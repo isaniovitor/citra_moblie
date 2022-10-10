@@ -14,10 +14,12 @@
         android:theme="@style/Theme.Citra_moblie"
         tools:targetApi="31">
         <activity
-            android:name=".EditUserActivity"
-            android:exported="false" />
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.Citra_moblie.NoActionBar" />
         <activity
-            android:name=".RegisterUserActivity"
+            android:name=".EditVacancy"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
@@ -28,6 +30,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RegisterVacancyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterUserActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

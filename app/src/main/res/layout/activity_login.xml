@@ -85,7 +85,7 @@
             android:textColor="@color/text"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/registerUserActivity"
-            app:layout_constraintTop_toBottomOf="@+id/button4"
+            app:layout_constraintTop_toBottomOf="@+id/login"
             tools:layout_editor_absoluteX="20dp" />
 
         <EditText
@@ -118,7 +118,7 @@
             tools:layout_editor_absoluteX="20dp" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
