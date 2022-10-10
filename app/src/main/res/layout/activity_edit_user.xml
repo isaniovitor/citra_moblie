@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/text"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
@@ -12,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Login"
+        android:text="Editar"
         android:textColor="@color/text"
         android:textSize="31sp"
         android:textStyle="bold"
@@ -53,17 +54,50 @@
         app:layout_constraintGuide_begin="20dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:background="@color/dark_blue"
         android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2">
+
+        <EditText
+            android:id="@+id/editTextTextPersonName6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:shadowColor="@color/white"
+            android:text="Repetir senha"
+            android:textColor="@color/text"
+            android:textColorHighlight="@color/text"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/registerUserActivity"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName5"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="20dp" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:shadowColor="@color/white"
+            android:soundEffectsEnabled="false"
+            android:text="Senha"
+            android:textColor="@color/text"
+            android:textColorHighlight="@color/text"
+            android:textColorHint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4"
+            tools:layout_editor_absoluteX="16dp" />
 
         <Button
             android:id="@+id/registerUserActivity"
@@ -76,18 +110,6 @@
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="25dp" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ou"
-            android:textAlignment="center"
-            android:textColor="@color/text"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/registerUserActivity"
-            app:layout_constraintTop_toBottomOf="@+id/button4"
-            tools:layout_editor_absoluteX="20dp" />
-
         <EditText
             android:id="@+id/editTextTextPersonName3"
             android:layout_width="match_parent"
@@ -95,12 +117,12 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:shadowColor="@color/white"
-            android:text="Digite sua senha"
+            android:text="Nome completo"
             android:textColor="@color/text"
             android:textColorHighlight="@color/text"
             android:textColorHint="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="18dp" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            tools:layout_editor_absoluteX="-6dp" />
 
         <EditText
             android:id="@+id/editTextTextPersonName7"
@@ -108,36 +130,57 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:shadowColor="@color/white"
-            android:text="Digite sua email"
+            android:text="Email"
             android:textColor="@color/text"
             android:textColorHighlight="@color/text"
             android:textColorHint="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3"
             tools:layout_editor_absoluteX="20dp" />
 
-        <Button
-            android:id="@+id/button4"
+        <EditText
+            android:id="@+id/editTextTextPersonName2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
-            android:background="@color/light_blue"
-            android:text="Entrar"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:inputType="date"
+            android:shadowColor="@color/white"
+            android:text="Aniversário"
             android:textColor="@color/text"
-            android:textSize="14sp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textColorHighlight="@color/text"
+            android:textColorHint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName7"
             tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:shadowColor="@color/white"
+            android:text="CPF"
+            android:textColor="@color/text"
+            android:textColorHighlight="@color/text"
+            android:textColorHint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
+            tools:layout_editor_absoluteX="24dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="297dp"
-        android:layout_height="429dp"
+        android:id="@+id/imageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="75dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/login_image" />
+        app:srcCompat="@drawable/register_user_image" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

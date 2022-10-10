@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class LoginActivity extends AppCompatActivity {
+public class RegisterUserActivity extends AppCompatActivity {
     public Button registerUserButton;
 
     @Override
@@ -15,13 +15,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register_user);
 
         registerUserButton = findViewById(R.id.registerUserActivity);
         registerUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, RegisterUserActivity.class);
+                Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });

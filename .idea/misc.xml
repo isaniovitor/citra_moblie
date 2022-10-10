@@ -4,9 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2595" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/drawable/botton_background.xml" value="0.1475" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2595" />
-        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_edit_user.xml" value="0.20863616930312098" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_login.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_register_user.xml" value="0.264" />
       </map>
     </option>
   </component>
