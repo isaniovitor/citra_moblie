@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class RegisterVacancyActivity extends AppCompatActivity {
+public class EditVacancyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_vacancy);
+        setContentView(R.layout.activity_edit_vacancy);
     }
 }

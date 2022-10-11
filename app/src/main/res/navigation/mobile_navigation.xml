@@ -12,14 +12,8 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.citra_moblie.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.citra_moblie.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_announce_vacancy"
+        android:name="com.example.citra_moblie.ui.announce_vacancy.Announce_vacancyFragment"
+        android:label="@string/nav_announce_vacancy"
+        tools:layout="@layout/fragment_announce_vacancy" />
 </navigation>

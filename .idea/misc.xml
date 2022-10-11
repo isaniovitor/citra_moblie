@@ -6,7 +6,9 @@
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2595" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/drawable/botton_background.xml" value="0.1475" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2595" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.1" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/drawable/round_outline.xml" value="0.2585" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/drawable/side_nav_bar.xml" value="0.1" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_edit_user.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_edit_vacancy.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_home.xml" value="0.20863616930312098" />
@@ -14,12 +16,19 @@
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_register_user.xml" value="0.264" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_register_vacancy.xml" value="0.20863616930312098" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/activity_vacancy_details.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/app_bar_home.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/content_home.xml" value="0.20863616930312098" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_announce_vacancy.xml" value="0.20863616930312098" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_edit_vacancy.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_gallery.xml" value="0.20863616930312098" />
-        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_home.xml" value="0.20863616930312098" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_slideshow.xml" value="0.20863616930312098" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_vacancy_details.xml" value="0.13039760581445062" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/list_vacancies_adapter.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/nav_header_home.xml" value="0.20863616930312098" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/menu/activity_main_drawer.xml" value="0.20863616930312098" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/menu/home.xml" value="0.20863616930312098" />
       </map>
     </option>
   </component>

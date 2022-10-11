@@ -1,37 +1,105 @@
 package com.example.citra_moblie.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.AdapterView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.citra_moblie.R;
+import com.example.citra_moblie.RecyclerItemClickListener;
+import com.example.citra_moblie.VacancyDetailsActivity;
+import com.example.citra_moblie.adapter.VacancyRecyclerViewAdapter;
 import com.example.citra_moblie.databinding.FragmentHomeBinding;
+import com.example.citra_moblie.model.Vacancy;
+import com.example.citra_moblie.ui.vacancy_details.VacancyDetails;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    private RecyclerView recyclerView;
+    private List<Vacancy> vacancies = new ArrayList<>();
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        recyclerView = view.findViewById(R.id.vacancies);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        // vacancies mock
+        this.createVacanciesMock();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        // configurar adapter
+        VacancyRecyclerViewAdapter adapter = new VacancyRecyclerViewAdapter(vacancies);
+
+        // configurar Recyclerview
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.hasFixedSize();
+        recyclerView.setAdapter(adapter);
+
+        // evento click
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getContext().getApplicationContext(),
+                        recyclerView,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                // como passar atributo
+                                Fragment fragment = new VacancyDetails();
+                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.nav_host_fragment_content_home, fragment, "Detalhes");
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        }
+                )
+        );
+
+
+        return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public void createVacanciesMock(){
+        Vacancy vacancy = new Vacancy(null, "Pedreiro", "ser um bom pedreito");
+        vacancies.add(vacancy);
+
+        vacancy = new Vacancy(null, "Pedreiro bom", "ser um bom pedreito");
+        vacancies.add(vacancy);
+
+        vacancy = new Vacancy(null, "Pedreiro do brabo", "ser um bom pedreito");
+        vacancies.add(vacancy);
+
+        vacancy = new Vacancy(null, "Pedreiro Eiro", "ser um bom pedreito");
+        vacancies.add(vacancy);
+
+        vacancy = new Vacancy(null, "Pedro eiro", "ser um bom pedreito");
+        vacancies.add(vacancy);
     }
 }
