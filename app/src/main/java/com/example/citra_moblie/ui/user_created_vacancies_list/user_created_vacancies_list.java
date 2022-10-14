@@ -1,15 +1,16 @@
-package com.example.citra_moblie.ui.home;
+package com.example.citra_moblie.ui.user_created_vacancies_list;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.RecyclerItemClickListener;
@@ -21,7 +22,7 @@ import com.example.citra_moblie.ui.vacancy_details.VacancyDetails;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class user_created_vacancies_list extends Fragment {
     private FragmentHomeBinding binding;
     private RecyclerView recyclerView;
     private List<Vacancy> vacancies = new ArrayList<>();
@@ -55,8 +56,8 @@ public class HomeFragment extends Fragment {
                                 // como passar atributo
                                 Fragment fragment = new VacancyDetails();
                                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                transaction.replace(R.id.nav_host_fragment_content_home, fragment, "home_vacancies_list");
-                                transaction.addToBackStack("home_vacancies_list");
+                                transaction.replace(R.id.nav_host_fragment_content_home, fragment, "user_created_vacancy_list");
+                                transaction.addToBackStack("user_created_vacancy_list");
                                 transaction.commit();
                             }
 
@@ -83,18 +84,6 @@ public class HomeFragment extends Fragment {
 
     public void createVacanciesMock(){
         Vacancy vacancy = new Vacancy(null, "Pedreiro", "ser um bom pedreito");
-        vacancies.add(vacancy);
-
-        vacancy = new Vacancy(null, "Pedreiro bom", "ser um bom pedreito");
-        vacancies.add(vacancy);
-
-        vacancy = new Vacancy(null, "Pedreiro do brabo", "ser um bom pedreito");
-        vacancies.add(vacancy);
-
-        vacancy = new Vacancy(null, "Pedreiro Eiro", "ser um bom pedreito");
-        vacancies.add(vacancy);
-
-        vacancy = new Vacancy(null, "Pedro eiro", "ser um bom pedreito");
         vacancies.add(vacancy);
     }
 }

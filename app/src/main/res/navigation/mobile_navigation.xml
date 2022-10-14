@@ -16,4 +16,16 @@
         android:name="com.example.citra_moblie.ui.announce_vacancy.Announce_vacancyFragment"
         android:label="@string/nav_announce_vacancy"
         tools:layout="@layout/fragment_announce_vacancy" />
+
+    <fragment
+        android:id="@+id/nav_user_created_jobs"
+        android:name="com.example.citra_moblie.ui.user_created_vacancies_list.user_created_vacancies_list"
+        android:label="Minhas vagas"
+        tools:layout="@layout/fragment_user_created_vacancies_list" />
+
+    <fragment
+        android:id="@+id/nav_user_applyed_vacancies_vacancy"
+        android:name="com.example.citra_moblie.ui.user_applyed_vacancies_list.user_applyed_vacancies"
+        android:label="Candidaturas"
+        tools:layout="@layout/fragment_user_applyed_vacancies_list" />
 </navigation>

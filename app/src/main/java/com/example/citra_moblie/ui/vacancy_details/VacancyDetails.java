@@ -1,66 +1,73 @@
 package com.example.citra_moblie.ui.vacancy_details;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.citra_moblie.LoginActivity;
 import com.example.citra_moblie.R;
+import com.example.citra_moblie.RegisterUserActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link VacancyDetails#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class VacancyDetails extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public VacancyDetails() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment VacancyDetails.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static VacancyDetails newInstance(String param1, String param2) {
-        VacancyDetails fragment = new VacancyDetails();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private String lasFragmentName;
+    private Button actionUser;
+    private FloatingActionButton ownerUserActions;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_vacancy_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_vacancy_details, container, false);
+        actionUser = view.findViewById(R.id.actionUserActivity);
+        ownerUserActions = view.findViewById(R.id.owner_user_actions);
+
+        // descobrindo a activity anterior
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        int count = fm.getBackStackEntryCount();
+        lasFragmentName = fm.getBackStackEntryAt(count - 1).getName();
+
+        actionUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (lasFragmentName.equals("home_vacancies_list")) {
+                    applyForVacancy();
+                } else {
+                    unsubscribeForVacancy();
+                }
+            }
+        });
+
+        // mudar ação do actionUser
+        // fazer floating button
+        if (lasFragmentName.equals("home_vacancies_list")) {
+            actionUser.setText("Candidatar-se");
+            ownerUserActions.setVisibility(View.GONE);
+        }else if (lasFragmentName.equals("user_created_vacancy_list")) {
+            actionUser.setVisibility(View.GONE);
+        }else{
+            actionUser.setText("Cancelar");
+            ownerUserActions.setVisibility(View.GONE);
+        }
+        return view;
+    }
+
+    public void applyForVacancy() {
+        Toast.makeText(getContext(),"Candidatado para a vaga", Toast.LENGTH_SHORT).show();
+    }
+
+    public void unsubscribeForVacancy() {
+        Toast.makeText(getContext(),"Candidatuta cancelada", Toast.LENGTH_SHORT).show();
     }
 }

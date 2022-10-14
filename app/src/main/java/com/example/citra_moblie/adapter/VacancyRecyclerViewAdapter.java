@@ -47,6 +47,7 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Vacancy vacancy = vacancies.get(position);
 
+        holder.vacancyImage.setImageResource(R.drawable.login_image);
         holder.vacancyName.setText(vacancy.getVacancyName());
         holder.vacancyDescription.setText(vacancy.getVacancyDescription());
     }

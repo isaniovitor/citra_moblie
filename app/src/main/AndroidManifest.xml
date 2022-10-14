@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.citra_moblie">
+    package="com.example.citra_moblie" >
 
     <application
         android:allowBackup="true"
@@ -12,27 +12,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Citra_moblie"
-        tools:targetApi="31">
-        <activity
-            android:name=".VacancyDetailsActivity"
-            android:exported="false" />
+        tools:targetApi="31" >
         <activity
             android:name=".HomeActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_home"
-            android:theme="@style/Theme.Citra_moblie.NoActionBar" />
-        <activity
-            android:name=".EditVacancyActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true">
+            android:theme="@style/Theme.Citra_moblie.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".EditVacancyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
         <activity
             android:name=".EditUserActivity"
             android:exported="false" />

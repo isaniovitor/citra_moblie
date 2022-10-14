@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true"
+    tools:context=".ui.vacancy_details.VacancyDetails"
+    tools:layout_editor_absoluteX="1dp"
+    tools:layout_editor_absoluteY="1dp">
+
+    <!--    n funciona o scroll-->
+    <!--    refatorar telas de editar e criar vacancy-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="7dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="7dp" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="TODO"
+                android:src="@drawable/vacancy_image"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/blue"
+                android:fadeScrollbars="true"
+                android:isScrollContainer="true"
+                android:keepScreenOn="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toBottomOf="@+id/imageView5"
+                app:layout_constraintVertical_bias="1.0">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/owner_user_actions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:src="@drawable/ic_launcher_foreground"
+                    app:backgroundTint="#00BCD4"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView"
+                    android:layout_width="0dp"
+                    android:layout_height="62dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline7"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9"
+                    tools:ignore="MissingConstraints">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/bustton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/light_blue"
+                            android:text="Button"
+                            tools:layout_editor_absoluteX="59dp"
+                            tools:layout_editor_absoluteY="494dp" />
+
+                        <Button
+                            android:id="@+id/budtton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/light_blue"
+                            android:text="Button"
+                            tools:layout_editor_absoluteX="59dp"
+                            tools:layout_editor_absoluteY="494dp" />
+
+                        <Button
+                            android:id="@+id/butfton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/light_blue"
+                            android:text="Button"
+                            tools:layout_editor_absoluteX="59dp"
+                            tools:layout_editor_absoluteY="494dp" />
+
+                        <Button
+                            android:id="@+id/buttfon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/light_blue"
+                            android:text="Button"
+                            tools:layout_editor_absoluteX="59dp"
+                            tools:layout_editor_absoluteY="494dp" />
+
+                        <Button
+                            android:id="@+id/button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/light_blue"
+                            android:text="Button"
+                            tools:layout_editor_absoluteX="59dp"
+                            tools:layout_editor_absoluteY="494dp" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <Button
+                    android:id="@+id/actionUserActivity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/light_blue"
+                    android:text="candidatar-se"
+                    android:textColor="@color/text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                    app:layout_constraintStart_toStartOf="@+id/guideline7"
+                    app:layout_constraintTop_toBottomOf="@+id/vacancy_description"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Pedreiro Eiro"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                    app:layout_constraintHorizontal_bias="0.189"
+                    app:layout_constraintStart_toStartOf="@+id/guideline7"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/vacancy_description"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:justificationMode="inter_word"
+                    android:text="skskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaffskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskskaskska"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toTopOf="@+id/actionUserActivity"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/guideline7"
+                    app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="10dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="10dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="7dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="7dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
