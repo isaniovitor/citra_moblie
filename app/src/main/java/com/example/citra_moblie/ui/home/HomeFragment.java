@@ -1,10 +1,14 @@
 package com.example.citra_moblie.ui.home;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,30 +25,34 @@ import com.example.citra_moblie.ui.vacancy_details.VacancyDetails;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment  {
     private FragmentHomeBinding binding;
     private RecyclerView recyclerView;
     private List<Vacancy> vacancies = new ArrayList<>();
+    private Spinner numberSpinner;
+    private Spinner shiftSpinner;
+    private Spinner typeHiring;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = view.findViewById(R.id.vacancies);
+        numberSpinner = view.findViewById(R.id.salatySpinner);
+        shiftSpinner = view.findViewById(R.id.shiftSpinner);
+        typeHiring = view.findViewById(R.id.typeHiringSpinner);
 
         // vacancies mock
         this.createVacanciesMock();
 
-        // configurar adapter
+        // recyclerView
         VacancyRecyclerViewAdapter adapter = new VacancyRecyclerViewAdapter(vacancies);
 
-        // configurar Recyclerview
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.hasFixedSize();
         recyclerView.setAdapter(adapter);
 
-        // evento click
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(
                         getContext().getApplicationContext(),
@@ -72,6 +80,60 @@ public class HomeFragment extends Fragment {
                         }
                 )
         );
+
+        // spinners
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.salary, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        numberSpinner.setAdapter(spinnerAdapter);
+//        numberSpinner.getBackground().setColorFilter(R.color.red), PorterDuff.Mode.SRC_ATOP);
+        numberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String itemSelected =  adapterView.getSelectedItem().toString();
+                Toast.makeText(getContext(),"item selecionado: " + itemSelected, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+       spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.shifts, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        shiftSpinner.setAdapter(spinnerAdapter);
+        shiftSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String itemSelected =  adapterView.getSelectedItem().toString();
+                Toast.makeText(getContext(),"item selecionado: " + itemSelected, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.typeHiring, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeHiring.setAdapter(spinnerAdapter);
+        typeHiring.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String itemSelected =  adapterView.getSelectedItem().toString();
+                Toast.makeText(getContext(),"item selecionado: " + itemSelected, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         return view;
     }
 

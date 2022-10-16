@@ -1,4 +1,4 @@
-package com.example.citra_moblie.ui.user_applyed_vacancies_list;
+package com.example.citra_moblie.ui.user_applied_vacancies_list;
 
 import android.os.Bundle;
 
@@ -22,7 +22,7 @@ import com.example.citra_moblie.ui.vacancy_details.VacancyDetails;
 import java.util.ArrayList;
 import java.util.List;
 
-public class user_applyed_vacancies extends Fragment {
+public class user_applied_vacancies_list extends Fragment {
     private FragmentHomeBinding binding;
     private RecyclerView recyclerView;
     private List<Vacancy> vacancies = new ArrayList<>();
@@ -30,7 +30,7 @@ public class user_applyed_vacancies extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_applied_vacancies_list, container, false);
         recyclerView = view.findViewById(R.id.vacancies);
 
         // vacancies mock

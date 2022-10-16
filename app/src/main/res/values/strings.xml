@@ -21,6 +21,26 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- Strings used for spinners -->
+    <string-array name="salary">
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+        <item>5000</item>
+    </string-array>
+
+    <string-array name="shifts">
+        <item>manhã</item>
+        <item>tarde</item>
+        <item>noite</item>
+    </string-array>
+
+    <string-array name="typeHiring">
+        <item>CLT</item>
+        <item>STE</item>
+        <item>SDE</item>
+        <item>EEL</item>
+        <item>SEW</item>
+    </string-array>
 </resources>

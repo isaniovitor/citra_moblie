@@ -11,6 +11,7 @@
         android:id="@+id/vacancies"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintHorizontal_bias="0.0"
@@ -35,7 +36,6 @@
         android:id="@+id/horizontalScrollView"
         android:layout_width="0dp"
         android:layout_height="62dp"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="parent">
@@ -45,50 +45,44 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/bustton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Spinner
+                android:id="@+id/salatySpinner"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Button"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/filter_background"
+                android:backgroundTint="@color/light_blue"
+                android:popupBackground="@color/white"
+                android:spinnerMode="dropdown"
                 tools:layout_editor_absoluteX="59dp"
                 tools:layout_editor_absoluteY="494dp" />
 
-            <Button
-                android:id="@+id/budtton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Spinner
+                android:id="@+id/shiftSpinner"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Button"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/filter_background"
+                android:spinnerMode="dropdown"
                 tools:layout_editor_absoluteX="59dp"
                 tools:layout_editor_absoluteY="494dp" />
 
-            <Button
-                android:id="@+id/butfton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Spinner
+                android:id="@+id/typeHiringSpinner"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Button"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/filter_background"
+                android:spinnerMode="dropdown"
                 tools:layout_editor_absoluteX="59dp"
                 tools:layout_editor_absoluteY="494dp" />
 
-            <Button
-                android:id="@+id/buttfon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="Button"
-                tools:layout_editor_absoluteX="59dp"
-                tools:layout_editor_absoluteY="494dp" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="Button"
-                tools:layout_editor_absoluteX="59dp"
-                tools:layout_editor_absoluteY="494dp" />
         </LinearLayout>
     </HorizontalScrollView>
 
