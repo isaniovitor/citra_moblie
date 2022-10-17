@@ -3,7 +3,9 @@ package com.example.citra_moblie.model;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class Vacancy {
+import java.io.Serializable;
+
+public class Vacancy implements Serializable {
 
     private String vacancyImage;
     private String vacancyName;

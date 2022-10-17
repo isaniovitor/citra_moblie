@@ -12,19 +12,30 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.helper.Permission;
+import com.example.citra_moblie.model.Vacancy;
+import com.example.citra_moblie.ui.user_created_vacancies_list.user_created_vacancies_list;
+
+import java.io.Serializable;
+import java.util.List;
 
 
 public class EditVacancy extends Fragment {
+    private TextView nameVacancyToEdit;
+    private TextView descriptionVacancyToEdit;
+    private Button editVacancyButton;
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
     private ImageView profileImage;
     private ImageButton gallery;
@@ -42,6 +53,18 @@ public class EditVacancy extends Fragment {
         gallery = view.findViewById(R.id.galleryButton);
         camera = view.findViewById(R.id.cameraButton);
         profileImage = view.findViewById(R.id.vacancy_image);
+        nameVacancyToEdit = view.findViewById(R.id.nameVacancyToEdit);
+        descriptionVacancyToEdit = view.findViewById(R.id.descriptionVacancyToEdit);
+        editVacancyButton = view.findViewById(R.id.announceVacancyButton);
+
+        Bundle bundle = getArguments();
+        int vacancyPosition = (int) bundle.getSerializable("position");
+        List<Vacancy> vacancies = (List<Vacancy>) bundle.getSerializable("vacancies");
+//        Log.i("TAG", "vacancy: " + currentVacancy.getVacancyName());
+
+        // setando os dados
+        nameVacancyToEdit.setText(vacancies.get(vacancyPosition).getVacancyName());
+        descriptionVacancyToEdit.setText(vacancies.get(vacancyPosition).getVacancyDescription());
 
         Permission.validatePermissions(necessaryPermissions, getActivity(), 1);
         // fazer codio Caso negada a permission
@@ -98,6 +121,26 @@ public class EditVacancy extends Fragment {
                     resultLauncher.launch(intent);
                     IMAGE_ACTION_CODE = 2;
                 }
+            }
+        });
+
+        // salvar mudança
+        editVacancyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vacancies.get(vacancyPosition).setVacancyName(nameVacancyToEdit.getText().toString());
+                vacancies.get(vacancyPosition).setVacancyDescription(descriptionVacancyToEdit.getText().toString());
+
+                Bundle bundle = new Bundle();
+                Fragment fragment = new user_created_vacancies_list();
+                bundle.putSerializable("vacancies", (Serializable) vacancies);
+
+                fragment.setArguments(bundle);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment_content_home, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+//                Log.i("TAG", "onClick: Salvou: " + currentVacancy.getVacancyName());
             }
         });
 

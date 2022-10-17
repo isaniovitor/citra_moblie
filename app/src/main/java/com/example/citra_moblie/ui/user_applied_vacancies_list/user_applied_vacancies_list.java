@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.example.citra_moblie.R;
-import com.example.citra_moblie.RecyclerItemClickListener;
+import com.example.citra_moblie.helper.RecyclerItemClickListener;
 import com.example.citra_moblie.adapter.VacancyRecyclerViewAdapter;
 import com.example.citra_moblie.databinding.FragmentHomeBinding;
 import com.example.citra_moblie.model.Vacancy;

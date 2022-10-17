@@ -66,7 +66,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <Button
-            android:id="@+id/registerUserActivity"
+            android:id="@+id/announceVacancyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_blue"
@@ -84,12 +84,12 @@
             android:textAlignment="center"
             android:textColor="@color/text"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/registerUserActivity"
+            app:layout_constraintBottom_toTopOf="@+id/announceVacancyButton"
             app:layout_constraintTop_toBottomOf="@+id/login"
             tools:layout_editor_absoluteX="20dp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName3"
+            android:id="@+id/nameVacancyToEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -103,7 +103,7 @@
             tools:layout_editor_absoluteX="18dp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName7"
+            android:id="@+id/descriptionVacancyToEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -114,7 +114,7 @@
             android:textColor="@color/text"
             android:textColorHighlight="@color/text"
             android:textColorHint="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3"
+            app:layout_constraintTop_toBottomOf="@+id/nameVacancyToEdit"
             tools:layout_editor_absoluteX="20dp" />
 
         <Button

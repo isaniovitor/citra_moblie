@@ -18,6 +18,25 @@
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/floatingMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationZ="1000dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:fab_labelStyle="@style/custonFab">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/createVacancy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/ic_baseline_edit"
+            app:fab_title="nova vaga" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"

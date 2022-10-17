@@ -1,4 +1,4 @@
-package com.example.citra_moblie;
+package com.example.citra_moblie.helper;
 
 import android.content.Context;
 import android.view.GestureDetector;

@@ -13,18 +13,29 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.helper.Permission;
+import com.example.citra_moblie.model.Vacancy;
+import com.example.citra_moblie.ui.user_created_vacancies_list.user_created_vacancies_list;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class Announce_vacancyFragment extends Fragment {
+    private Button announceVacancyButton;
+    private TextView nameVacancyToEdit;
+    private TextView descriptionVacancyToEdit;
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
     private ImageView profileImage;
     private ImageButton gallery;
@@ -38,10 +49,15 @@ public class Announce_vacancyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_announce_vacancy, container, false);
+        Bundle bundle = getArguments();
+        List<Vacancy> newVacancies = (List<Vacancy>) bundle.getSerializable("vacancies");
 
         gallery = view.findViewById(R.id.galleryButton);
         camera = view.findViewById(R.id.cameraButton);
         profileImage = view.findViewById(R.id.vacancy_image);
+        announceVacancyButton = view.findViewById(R.id.announceVacancyButton);
+        nameVacancyToEdit = view.findViewById(R.id.nameVacancyToEdit);
+        descriptionVacancyToEdit = view.findViewById(R.id.descriptionVacancyToEdit);
 
         Permission.validatePermissions(necessaryPermissions, getActivity(), 1);
         // fazer codio Caso negada a permission
@@ -100,6 +116,25 @@ public class Announce_vacancyFragment extends Fragment {
                 }
             }
         });
+
+        announceVacancyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Vacancy vacancy = new Vacancy(null, nameVacancyToEdit.getText().toString(), descriptionVacancyToEdit.getText().toString());
+                newVacancies.add(vacancy);
+
+                Bundle bundle = new Bundle();
+                Fragment fragment = new user_created_vacancies_list();
+                bundle.putSerializable("vacancies", (Serializable) newVacancies);
+
+                fragment.setArguments(bundle);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment_content_home, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         return view;
     }
 }

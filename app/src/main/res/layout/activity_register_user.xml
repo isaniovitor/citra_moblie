@@ -78,7 +78,7 @@
             android:textColor="@color/text"
             android:textColorHighlight="@color/text"
             android:textColorHint="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/registerUserActivity"
+            app:layout_constraintBottom_toTopOf="@+id/announceVacancyButton"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName5"
             app:layout_constraintVertical_bias="0.0"
             tools:layout_editor_absoluteX="20dp" />
@@ -100,7 +100,7 @@
             tools:layout_editor_absoluteX="16dp" />
 
         <Button
-            android:id="@+id/registerUserActivity"
+            android:id="@+id/announceVacancyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_blue"
@@ -111,7 +111,7 @@
             tools:layout_editor_absoluteX="25dp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName3"
+            android:id="@+id/nameVacancyToEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -125,7 +125,7 @@
             tools:layout_editor_absoluteX="-6dp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName7"
+            android:id="@+id/descriptionVacancyToEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -136,7 +136,7 @@
             android:textColor="@color/text"
             android:textColorHighlight="@color/text"
             android:textColorHint="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3"
+            app:layout_constraintTop_toBottomOf="@+id/nameVacancyToEdit"
             tools:layout_editor_absoluteX="20dp" />
 
         <EditText
@@ -151,7 +151,7 @@
             android:textColor="@color/text"
             android:textColorHighlight="@color/text"
             android:textColorHint="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName7"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionVacancyToEdit"
             tools:layout_editor_absoluteX="16dp" />
 
         <EditText

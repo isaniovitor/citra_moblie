@@ -38,7 +38,7 @@ public class RegisterUserActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_register_user);
 
-        registerUserButton = findViewById(R.id.registerUserActivity);
+        registerUserButton = findViewById(R.id.announceVacancyButton);
         gallery = findViewById(R.id.galleryButton);
         camera = findViewById(R.id.cameraButton);
         profileImage = findViewById(R.id.profile_image);

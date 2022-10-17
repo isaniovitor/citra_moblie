@@ -1,7 +1,7 @@
 package com.example.citra_moblie.ui.home;
 
-import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.citra_moblie.R;
-import com.example.citra_moblie.RecyclerItemClickListener;
+import com.example.citra_moblie.helper.RecyclerItemClickListener;
 import com.example.citra_moblie.adapter.VacancyRecyclerViewAdapter;
 import com.example.citra_moblie.databinding.FragmentHomeBinding;
 import com.example.citra_moblie.model.Vacancy;
 import com.example.citra_moblie.ui.vacancy_details.VacancyDetails;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +61,13 @@ public class HomeFragment extends Fragment  {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                // como passar atributo
+                                Bundle bundle = new Bundle();
                                 Fragment fragment = new VacancyDetails();
+
+                                bundle.putSerializable("position", position);
+                                bundle.putSerializable("vacancies", (Serializable) vacancies);
+                                fragment.setArguments(bundle);
+
                                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                                 transaction.replace(R.id.nav_host_fragment_content_home, fragment, "home_vacancies_list");
                                 transaction.addToBackStack("home_vacancies_list");

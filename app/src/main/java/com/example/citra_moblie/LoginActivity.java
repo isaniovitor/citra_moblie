@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
-        registerUserButton = findViewById(R.id.registerUserActivity);
+        registerUserButton = findViewById(R.id.announceVacancyButton);
         registerUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
