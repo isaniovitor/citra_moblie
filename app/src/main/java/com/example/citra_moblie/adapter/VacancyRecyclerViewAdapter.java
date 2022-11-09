@@ -25,14 +25,18 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
 
         ImageView vacancyImage;
         TextView vacancyName;
-        TextView vacancyDescription;
+        TextView vacancySalary;
+        TextView vacancyShift;
+        TextView vacancyTypeHiring;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             vacancyImage = itemView.findViewById(R.id.vacancyImage);
             vacancyName = itemView.findViewById(R.id.vacancyName);
-            vacancyDescription = itemView.findViewById(R.id.vacancyDescription);
+            vacancySalary = itemView.findViewById(R.id.vacancySalary);
+            vacancyShift = itemView.findViewById(R.id.vacancyShift);
+            vacancyTypeHiring = itemView.findViewById(R.id.vacancyTypeHiring);
         }
     }
 
@@ -47,13 +51,22 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Vacancy vacancy = vacancies.get(position);
 
-        holder.vacancyImage.setImageResource(R.drawable.login_image);
+        if (vacancy.getVacancyImage() != null) {
+            holder.vacancyImage.setImageBitmap(vacancy.getVacancyImage());
+        }
+
         holder.vacancyName.setText(vacancy.getVacancyName());
-        holder.vacancyDescription.setText(vacancy.getVacancyDescription());
+        holder.vacancySalary.setText(vacancy.getSalatySpinner());
+        holder.vacancyShift.setText(vacancy.getShiftSpinner());
+        holder.vacancyTypeHiring.setText(vacancy.getTypeHiringSpinner());
     }
 
     @Override
     public int getItemCount() {
         return vacancies.size();
+    }
+
+    public void setVacancies(List<Vacancy> vacancies) {
+        this.vacancies = vacancies;
     }
 }

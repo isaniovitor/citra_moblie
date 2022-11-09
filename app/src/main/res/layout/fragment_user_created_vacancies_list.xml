@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.user_applied_vacancies_list.user_applied_vacancies_list">
+    tools:context=".ui.UserAppliedVacancies">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vacancies"

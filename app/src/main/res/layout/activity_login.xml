@@ -8,7 +8,7 @@
     tools:context=".LoginActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/navUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -89,13 +89,13 @@
             tools:layout_editor_absoluteX="20dp" />
 
         <EditText
-            android:id="@+id/nameVacancyToEdit"
+            android:id="@+id/nameVacancyToCreate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Digite sua email"
             android:inputType="textPersonName"
             android:shadowColor="@color/white"
-            android:text="Digite sua senha"
             android:textColor="@color/text"
             android:textColorHighlight="@color/text"
             android:textColorHint="@color/white"
@@ -103,18 +103,18 @@
             tools:layout_editor_absoluteX="18dp" />
 
         <EditText
-            android:id="@+id/descriptionVacancyToEdit"
+            android:id="@+id/descriptionVacancyToCreate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:hint="Digite sua senha"
+            android:inputType="textPassword"
             android:shadowColor="@color/white"
-            android:text="Digite sua email"
             android:textColor="@color/text"
             android:textColorHighlight="@color/text"
             android:textColorHint="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/nameVacancyToEdit"
+            app:layout_constraintTop_toBottomOf="@+id/nameVacancyToCreate"
             tools:layout_editor_absoluteX="20dp" />
 
         <Button
@@ -122,7 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
-            android:background="@color/light_blue"
+            android:background="@color/dark_blue"
             android:text="Entrar"
             android:textColor="@color/text"
             android:textSize="14sp"

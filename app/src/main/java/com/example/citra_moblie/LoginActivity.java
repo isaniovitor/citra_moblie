@@ -6,10 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.citra_moblie.dao.IUserDAO;
+import com.example.citra_moblie.dao.UserDAO;
 
 public class LoginActivity extends AppCompatActivity {
-    public Button registerUserButton;
-    public Button loginButton;
+    private TextView loginName;
+    private TextView loginEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +23,12 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
-        registerUserButton = findViewById(R.id.announceVacancyButton);
+        Button registerUserButton = findViewById(R.id.announceVacancyButton);
+        Button loginButton = findViewById(R.id.login);
+        TextView loginEmail = findViewById(R.id.nameVacancyToCreate);
+        TextView loginPassword = findViewById(R.id.descriptionVacancyToCreate);
+        IUserDAO userDAO = UserDAO.getInstance(this);
+
         registerUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -27,12 +37,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        loginButton = findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
+                if (loginEmail.getText().toString().equals(userDAO.getUser().getEmail()) &&
+                        loginPassword.getText().toString().equals(userDAO.getUser().getPassword())) {
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(LoginActivity.this,"Credenciais erradas ou vazias!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

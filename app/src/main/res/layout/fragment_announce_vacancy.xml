@@ -8,7 +8,7 @@ android:layout_height="match_parent"
 tools:layout_editor_absoluteX="1dp"
 tools:layout_editor_absoluteY="1dp"
 android:fillViewport="true"
-tools:context=".ui.announce_vacancy.Announce_vacancyFragment">
+tools:context=".ui.AnnounceVacancyFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/text"
@@ -54,7 +54,7 @@ tools:context=".ui.announce_vacancy.Announce_vacancyFragment">
             app:layout_constraintStart_toStartOf="@+id/guideline2">
 
             <EditText
-                android:id="@+id/editTextTextPersonName6"
+                android:id="@+id/registerUserRepeatPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -67,24 +67,24 @@ tools:context=".ui.announce_vacancy.Announce_vacancyFragment">
                 android:textColorHighlight="@color/text"
                 android:textColorHint="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/announceVacancyButton"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName5"
+                app:layout_constraintTop_toBottomOf="@+id/salaryVacancyToCreate"
                 app:layout_constraintVertical_bias="0.0"
                 tools:layout_editor_absoluteX="20dp" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName5"
+                android:id="@+id/salaryVacancyToCreate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ems="10"
-                android:inputType="text"
+                android:hint="Salário"
+                android:inputType="number|text"
                 android:shadowColor="@color/white"
                 android:soundEffectsEnabled="false"
-                android:text="Empresa"
                 android:textColor="@color/text"
                 android:textColorHighlight="@color/text"
                 android:textColorHint="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4"
+                app:layout_constraintTop_toBottomOf="@+id/typeHiringVacancyToCreate"
                 tools:layout_editor_absoluteX="16dp" />
 
             <Button
@@ -100,71 +100,71 @@ tools:context=".ui.announce_vacancy.Announce_vacancyFragment">
                 tools:layout_editor_absoluteX="25dp" />
 
             <EditText
-                android:id="@+id/nameVacancyToEdit"
+                android:id="@+id/nameVacancyToCreate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="Nome da vaga"
                 android:inputType="textPersonName"
                 android:shadowColor="@color/white"
-                android:text="Nome da vaga"
                 android:textColor="@color/text"
                 android:textColorHighlight="@color/text"
                 android:textColorHint="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/userIHeadermage"
                 tools:layout_editor_absoluteX="-6dp" />
 
             <EditText
-                android:id="@+id/descriptionVacancyToEdit"
+                android:id="@+id/descriptionVacancyToCreate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ems="10"
+                android:hint="Descrição"
                 android:inputType="textMultiLine"
                 android:shadowColor="@color/white"
-                android:text="Descrição"
                 android:textColor="@color/text"
                 android:textColorHighlight="@color/text"
                 android:textColorHint="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/nameVacancyToEdit"
+                app:layout_constraintTop_toBottomOf="@+id/nameVacancyToCreate"
                 tools:layout_editor_absoluteX="20dp" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName2"
+                android:id="@+id/shiftVacancyToCreate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ems="10"
-                android:inputType="date"
+                android:hint="Turno"
+                android:inputType="text"
                 android:shadowColor="@color/white"
-                android:text="Aniversário"
                 android:textColor="@color/text"
                 android:textColorHighlight="@color/text"
                 android:textColorHint="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionVacancyToEdit"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionVacancyToCreate"
                 tools:layout_editor_absoluteX="16dp" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName4"
+                android:id="@+id/typeHiringVacancyToCreate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ems="10"
-                android:inputType="number"
+                android:hint="Tipo de contratação"
+                android:inputType="text"
                 android:shadowColor="@color/white"
-                android:text="Salário"
                 android:textColor="@color/text"
                 android:textColorHighlight="@color/text"
                 android:textColorHint="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
+                app:layout_constraintTop_toBottomOf="@+id/shiftVacancyToCreate"
                 tools:layout_editor_absoluteX="24dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/vacancy_image"
+            android:id="@+id/vacancyImageToCreate"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/no_user_image"
+            android:src="@drawable/noimage"
             app:civ_border_color="@color/blue"
             app:civ_border_width="1dp"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
@@ -178,11 +178,11 @@ tools:context=".ui.announce_vacancy.Announce_vacancyFragment">
             android:layout_height="wrap_content"
             android:background="@drawable/pick_image_background"
             android:src="@drawable/ic_baseline_photo_library"
-            app:layout_constraintBottom_toBottomOf="@+id/vacancy_image"
-            app:layout_constraintEnd_toEndOf="@+id/vacancy_image"
+            app:layout_constraintBottom_toBottomOf="@+id/vacancyImageToCreate"
+            app:layout_constraintEnd_toEndOf="@+id/vacancyImageToCreate"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/cameraButton"
-            app:layout_constraintTop_toTopOf="@+id/vacancy_image"
+            app:layout_constraintTop_toTopOf="@+id/vacancyImageToCreate"
             app:layout_constraintVertical_bias="0.85" />
 
         <ImageButton
@@ -191,12 +191,12 @@ tools:context=".ui.announce_vacancy.Announce_vacancyFragment">
             android:layout_height="wrap_content"
             android:background="@drawable/pick_image_background"
             android:src="@drawable/ic_menu_camera"
-            app:layout_constraintBottom_toBottomOf="@+id/vacancy_image"
+            app:layout_constraintBottom_toBottomOf="@+id/vacancyImageToCreate"
             app:layout_constraintEnd_toStartOf="@+id/galleryButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="@+id/vacancy_image"
-            app:layout_constraintTop_toTopOf="@+id/vacancy_image"
+            app:layout_constraintStart_toStartOf="@+id/vacancyImageToCreate"
+            app:layout_constraintTop_toTopOf="@+id/vacancyImageToCreate"
             app:layout_constraintVertical_bias="0.85" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

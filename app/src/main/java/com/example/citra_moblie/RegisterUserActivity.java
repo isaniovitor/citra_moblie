@@ -10,6 +10,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,15 +18,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.citra_moblie.dao.IUserDAO;
+import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.helper.Permission;
+import com.example.citra_moblie.model.User;
 
 public class RegisterUserActivity extends AppCompatActivity {
     public Button registerUserButton;
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
     private ImageView profileImage;
-    private ImageButton gallery;
-    private ImageButton camera;
+    private TextView registerUserName;
+    private TextView registerUserEmail;
+    private TextView registerUserBirthday;
+    private TextView registerUserCpf;
+    private TextView registerUserPassword;
+    private TextView registerUserRepeatPassword;
     private String[] necessaryPermissions = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
@@ -38,10 +48,17 @@ public class RegisterUserActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_register_user);
 
+        registerUserName = findViewById(R.id.nameVacancyToCreate);
+        registerUserEmail = findViewById(R.id.descriptionVacancyToCreate);
+        registerUserBirthday = findViewById(R.id.shiftVacancyToCreate);
+        registerUserCpf = findViewById(R.id.typeHiringVacancyToCreate);
+        registerUserPassword = findViewById(R.id.salaryVacancyToCreate);
+        registerUserRepeatPassword = findViewById(R.id.registerUserRepeatPassword);
+        profileImage = findViewById(R.id.profileImage);
         registerUserButton = findViewById(R.id.announceVacancyButton);
-        gallery = findViewById(R.id.galleryButton);
-        camera = findViewById(R.id.cameraButton);
-        profileImage = findViewById(R.id.profile_image);
+        ImageButton gallery = findViewById(R.id.galleryButton);
+        ImageButton camera = findViewById(R.id.cameraButton);
+        IUserDAO userDAO = UserDAO.getInstance(this);
 
         Permission.validatePermissions(necessaryPermissions, this, 1);
         // fazer codio Caso negada a permission
@@ -104,8 +121,22 @@ public class RegisterUserActivity extends AppCompatActivity {
         registerUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
-                startActivity(intent);
+                if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
+                    User user = new User(
+                            ((BitmapDrawable) profileImage.getDrawable()).getBitmap(),
+                            registerUserName.getText().toString(),
+                            registerUserEmail.getText().toString(),
+                            registerUserBirthday.getText().toString(),
+                            registerUserCpf.getText().toString(),
+                            registerUserPassword.getText().toString()
+                    );
+
+                    userDAO.setUser(user);
+                    Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(RegisterUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

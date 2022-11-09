@@ -1,9 +1,10 @@
-package com.example.citra_moblie.ui.editVacancyActivity;
+package com.example.citra_moblie.ui;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -24,20 +25,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.citra_moblie.R;
+import com.example.citra_moblie.dao.IVacancyDAO;
+import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.helper.Permission;
-import com.example.citra_moblie.model.Vacancy;
-import com.example.citra_moblie.ui.user_created_vacancies_list.user_created_vacancies_list;
-
-import java.io.Serializable;
-import java.util.List;
 
 
 public class EditVacancy extends Fragment {
     private TextView nameVacancyToEdit;
     private TextView descriptionVacancyToEdit;
+    private TextView shiftVacancyToEdit;
+    private TextView typeHiringVacancyToEdit;
+    private TextView salaryVacancyToEdit;
     private Button editVacancyButton;
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
-    private ImageView profileImage;
+    private ImageView vacancyImageToCreate;
     private ImageButton gallery;
     private ImageButton camera;
     private String[] necessaryPermissions = new String[]{
@@ -52,19 +53,28 @@ public class EditVacancy extends Fragment {
 
         gallery = view.findViewById(R.id.galleryButton);
         camera = view.findViewById(R.id.cameraButton);
-        profileImage = view.findViewById(R.id.vacancy_image);
-        nameVacancyToEdit = view.findViewById(R.id.nameVacancyToEdit);
-        descriptionVacancyToEdit = view.findViewById(R.id.descriptionVacancyToEdit);
+        vacancyImageToCreate = view.findViewById(R.id.vacancyImageToCreate);
+        nameVacancyToEdit = view.findViewById(R.id.nameVacancyToCreate);
+        descriptionVacancyToEdit = view.findViewById(R.id.descriptionVacancyToCreate);
+        shiftVacancyToEdit = view.findViewById(R.id.shiftVacancyToCreate);
+        typeHiringVacancyToEdit = view.findViewById(R.id.typeHiringVacancyToCreate);
+        salaryVacancyToEdit = view.findViewById(R.id.salaryVacancyToCreate);
         editVacancyButton = view.findViewById(R.id.announceVacancyButton);
 
         Bundle bundle = getArguments();
+        IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
         int vacancyPosition = (int) bundle.getSerializable("position");
-        List<Vacancy> vacancies = (List<Vacancy>) bundle.getSerializable("vacancies");
-//        Log.i("TAG", "vacancy: " + currentVacancy.getVacancyName());
 
         // setando os dados
-        nameVacancyToEdit.setText(vacancies.get(vacancyPosition).getVacancyName());
-        descriptionVacancyToEdit.setText(vacancies.get(vacancyPosition).getVacancyDescription());
+        if (vacancyDAO.getVacancy(vacancyPosition).getVacancyImage() != null) {
+            vacancyImageToCreate.setImageBitmap(vacancyDAO.getVacancy(vacancyPosition).getVacancyImage());
+        }
+
+        nameVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getVacancyName());
+        descriptionVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getVacancyDescription());
+        shiftVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getShiftSpinner());
+        typeHiringVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getTypeHiringSpinner());
+        salaryVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getSalatySpinner());
 
         Permission.validatePermissions(necessaryPermissions, getActivity(), 1);
         // fazer codio Caso negada a permission
@@ -75,8 +85,6 @@ public class EditVacancy extends Fragment {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        // There are no request codes
-
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Bitmap image = null;
 
@@ -90,13 +98,12 @@ public class EditVacancy extends Fragment {
                                         image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), localImage);
                                         break;
                                 }
-
                             }catch (Exception e){
                                 // por toast
                             }
 
                             if (image != null) {
-                                profileImage.setImageBitmap(image);
+                                vacancyImageToCreate.setImageBitmap(image);
                             }
                         }
                     }
@@ -128,19 +135,19 @@ public class EditVacancy extends Fragment {
         editVacancyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vacancies.get(vacancyPosition).setVacancyName(nameVacancyToEdit.getText().toString());
-                vacancies.get(vacancyPosition).setVacancyDescription(descriptionVacancyToEdit.getText().toString());
+                vacancyDAO.getCreatedVacancy(vacancyPosition).setVacancyImage(((BitmapDrawable) vacancyImageToCreate.getDrawable()).getBitmap());
+                vacancyDAO.getCreatedVacancy(vacancyPosition).setVacancyName(nameVacancyToEdit.getText().toString());
+                vacancyDAO.getCreatedVacancy(vacancyPosition).setVacancyDescription(descriptionVacancyToEdit.getText().toString());
+                vacancyDAO.getCreatedVacancy(vacancyPosition).setShiftSpinner(shiftVacancyToEdit.getText().toString());
+                vacancyDAO.getCreatedVacancy(vacancyPosition).setTypeHiringSpinner(typeHiringVacancyToEdit.getText().toString());
+                vacancyDAO.getCreatedVacancy(vacancyPosition).setSalatySpinner(salaryVacancyToEdit.getText().toString());
 
-                Bundle bundle = new Bundle();
-                Fragment fragment = new user_created_vacancies_list();
-                bundle.putSerializable("vacancies", (Serializable) vacancies);
-
+                Fragment fragment = new UserCreatedVacancies();
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.nav_host_fragment_content_home, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-//                Log.i("TAG", "onClick: Salvou: " + currentVacancy.getVacancyName());
             }
         });
 
