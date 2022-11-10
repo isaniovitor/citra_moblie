@@ -45,24 +45,48 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-<!--            <Spinner-->
-<!--                android:id="@+id/salarySpinner"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:layout_marginRight="10dp"-->
-<!--                android:layout_marginBottom="10dp"-->
-<!--                android:backgroundTint="@color/red"-->
-<!--                android:popupBackground="@color/white"-->
-<!--                android:spinnerMode="dropdown"-->
-<!--                app:itemIconTint="@color/black"-->
-<!--                app:itemTextColor="@color/black"-->
-<!--                tools:layout_editor_absoluteX="59dp"-->
-<!--                tools:layout_editor_absoluteY="494dp" />-->
+            <ImageButton
+                android:id="@+id/clearFilters"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@color/red"
+                android:src="@drawable/ic_baseline_restore_from_trash" />
+
+            <Spinner
+                android:id="@+id/minimumSalarySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/filter_background"
+                android:spinnerMode="dropdown"
+                app:itemIconTint="@color/black"
+                app:itemTextColor="@color/black"
+                tools:layout_editor_absoluteX="59dp"
+                tools:layout_editor_absoluteY="494dp" />
+
+            <Spinner
+                android:id="@+id/maximumSalarySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/filter_background"
+                android:spinnerMode="dropdown"
+                app:itemIconTint="@color/black"
+                app:itemTextColor="@color/black"
+                tools:layout_editor_absoluteX="59dp"
+                tools:layout_editor_absoluteY="494dp" />
 
             <Spinner
                 android:id="@+id/shiftSpinner"
-                android:layout_width="100dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
@@ -74,7 +98,7 @@
 
             <Spinner
                 android:id="@+id/typeHiringSpinner"
-                android:layout_width="100dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"

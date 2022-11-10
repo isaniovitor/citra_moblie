@@ -32,7 +32,6 @@ import com.example.citra_moblie.helper.Permission;
 import com.example.citra_moblie.model.Vacancy;
 
 public class AnnounceVacancyFragment extends Fragment {
-    private Button announceVacancyButton;
     private TextView nameVacancyToCreate;
     private TextView descriptionVacancyToCreate;
     private TextView shiftVacancyToCreate;
@@ -40,8 +39,6 @@ public class AnnounceVacancyFragment extends Fragment {
     private TextView salaryVacancyToCreate;
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
     private ImageView profileImage;
-    private ImageButton gallery;
-    private ImageButton camera;
     private String[] necessaryPermissions = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
@@ -52,17 +49,16 @@ public class AnnounceVacancyFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_announce_vacancy, container, false);
 
-        gallery = view.findViewById(R.id.galleryButton);
-        camera = view.findViewById(R.id.cameraButton);
+        ImageButton gallery = view.findViewById(R.id.galleryButton);
+        ImageButton camera = view.findViewById(R.id.cameraButton);
         profileImage = view.findViewById(R.id.vacancyImageToCreate);
-        announceVacancyButton = view.findViewById(R.id.announceVacancyButton);
+        Button announceVacancyButton = view.findViewById(R.id.announceVacancyButton);
         nameVacancyToCreate = view.findViewById(R.id.nameVacancyToCreate);
         descriptionVacancyToCreate = view.findViewById(R.id.descriptionVacancyToCreate);
         shiftVacancyToCreate = view.findViewById(R.id.shiftVacancyToCreate);
         typeHiringVacancyToCreate = view.findViewById(R.id.typeHiringVacancyToCreate);
         salaryVacancyToCreate = view.findViewById(R.id.salaryVacancyToCreate);
         IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
-
 
         Permission.validatePermissions(necessaryPermissions, getActivity(), 1); // fazer codio Caso negada a permission
         ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
@@ -87,7 +83,7 @@ public class AnnounceVacancyFragment extends Fragment {
                                 }
 
                             }catch (Exception e){
-                                // por toast
+                                Toast.makeText(getContext(),"Erro ao acessar imagem!", Toast.LENGTH_SHORT).show();
                             }
 
                             if (image != null) {

@@ -11,7 +11,7 @@ public interface IVacancyDAO {
     List<Vacancy> getHomeVacancies();
     List<Vacancy> getUserAppliedVacancies();
     List<Vacancy> getUserCreatedVacancies();
-    Vacancy getVacancy(int id);
+    Vacancy  getVacancy(int id);
     Vacancy getAppliedVacancy(int id);
     Vacancy getCreatedVacancy(int id);
     boolean addVacancy(Vacancy vacancy);

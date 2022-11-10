@@ -69,6 +69,47 @@
                 app:layout_constraintTop_toBottomOf="@+id/vacancyImageView"
                 app:layout_constraintVertical_bias="1.0">
 
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                    app:layout_constraintStart_toStartOf="@+id/guideline7"
+                    app:layout_constraintTop_toBottomOf="@+id/nameVacancy">
+
+                    <TextView
+                        android:id="@+id/vacancySalaryDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/filter_background"
+                        android:padding="5dp"
+                        android:text="TextView"
+                        android:textColor="@color/text" />
+
+                    <TextView
+                        android:id="@+id/vacancyShiftDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/filter_background"
+                        android:padding="5dp"
+                        android:text="TextView"
+                        android:textColor="@color/text" />
+
+                    <TextView
+                        android:id="@+id/vacancyTypeHiringDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/filter_background"
+                        android:padding="5dp"
+                        android:text="TextView"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
                 <com.getbase.floatingactionbutton.FloatingActionsMenu
                     android:id="@+id/floatingMenu"
                     android:layout_width="wrap_content"
@@ -105,72 +146,6 @@
 
                 </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-                <HorizontalScrollView
-                    android:id="@+id/horizontalScrollView"
-                    android:layout_width="0dp"
-                    android:layout_height="62dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintStart_toStartOf="@+id/guideline7"
-                    app:layout_constraintTop_toBottomOf="@+id/nameVacancy"
-                    tools:ignore="MissingConstraints">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/bustton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:background="@color/light_blue"
-                            android:text="Button"
-                            tools:layout_editor_absoluteX="59dp"
-                            tools:layout_editor_absoluteY="494dp" />
-
-                        <Button
-                            android:id="@+id/budtton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:background="@color/light_blue"
-                            android:text="Button"
-                            tools:layout_editor_absoluteX="59dp"
-                            tools:layout_editor_absoluteY="494dp" />
-
-                        <Button
-                            android:id="@+id/butfton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:background="@color/light_blue"
-                            android:text="Button"
-                            tools:layout_editor_absoluteX="59dp"
-                            tools:layout_editor_absoluteY="494dp" />
-
-                        <Button
-                            android:id="@+id/buttfon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:background="@color/light_blue"
-                            android:text="Button"
-                            tools:layout_editor_absoluteX="59dp"
-                            tools:layout_editor_absoluteY="494dp" />
-
-                        <Button
-                            android:id="@+id/button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:background="@color/light_blue"
-                            android:text="Button"
-                            tools:layout_editor_absoluteX="59dp"
-                            tools:layout_editor_absoluteY="494dp" />
-                    </LinearLayout>
-                </HorizontalScrollView>
-
                 <Button
                     android:id="@+id/actionUserActivity"
                     android:layout_width="0dp"
@@ -183,7 +158,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline8"
                     app:layout_constraintStart_toStartOf="@+id/guideline7"
-                    app:layout_constraintTop_toBottomOf="@+id/vacancy_description"
+                    app:layout_constraintTop_toBottomOf="@+id/vacancyDescription"
                     tools:ignore="MissingConstraints" />
 
                 <TextView
@@ -201,7 +176,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/vacancy_description"
+                    android:id="@+id/vacancyDescription"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="10dp"
@@ -214,7 +189,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/guideline8"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/guideline7"
-                    app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
                     app:layout_constraintVertical_bias="1.0" />
 
                 <androidx.constraintlayout.widget.Guideline

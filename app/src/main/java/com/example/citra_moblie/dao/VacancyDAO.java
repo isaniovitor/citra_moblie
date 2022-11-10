@@ -1,9 +1,12 @@
 package com.example.citra_moblie.dao;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
 
+import com.example.citra_moblie.R;
 import com.example.citra_moblie.model.Vacancy;
 
 import java.util.ArrayList;
@@ -26,58 +29,46 @@ public class VacancyDAO implements IVacancyDAO {
     public static IVacancyDAO getInstance(Context context) {
         if (vacancyDAO == null) {
             vacancyDAO = new VacancyDAO(context);
-//            createHomeVacanciesMock();
-//            userAppliedVacancies();
-//            userCreatedVacancies();
         }
         return vacancyDAO;
     }
 
     @Override
     public void createHomeVacanciesMock() {
-        Vacancy vacancy = new Vacancy(null, "Pedreiro",
-                "ser um bom pedreito", "manhã", "CLT", "2000");
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.noimage);
+
+        Vacancy vacancy = new Vacancy(bitmap, "Pedreiro", "ser um bom pedreito",
+                "manhã", "CLT", "2000");
         homeVacancies.add(vacancy);
 
-        vacancy = new Vacancy(null, "Pedreiro bom",
-                "ser um bom pedreito", "tarde", "CLT", "1000");
+        vacancy = new Vacancy(bitmap, "Pedreiro bom", "ser um bom pedreito",
+                "tarde", "CLT", "1000");
         homeVacancies.add(vacancy);
 
-        vacancy = new Vacancy(null, "Pedreiro do brabo",
-                "ser um bom pedreito", "tarde", "SDE", "1200");
+        vacancy = new Vacancy(bitmap, "Pedreiro do brabo", "ser um bom pedreito",
+                "tarde", "SDE", "1200");
         homeVacancies.add(vacancy);
 
-        vacancy = new Vacancy(null, "Pedreiro Eiro",
-                "ser um bom pedreito", "tarde", "STE", "3000");
+        vacancy = new Vacancy(bitmap, "Pedreiro Eiro", "ser um bom pedreito",
+                "tarde", "STE", "3000");
         homeVacancies.add(vacancy);
-        vacancy = new Vacancy(null, "Pedro eiro",
-                "ser um bom pedreito", "noite", "STE", "2400");
+
+        vacancy = new Vacancy(bitmap, "Pedro eiro", "ser um bom pedreito",
+                "noite", "STE", "2400");
         homeVacancies.add(vacancy);
     }
 
     @Override
     public void userAppliedVacancies() {
-        Vacancy vacancy = new Vacancy(null, "Pedreiro",
-                "ser um bom pedreito", "manhã", "CLT", "2000");
-        userAppliedVacancies.add(vacancy);
-
-        vacancy = new Vacancy(null, "Pedreiro bom",
-                "ser um bom pedreito", "tarde", "CLT", "1000");
-        userAppliedVacancies.add(vacancy);
-
-        vacancy = new Vacancy(null, "Pedreiro do brabo",
-                "ser um bom pedreito", "tarde", "SDE", "1200");
-        userAppliedVacancies.add(vacancy);
+        userAppliedVacancies.add(homeVacancies.get(0));
+        userAppliedVacancies.add(homeVacancies.get(1));
+        userAppliedVacancies.add(homeVacancies.get(2));
     }
 
     @Override
     public void userCreatedVacancies() {
-        Vacancy vacancy = new Vacancy(null, "Pedreiro Eiro",
-                "ser um bom pedreito", "tarde", "STE", "3000");
-        userCreatedVacancies.add(vacancy);
-        vacancy = new Vacancy(null, "Pedro eiro",
-                "ser um bom pedreito", "noite", "STE", "2400");
-        userCreatedVacancies.add(vacancy);
+        userCreatedVacancies.add(homeVacancies.get(3));
+        userCreatedVacancies.add(homeVacancies.get(4));
     }
 
     @Override

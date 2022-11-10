@@ -18,12 +18,8 @@ import com.example.citra_moblie.R;
 import com.example.citra_moblie.dao.IVacancyDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.model.Vacancy;
-import com.example.citra_moblie.ui.EditVacancy;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
-import java.io.Serializable;
-import java.util.List;
 
 public class VacancyDetails extends Fragment {
     private String lastFragmentName;
@@ -38,52 +34,46 @@ public class VacancyDetails extends Fragment {
         FloatingActionButton editVacancy = view.findViewById(R.id.editVacancy);
         Button actionUser = view.findViewById(R.id.actionUserActivity);
         TextView vacancyName = view.findViewById(R.id.nameVacancy);
-        TextView vacancyDescription = view.findViewById(R.id.vacancy_description);
+        TextView vacancySalaryDetails = view.findViewById(R.id.vacancySalaryDetails);
+        TextView vacancyShiftDetails = view.findViewById(R.id.vacancyShiftDetails);
+        TextView vacancyTypeHiringDetails = view.findViewById(R.id.vacancyTypeHiringDetails);
+        TextView vacancyDescription = view.findViewById(R.id.vacancyDescription);
         ImageView vacancyImageView = view.findViewById(R.id.vacancyImageView);
         Bundle bundle = getArguments();
         IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
-        int vacancyPosition = (int) bundle.getSerializable("position");
 
         // descobrindo a activity anterior
         FragmentManager fm = getActivity().getSupportFragmentManager();
         int count = fm.getBackStackEntryCount();
+        int vacancyPosition = (int) bundle.getSerializable("position");
         lastFragmentName = fm.getBackStackEntryAt(count - 1).getName();
 
-//        MUDAR ISSO
+        Vacancy currentVacancy;
         if (lastFragmentName.equals("home_vacancies_list")) {
             actionUser.setText("Candidatar-se");
             ownerUserActions.setVisibility(View.GONE);
-
-            // setando os dados da vaga
-            if (vacancyDAO.getVacancy(vacancyPosition).getVacancyImage() != null) {
-                vacancyImageView.setImageBitmap(vacancyDAO.getVacancy(vacancyPosition).getVacancyImage());
-            }
-
-            vacancyName.setText(vacancyDAO.getVacancy(vacancyPosition).getVacancyName());
-            vacancyDescription.setText(vacancyDAO.getVacancy(vacancyPosition).getVacancyDescription());
+            currentVacancy = vacancyDAO.getVacancy(vacancyPosition);
         }else if (lastFragmentName.equals("user_created_vacancy_list")) {
             actionUser.setVisibility(View.GONE);
-
-            // setando os dados da vaga
-            if (vacancyDAO.getCreatedVacancy(vacancyPosition).getVacancyImage() != null) {
-                vacancyImageView.setImageBitmap(vacancyDAO.getCreatedVacancy(vacancyPosition).getVacancyImage());
-            }
-
-            vacancyName.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getVacancyName());
-            vacancyDescription.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getVacancyDescription());
+            currentVacancy = vacancyDAO.getCreatedVacancy(vacancyPosition);
         }else{
             actionUser.setText("Cancelar");
             ownerUserActions.setVisibility(View.GONE);
-
-            // setando os dados da vaga
-            if (vacancyDAO.getAppliedVacancy(vacancyPosition).getVacancyImage() != null) {
-                vacancyImageView.setImageBitmap(vacancyDAO.getAppliedVacancy(vacancyPosition).getVacancyImage());
-            }
-
-            vacancyName.setText(vacancyDAO.getAppliedVacancy(vacancyPosition).getVacancyName());
-            vacancyDescription.setText(vacancyDAO.getAppliedVacancy(vacancyPosition).getVacancyDescription());
+            currentVacancy = vacancyDAO.getAppliedVacancy(vacancyPosition);
         }
 
+        // setando os dados
+        if (currentVacancy.getVacancyImage() != null) {
+            vacancyImageView.setImageBitmap(currentVacancy.getVacancyImage());
+        }
+
+        vacancyName.setText(currentVacancy.getVacancyName());
+        vacancySalaryDetails.setText(currentVacancy.getSalatySpinner());
+        vacancyShiftDetails.setText(currentVacancy.getShiftSpinner());
+        vacancyTypeHiringDetails.setText(currentVacancy.getTypeHiringSpinner());
+        vacancyDescription.setText(currentVacancy.getVacancyDescription());
+
+        // buttons
         actionUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

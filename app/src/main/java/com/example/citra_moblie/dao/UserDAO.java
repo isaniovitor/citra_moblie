@@ -24,7 +24,7 @@ public class UserDAO implements IUserDAO{
 
     @Override
     public void createUserMock() {
-        user = new User(null, "Alice", "alice","12/02/2002", "02193243234", "alice");
+        user = new User(null, "alice", "alice@com","12/02/2002", "02193243234", "alice");
     }
 
     public User getUser() {

@@ -14,10 +14,10 @@ import com.example.citra_moblie.model.Vacancy;
 
 import java.util.List;
 
-public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecyclerViewAdapter.MyViewHolder> {
+public class CandidateRecyclerViewAdapter extends RecyclerView.Adapter<CandidateRecyclerViewAdapter.MyViewHolder> {
     private List<Vacancy> vacancies;
 
-    public VacancyRecyclerViewAdapter(List<Vacancy> vacancies) {
+    public CandidateRecyclerViewAdapter(List<Vacancy> vacancies) {
         this.vacancies = vacancies;
     }
 

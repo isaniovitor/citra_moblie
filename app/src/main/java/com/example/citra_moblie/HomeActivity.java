@@ -51,7 +51,6 @@ public class HomeActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.navUserName);
-//        TextView navUserEmail = (TextView) headerView.findViewById(R.id.navUserEmail);
         TextView editUserButton = (TextView) headerView.findViewById(R.id.editUserButton);
         ImageView userIHeaderImage = (ImageView) headerView.findViewById(R.id.userIHeaderImage);
 
