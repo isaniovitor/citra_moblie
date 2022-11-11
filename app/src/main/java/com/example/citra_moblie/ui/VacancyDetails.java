@@ -27,6 +27,9 @@ public class VacancyDetails extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle bundle = getArguments();
+        IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
+
         View view = inflater.inflate(R.layout.fragment_vacancy_details, container, false);
         FloatingActionButton seeCandidatesVacancy = view.findViewById(R.id.seeCandidatesVacancy);
         FloatingActionsMenu ownerUserActions = view.findViewById(R.id.floatingMenu);
@@ -39,8 +42,6 @@ public class VacancyDetails extends Fragment {
         TextView vacancyTypeHiringDetails = view.findViewById(R.id.vacancyTypeHiringDetails);
         TextView vacancyDescription = view.findViewById(R.id.vacancyDescription);
         ImageView vacancyImageView = view.findViewById(R.id.vacancyImageView);
-        Bundle bundle = getArguments();
-        IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
 
         // descobrindo a activity anterior
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -68,7 +69,7 @@ public class VacancyDetails extends Fragment {
         }
 
         vacancyName.setText(currentVacancy.getVacancyName());
-        vacancySalaryDetails.setText(currentVacancy.getSalatySpinner());
+        vacancySalaryDetails.setText(currentVacancy.getSalarySpinner());
         vacancyShiftDetails.setText(currentVacancy.getShiftSpinner());
         vacancyTypeHiringDetails.setText(currentVacancy.getTypeHiringSpinner());
         vacancyDescription.setText(currentVacancy.getVacancyDescription());
@@ -120,7 +121,15 @@ public class VacancyDetails extends Fragment {
         seeCandidatesVacancy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"Ir pra tela: ainda n feita", Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                Fragment fragment = new VacancyCandidatesFragment();
+                bundle.putSerializable("position", vacancyPosition);
+
+                fragment.setArguments(bundle);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment_content_home, fragment );
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 

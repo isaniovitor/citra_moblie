@@ -26,7 +26,6 @@ import java.util.List;
 public class UserAppliedVacancies extends Fragment {
     private FragmentHomeBinding binding;
     private RecyclerView recyclerView;
-    private List<Vacancy> vacancies = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

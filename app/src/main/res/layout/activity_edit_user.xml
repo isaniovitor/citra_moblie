@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    tools:context=".LoginActivity">
+    tools:context=".EditUserActivity">
 
     <TextView
         android:id="@+id/navUserEmail"
@@ -161,7 +161,7 @@
             android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="CPF"
-            android:inputType="text"
+            android:inputType="number"
             android:shadowColor="@color/white"
             android:textColor="@color/text"
             android:textColorHighlight="@color/text"

@@ -29,7 +29,6 @@ public class UserCreatedVacancies extends Fragment {
     private FragmentHomeBinding binding;
     private RecyclerView recyclerView;
     private FloatingActionButton createVacancy;
-    private List<Vacancy> vacancies = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

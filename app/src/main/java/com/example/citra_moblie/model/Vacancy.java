@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.example.citra_moblie.R;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Vacancy implements Serializable {
     private Bitmap vacancyImage;
@@ -15,17 +16,19 @@ public class Vacancy implements Serializable {
     private String shiftSpinner;
     private String typeHiringSpinner;
     private String salarySpinner;
+    private List<User> appliedCandidates;
 
     public Vacancy() {
     }
 
-    public Vacancy(Bitmap vacancyImage, String vacancyName, String vacancyDescription, String shiftSpinner, String typeHiringSpinner, String salarySpinner) {
+    public Vacancy(Bitmap vacancyImage, String vacancyName, String vacancyDescription, String shiftSpinner, String typeHiringSpinner, String salarySpinner, List<User> appliedCandidates) {
         this.vacancyImage = vacancyImage;
         this.vacancyName = vacancyName;
         this.shiftSpinner = shiftSpinner;
         this.vacancyDescription = vacancyDescription;
         this.typeHiringSpinner = typeHiringSpinner;
         this.salarySpinner = salarySpinner;
+        this.appliedCandidates = appliedCandidates;
     }
 
     public Bitmap getVacancyImage() {
@@ -68,11 +71,19 @@ public class Vacancy implements Serializable {
         this.typeHiringSpinner = typeHiringSpinner;
     }
 
-    public String getSalatySpinner() {
+    public String getSalarySpinner() {
         return salarySpinner;
     }
 
-    public void setSalatySpinner(String salatySpinner) {
+    public void setSalarySpinner(String salatySpinner) {
         this.salarySpinner = salatySpinner;
+    }
+
+    public List<User> getAppliedCandidates() {
+        return appliedCandidates;
+    }
+
+    public void setAppliedCandidates(List<User> appliedCandidates) {
+        this.appliedCandidates = appliedCandidates;
     }
 }

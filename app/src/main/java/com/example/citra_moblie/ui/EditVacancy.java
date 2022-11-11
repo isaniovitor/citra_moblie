@@ -19,9 +19,11 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.citra_moblie.R;
@@ -33,10 +35,9 @@ import com.example.citra_moblie.helper.Permission;
 public class EditVacancy extends Fragment {
     private TextView nameVacancyToEdit;
     private TextView descriptionVacancyToEdit;
-    private TextView shiftVacancyToEdit;
-    private TextView typeHiringVacancyToEdit;
+    private Spinner shiftVacancyToEdit;
+    private Spinner typeHiringVacancyToEdit;
     private TextView salaryVacancyToEdit;
-    private Button editVacancyButton;
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
     private ImageView vacancyImageToCreate;
     private ImageButton gallery;
@@ -45,6 +46,9 @@ public class EditVacancy extends Fragment {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
+
+    String[] shifts = new String[]{"manhã", "tarde", "noite"};
+    String[] typesHiring = new String[]{"CTI", "CTD", "Temporário", "Terceirizado", "Parcial", "Estágio"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,10 +60,10 @@ public class EditVacancy extends Fragment {
         vacancyImageToCreate = view.findViewById(R.id.vacancyImageToCreate);
         nameVacancyToEdit = view.findViewById(R.id.nameVacancyToCreate);
         descriptionVacancyToEdit = view.findViewById(R.id.descriptionVacancyToCreate);
-        shiftVacancyToEdit = view.findViewById(R.id.shiftVacancyToCreate);
-        typeHiringVacancyToEdit = view.findViewById(R.id.typeHiringVacancyToCreate);
+        shiftVacancyToEdit = view.findViewById(R.id.shiftVacancyToEdit);
+        typeHiringVacancyToEdit = view.findViewById(R.id.typeHiringVacancyToEdit);
         salaryVacancyToEdit = view.findViewById(R.id.salaryVacancyToCreate);
-        editVacancyButton = view.findViewById(R.id.announceVacancyButton);
+        Button editVacancyButton = view.findViewById(R.id.announceVacancyButton);
 
         Bundle bundle = getArguments();
         IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
@@ -70,11 +74,50 @@ public class EditVacancy extends Fragment {
             vacancyImageToCreate.setImageBitmap(vacancyDAO.getVacancy(vacancyPosition).getVacancyImage());
         }
 
+        // spinners
+        ArrayAdapter<String> shiftVacancyAdapter = new ArrayAdapter<String>(
+                getContext(), android.R.layout.simple_spinner_item, shifts){
+            @Override
+            public boolean isEnabled(int position){
+                return true;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+
+                return view;
+            }
+        };
+        shiftVacancyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        shiftVacancyToEdit.setAdapter(shiftVacancyAdapter);
+
+        ArrayAdapter<String> typeHiringVacancyAdapter = new ArrayAdapter<String>(
+                getContext(), android.R.layout.simple_spinner_item, typesHiring){
+            @Override
+            public boolean isEnabled(int position){
+                return true;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+
+                return view;
+            }
+        };
+        typeHiringVacancyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeHiringVacancyToEdit.setAdapter(typeHiringVacancyAdapter);
+
         nameVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getVacancyName());
         descriptionVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getVacancyDescription());
-        shiftVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getShiftSpinner());
-        typeHiringVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getTypeHiringSpinner());
-        salaryVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getSalatySpinner());
+        salaryVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getSalarySpinner());
+        shiftVacancyToEdit.setSelection(shiftVacancyAdapter.getPosition(vacancyDAO.getCreatedVacancy(vacancyPosition).getShiftSpinner()));
+        typeHiringVacancyToEdit.setSelection(typeHiringVacancyAdapter.getPosition(vacancyDAO.getCreatedVacancy(vacancyPosition).getTypeHiringSpinner()));
 
         Permission.validatePermissions(necessaryPermissions, getActivity(), 1);
         // fazer codio Caso negada a permission
@@ -138,9 +181,9 @@ public class EditVacancy extends Fragment {
                 vacancyDAO.getCreatedVacancy(vacancyPosition).setVacancyImage(((BitmapDrawable) vacancyImageToCreate.getDrawable()).getBitmap());
                 vacancyDAO.getCreatedVacancy(vacancyPosition).setVacancyName(nameVacancyToEdit.getText().toString());
                 vacancyDAO.getCreatedVacancy(vacancyPosition).setVacancyDescription(descriptionVacancyToEdit.getText().toString());
-                vacancyDAO.getCreatedVacancy(vacancyPosition).setShiftSpinner(shiftVacancyToEdit.getText().toString());
-                vacancyDAO.getCreatedVacancy(vacancyPosition).setTypeHiringSpinner(typeHiringVacancyToEdit.getText().toString());
-                vacancyDAO.getCreatedVacancy(vacancyPosition).setSalatySpinner(salaryVacancyToEdit.getText().toString());
+                vacancyDAO.getCreatedVacancy(vacancyPosition).setShiftSpinner(shiftVacancyToEdit.getSelectedItem().toString());
+                vacancyDAO.getCreatedVacancy(vacancyPosition).setTypeHiringSpinner(typeHiringVacancyToEdit.getSelectedItem().toString());
+                vacancyDAO.getCreatedVacancy(vacancyPosition).setSalarySpinner(salaryVacancyToEdit.getText().toString());
 
                 Fragment fragment = new UserCreatedVacancies();
                 fragment.setArguments(bundle);

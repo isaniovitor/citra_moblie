@@ -22,7 +22,6 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
         ImageView vacancyImage;
         TextView vacancyName;
         TextView vacancySalary;
@@ -56,7 +55,7 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
         }
 
         holder.vacancyName.setText(vacancy.getVacancyName());
-        holder.vacancySalary.setText(vacancy.getSalatySpinner());
+        holder.vacancySalary.setText(vacancy.getSalarySpinner());
         holder.vacancyShift.setText(vacancy.getShiftSpinner());
         holder.vacancyTypeHiring.setText(vacancy.getTypeHiringSpinner());
     }

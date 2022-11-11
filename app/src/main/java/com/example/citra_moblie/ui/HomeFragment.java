@@ -17,20 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.citra_moblie.R;
-import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.IVacancyDAO;
-import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.helper.RecyclerItemClickListener;
 import com.example.citra_moblie.adapter.VacancyRecyclerViewAdapter;
-import com.example.citra_moblie.databinding.FragmentHomeBinding;
 import com.example.citra_moblie.model.Vacancy;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Callable;
 
 public class HomeFragment extends Fragment  {
     private ImageView clearFilters;
@@ -44,7 +38,7 @@ public class HomeFragment extends Fragment  {
     String[] minimumsSalary = new String[]{"Mínimo salário", "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"};
     String[] maximumsSalary = new String[]{"Máximo salário", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000", "11000"};
     String[] shifts = new String[]{"Turno", "manhã", "tarde", "noite"};
-    String[] typesHiring = new String[]{"Tipo de contratação", "CLT", "STE", "SDE", "EEL", "SEW"};
+    String[] typesHiring = new String[]{"Tipo de contratação", "CTI", "CTD", "Temporário", "Terceirizado", "Parcial", "Estágio"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -239,9 +233,9 @@ public class HomeFragment extends Fragment  {
 
         for (Vacancy vacancy : vacancyDAO.getHomeVacancies()) {
             boolean hasMinimumsSalary = minimumsSalarySpinner.getSelectedItemPosition() == 0 ||
-                    Integer.parseInt(vacancy.getSalatySpinner()) >= Integer.parseInt(minimumsSalarySpinner.getSelectedItem().toString());
+                    Integer.parseInt(vacancy.getSalarySpinner()) >= Integer.parseInt(minimumsSalarySpinner.getSelectedItem().toString());
             boolean hasMaximumsSalary = maximumsSalarySpinner.getSelectedItemPosition() == 0 ||
-                    Integer.parseInt(vacancy.getSalatySpinner()) <= Integer.parseInt(maximumsSalarySpinner.getSelectedItem().toString());
+                    Integer.parseInt(vacancy.getSalarySpinner()) <= Integer.parseInt(maximumsSalarySpinner.getSelectedItem().toString());
             boolean hasShift = shiftSpinner.getSelectedItemPosition() == 0 ||
                     vacancy.getShiftSpinner().equals(shiftSpinner.getSelectedItem());
             boolean typeHiring = typeHiringSpinner.getSelectedItemPosition() == 0 ||

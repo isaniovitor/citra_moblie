@@ -19,9 +19,12 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +37,8 @@ import com.example.citra_moblie.model.Vacancy;
 public class AnnounceVacancyFragment extends Fragment {
     private TextView nameVacancyToCreate;
     private TextView descriptionVacancyToCreate;
-    private TextView shiftVacancyToCreate;
-    private TextView typeHiringVacancyToCreate;
+    private Spinner shiftVacancyToCreate;
+    private Spinner typeHiringVacancyToCreate;
     private TextView salaryVacancyToCreate;
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
     private ImageView profileImage;
@@ -43,6 +46,9 @@ public class AnnounceVacancyFragment extends Fragment {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
+
+    String[] shifts = new String[]{"manhã", "tarde", "noite"};
+    String[] typesHiring = new String[]{"CTI", "CTD", "Temporário", "Terceirizado", "Parcial", "Estágio"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,10 +61,49 @@ public class AnnounceVacancyFragment extends Fragment {
         Button announceVacancyButton = view.findViewById(R.id.announceVacancyButton);
         nameVacancyToCreate = view.findViewById(R.id.nameVacancyToCreate);
         descriptionVacancyToCreate = view.findViewById(R.id.descriptionVacancyToCreate);
-        shiftVacancyToCreate = view.findViewById(R.id.shiftVacancyToCreate);
-        typeHiringVacancyToCreate = view.findViewById(R.id.typeHiringVacancyToCreate);
+        shiftVacancyToCreate = view.findViewById(R.id.shiftSpinnertoCreate);
+        typeHiringVacancyToCreate = view.findViewById(R.id.typeHiringVacancyToCreatee);
         salaryVacancyToCreate = view.findViewById(R.id.salaryVacancyToCreate);
         IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
+
+        // spinners
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(
+                getContext(), android.R.layout.simple_spinner_item, shifts){
+            @Override
+            public boolean isEnabled(int position){
+                return true;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+
+                return view;
+            }
+        };
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        shiftVacancyToCreate.setAdapter(spinnerAdapter);
+
+        spinnerAdapter = new ArrayAdapter<String>(
+                getContext(), android.R.layout.simple_spinner_item, typesHiring){
+            @Override
+            public boolean isEnabled(int position){
+                return true;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+
+                return view;
+            }
+        };
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeHiringVacancyToCreate.setAdapter(spinnerAdapter);
 
         Permission.validatePermissions(necessaryPermissions, getActivity(), 1); // fazer codio Caso negada a permission
         ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
@@ -120,8 +165,8 @@ public class AnnounceVacancyFragment extends Fragment {
             public void onClick(View view) {
                 Vacancy vacancy = new Vacancy(((BitmapDrawable) profileImage.getDrawable()).getBitmap(),
                         nameVacancyToCreate.getText().toString(), descriptionVacancyToCreate.getText().toString(),
-                        shiftVacancyToCreate.getText().toString(), typeHiringVacancyToCreate.getText().toString(),
-                        salaryVacancyToCreate.getText().toString());
+                        shiftVacancyToCreate.getSelectedItem().toString(), typeHiringVacancyToCreate.getSelectedItem().toString(),
+                        salaryVacancyToCreate.getText().toString(), null);
 
                 if (vacancyDAO.addVacancy(vacancy)) {
                     Toast.makeText(getContext(),"Sucesso ao anunciar Vaga!", Toast.LENGTH_SHORT).show();

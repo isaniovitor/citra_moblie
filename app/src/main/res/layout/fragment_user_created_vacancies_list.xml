@@ -23,16 +23,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:translationZ="1000dp"
+        app:fab_labelStyle="@style/custonFab"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:fab_labelStyle="@style/custonFab">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/createVacancy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_size="mini"
             app:fab_icon="@drawable/ic_baseline_edit"
+            app:fab_size="mini"
             app:fab_title="nova vaga" />
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
