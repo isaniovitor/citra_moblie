@@ -11,22 +11,28 @@ import android.widget.Toast;
 
 import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.UserDAO;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
-    private TextView loginName;
     private TextView loginEmail;
+    private TextView loginPassword;
+    private TextView txtRecoverAccount;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        auth = FirebaseAuth.getInstance();
+
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
         Button registerUserButton = findViewById(R.id.announceVacancyButton);
-        Button loginButton = findViewById(R.id.login);
-        TextView loginEmail = findViewById(R.id.nameVacancyToCreate);
-        TextView loginPassword = findViewById(R.id.descriptionVacancyToCreate);
+        Button loginButton = findViewById(R.id.btnLogin);
+        txtRecoverAccount = findViewById(R.id.txtRecoverAccount);
+        loginEmail = findViewById(R.id.txtEmailRecover);
+        loginPassword = findViewById(R.id.descriptionVacancyToCreate);
         IUserDAO userDAO = UserDAO.getInstance(this);
 
         registerUserButton.setOnClickListener(new View.OnClickListener() {
@@ -37,16 +43,29 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (loginEmail.getText().toString().equals(userDAO.getUser().getEmail()) &&
-                        loginPassword.getText().toString().equals(userDAO.getUser().getPassword())) {
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(LoginActivity.this,"Credenciais erradas ou vazias!", Toast.LENGTH_SHORT).show();
-                }
+        loginButton.setOnClickListener(view -> validaDados());
+
+        txtRecoverAccount.setOnClickListener(view ->
+                startActivity(new Intent(this, RecoverAccountActivity.class)));
+
+
+    }
+
+    private void validaDados(){
+        if(loginEmail.getText().toString().equals("") || loginPassword.getText().toString().equals("")){
+            Toast.makeText(this, "Preencha os campos",Toast.LENGTH_LONG).show();
+        }
+        else{
+            loginConta(loginEmail.getText().toString(), loginPassword.getText().toString());
+        }
+    }
+
+    private void loginConta(String email, String senha){
+        auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                startActivity(new Intent(this, HomeActivity.class));
+            }else{
+                Toast.makeText(LoginActivity.this,"Erro ao logar!", Toast.LENGTH_SHORT).show();
             }
         });
     }

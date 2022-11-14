@@ -25,23 +25,23 @@ public class VacancyDAO implements IVacancyDAO {
     private VacancyDAO(Context context) {
         VacancyDAO.context = context;
 
-        User user = new User(null, "alice Maria", "aliceMaria@com",
+        User user = new User("1", null, "alice Maria", "aliceMaria@com",
                 "12/02/2002", "02193243234", "alice");
         appliedUsers.add(user);
 
-        user = new User(null, "Davilo", "daviloAlo@com",
+        user = new User("1", null, "Davilo", "daviloAlo@com",
                 "12/02/2002", "02193243234", "alice");
         appliedUsers.add(user);
 
-        user = new User(null, "Ewados", "ewadosJunios@com",
+        user = new User("1", null, "Ewados", "ewadosJunios@com",
                 "12/02/2002", "02193243234", "alice");
         appliedUsers.add(user);
 
-        user = new User(null, "Isanus", "isanusVitors@com",
+        user = new User("1", null, "Isanus", "isanusVitors@com",
                 "12/02/2002", "02193243234", "alice");
         appliedUsers.add(user);
 
-        user = new User(null, "Falcs alcs", "falconato@com",
+        user = new User("1",null, "Falcs alcs", "falconato@com",
                 "12/02/2002", "02193243234", "alice");
         appliedUsers.add(user);
 

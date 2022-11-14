@@ -111,7 +111,7 @@
             tools:layout_editor_absoluteX="25dp" />
 
         <EditText
-            android:id="@+id/nameVacancyToCreate"
+            android:id="@+id/txtEmailRecover"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -136,7 +136,7 @@
             android:textColor="@color/text"
             android:textColorHighlight="@color/text"
             android:textColorHint="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/nameVacancyToCreate"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmailRecover"
             tools:layout_editor_absoluteX="20dp" />
 
         <EditText

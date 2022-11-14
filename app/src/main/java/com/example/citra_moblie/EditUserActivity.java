@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.helper.Permission;
-import com.example.citra_moblie.model.User;
 
 public class EditUserActivity extends AppCompatActivity {
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
@@ -52,7 +51,7 @@ public class EditUserActivity extends AppCompatActivity {
 
         gallery = findViewById(R.id.galleryButton);
         camera = findViewById(R.id.cameraButton);
-        registerUserName = findViewById(R.id.nameVacancyToCreate);
+        registerUserName = findViewById(R.id.txtEmailRecover);
         registerUserEmail = findViewById(R.id.descriptionVacancyToCreate);
         registerUserBirthday = findViewById(R.id.shiftVacancyToCreate);
         registerUserCpf = findViewById(R.id.typeHiringVacancyToCreate);
@@ -136,7 +135,7 @@ public class EditUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
-                    userDAO.getUser().setImage(((BitmapDrawable) profileImage.getDrawable()).getBitmap());
+                    //userDAO.getUser().setImage(((BitmapDrawable) profileImage.getDrawable()).getBitmap());
                     userDAO.getUser().setName(registerUserName.getText().toString());
                     userDAO.getUser().setEmail(registerUserEmail.getText().toString());
                     userDAO.getUser().setBirthday(registerUserBirthday.getText().toString());
