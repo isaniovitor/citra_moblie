@@ -13,7 +13,7 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Vagas" />
         <item
-            android:id="@+id/nav_user_applyed_vacancies_vacancy"
+            android:id="@+id/nav_user_applyed_vacancies"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Candidaturas" />
         <item

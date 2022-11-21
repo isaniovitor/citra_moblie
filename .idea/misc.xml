@@ -28,6 +28,7 @@
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/app_bar_home.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/candidates_adapter.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/content_home.xml" value="0.20863616930312098" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_activities_map.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_announce_vacancy.xml" value="0.264" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_edit_vacancy.xml" value="0.4" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_gallery.xml" value="0.20863616930312098" />
@@ -40,6 +41,7 @@
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_user_applyed_vacancies_list.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_user_created_jobs.xml" value="0.20534904805077062" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_user_created_vacancies_list.xml" value="0.12954253954681488" />
+        <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_vacancies_map.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_vacancy_canditates.xml" value="0.176" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/fragment_vacancy_details.xml" value="0.4" />
         <entry key="..\:/Users/isani/AndroidStudioProjects/citra_moblie/app/src/main/res/layout/list_vacancies_adapter.xml" value="0.4" />

@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         IUserDAO userDAO = UserDAO.getInstance(this);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_user_created_jobs, R.id.nav_user_applyed_vacancies_vacancy)
+                R.id.nav_home, R.id.nav_user_created_jobs, R.id.nav_user_applyed_vacancies, R.id.nav_map)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);

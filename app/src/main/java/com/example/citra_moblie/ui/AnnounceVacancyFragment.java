@@ -166,7 +166,7 @@ public class AnnounceVacancyFragment extends Fragment {
                 Vacancy vacancy = new Vacancy(((BitmapDrawable) profileImage.getDrawable()).getBitmap(),
                         nameVacancyToCreate.getText().toString(), descriptionVacancyToCreate.getText().toString(),
                         shiftVacancyToCreate.getSelectedItem().toString(), typeHiringVacancyToCreate.getSelectedItem().toString(),
-                        salaryVacancyToCreate.getText().toString(), null);
+                        salaryVacancyToCreate.getText().toString(),null,null,null);
 
                 if (vacancyDAO.addVacancy(vacancy)) {
                     Toast.makeText(getContext(),"Sucesso ao anunciar Vaga!", Toast.LENGTH_SHORT).show();

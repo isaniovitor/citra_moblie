@@ -16,18 +16,23 @@ public class Vacancy implements Serializable {
     private String shiftSpinner;
     private String typeHiringSpinner;
     private String salarySpinner;
+    private String vacancyLat;
+    private String vacancyLog;
     private List<User> appliedCandidates;
 
     public Vacancy() {
     }
 
-    public Vacancy(Bitmap vacancyImage, String vacancyName, String vacancyDescription, String shiftSpinner, String typeHiringSpinner, String salarySpinner, List<User> appliedCandidates) {
+    public Vacancy(Bitmap vacancyImage, String vacancyName, String vacancyDescription, String shiftSpinner,
+                   String typeHiringSpinner, String salarySpinner, String vacancyLat, String vacancyLog, List<User> appliedCandidates) {
         this.vacancyImage = vacancyImage;
         this.vacancyName = vacancyName;
         this.shiftSpinner = shiftSpinner;
         this.vacancyDescription = vacancyDescription;
         this.typeHiringSpinner = typeHiringSpinner;
         this.salarySpinner = salarySpinner;
+        this.vacancyLat = vacancyLat;
+        this.vacancyLog = vacancyLog;
         this.appliedCandidates = appliedCandidates;
     }
 
@@ -77,6 +82,22 @@ public class Vacancy implements Serializable {
 
     public void setSalarySpinner(String salatySpinner) {
         this.salarySpinner = salatySpinner;
+    }
+
+    public String getVacancyLat() {
+        return vacancyLat;
+    }
+
+    public void setVacancyLat(String vacancyLat) {
+        this.vacancyLat = vacancyLat;
+    }
+
+    public String getVacancyLog() {
+        return vacancyLog;
+    }
+
+    public void setVacancyLog(String vacancyLog) {
+        this.vacancyLog = vacancyLog;
     }
 
     public List<User> getAppliedCandidates() {
