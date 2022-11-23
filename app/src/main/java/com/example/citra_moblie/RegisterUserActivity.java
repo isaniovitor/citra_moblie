@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -25,6 +26,14 @@ import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.helper.Permission;
 import com.example.citra_moblie.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 public class RegisterUserActivity extends AppCompatActivity {
     public Button registerUserButton;
@@ -40,6 +49,8 @@ public class RegisterUserActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
+    private FirebaseAuth auth;
+    private FirebaseStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +59,10 @@ public class RegisterUserActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_register_user);
 
-        registerUserName = findViewById(R.id.nameVacancyToCreate);
+        auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+
+        registerUserName = findViewById(R.id.txtEmailRecover);
         registerUserEmail = findViewById(R.id.descriptionVacancyToCreate);
         registerUserBirthday = findViewById(R.id.shiftVacancyToCreate);
         registerUserCpf = findViewById(R.id.typeHiringVacancyToCreate);
@@ -59,6 +73,8 @@ public class RegisterUserActivity extends AppCompatActivity {
         ImageButton gallery = findViewById(R.id.galleryButton);
         ImageButton camera = findViewById(R.id.cameraButton);
         IUserDAO userDAO = UserDAO.getInstance(this);
+
+
 
         Permission.validatePermissions(necessaryPermissions, this, 1);
         // fazer codio Caso negada a permission
@@ -121,22 +137,78 @@ public class RegisterUserActivity extends AppCompatActivity {
         registerUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
-                    User user = new User(
-                            ((BitmapDrawable) profileImage.getDrawable()).getBitmap(),
-                            registerUserName.getText().toString(),
-                            registerUserEmail.getText().toString(),
-                            registerUserBirthday.getText().toString(),
-                            registerUserCpf.getText().toString(),
-                            registerUserPassword.getText().toString()
-                    );
+                validaDados();
+                uploadImagem();
+            }
+        });
+    }
 
-                    userDAO.setUser(user);
-                    Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(RegisterUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
-                }
+    private void validaDados(){
+
+        User userModel = new User();
+
+
+
+        //userModel.setImage((profileImage.getDrawable()));
+        userModel.setName(registerUserName.getText().toString());
+        userModel.setEmail(registerUserEmail.getText().toString());
+        userModel.setBirthday(registerUserBirthday.getText().toString());
+        userModel.setCpf(registerUserCpf.getText().toString());
+
+        if(     registerUserName.getText().toString().equals("") ||
+                registerUserEmail.getText().toString().equals("") ||
+                registerUserPassword.getText().toString().equals("") ||
+                registerUserRepeatPassword.getText().toString().equals("") ||
+                registerUserCpf.getText().toString().equals("")){
+
+            Toast.makeText(RegisterUserActivity.this, "Valores incorretos",Toast.LENGTH_LONG).show();
+        }
+        else if (!registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
+            Toast.makeText(RegisterUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
+
+        }else{
+            criarConta(userModel.getEmail(),registerUserRepeatPassword.getText().toString());
+        }
+    }
+
+    private void criarConta(String email, String senha){
+        User userModel = new User();
+        userModel.setName(registerUserName.getText().toString());
+        userModel.setEmail(registerUserEmail.getText().toString());
+        userModel.setBirthday(registerUserBirthday.getText().toString());
+        userModel.setCpf(registerUserCpf.getText().toString());
+
+
+        auth.createUserWithEmailAndPassword(email, senha).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                userModel.setId(auth.getUid());
+                userModel.salvar();
+                startActivity(new Intent(this, HomeActivity.class));
+            }else{
+                Toast.makeText(RegisterUserActivity.this,"Erro ao logar!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void uploadImagem(){
+        User userModel = new User();
+
+        StorageReference reference = storage.getReference().child("upload");
+        StorageReference nome_imagem = reference.child(userModel.getId()+".jpg");
+
+        BitmapDrawable drawable = (BitmapDrawable) profileImage.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+        UploadTask uploadTask = nome_imagem.putBytes(bytes.toByteArray());
+
+        uploadTask.addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                Toast.makeText(this, "Upload com sucesso", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Erro ao fazer upload", Toast.LENGTH_SHORT).show();
             }
         });
     }

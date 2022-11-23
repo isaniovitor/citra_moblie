@@ -28,7 +28,7 @@ public class UserDAO implements IUserDAO{
     @Override
     public void createUserMock() {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lice);
-        user = new User(bitmap, "alice", "alice@com","12/02/2002", "02193243234", "alice");
+        user = new User("1", bitmap, "alice", "alice@com","12/02/2002", "02193243234", "alice");
     }
 
     public User getUser() {

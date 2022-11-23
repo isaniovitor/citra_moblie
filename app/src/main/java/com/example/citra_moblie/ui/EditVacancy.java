@@ -58,7 +58,7 @@ public class EditVacancy extends Fragment {
         gallery = view.findViewById(R.id.galleryButton);
         camera = view.findViewById(R.id.cameraButton);
         vacancyImageToCreate = view.findViewById(R.id.vacancyImageToCreate);
-        nameVacancyToEdit = view.findViewById(R.id.nameVacancyToCreate);
+        nameVacancyToEdit = view.findViewById(R.id.txtEmailRecover);
         descriptionVacancyToEdit = view.findViewById(R.id.descriptionVacancyToCreate);
         shiftVacancyToEdit = view.findViewById(R.id.shiftVacancyToEdit);
         typeHiringVacancyToEdit = view.findViewById(R.id.typeHiringVacancyToEdit);

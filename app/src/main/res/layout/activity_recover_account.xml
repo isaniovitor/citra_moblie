@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    tools:context=".LoginActivity">
+    tools:context=".RecoverAccountActivity">
 
     <TextView
         android:id="@+id/navUserEmail"
@@ -53,7 +53,7 @@
         app:layout_constraintGuide_begin="20dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
+        android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="20dp"
@@ -86,7 +86,7 @@
             android:textColor="@color/text"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/announceVacancyButton"
-            app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+            app:layout_constraintTop_toBottomOf="@+id/btnRecover"
             tools:layout_editor_absoluteX="20dp" />
 
         <EditText
@@ -94,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Digite sua email"
+            android:hint="Digite seu email"
             android:inputType="textPersonName"
             android:shadowColor="@color/white"
             android:textColor="@color/text"
@@ -103,28 +103,13 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="18dp" />
 
-        <EditText
-            android:id="@+id/descriptionVacancyToCreate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="Digite sua senha"
-            android:inputType="textPassword"
-            android:shadowColor="@color/white"
-            android:textColor="@color/text"
-            android:textColorHighlight="@color/text"
-            android:textColorHint="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/txtEmailRecover"
-            tools:layout_editor_absoluteX="20dp" />
-
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnRecover"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
             android:background="@color/dark_blue"
-            android:text="Entrar"
+            android:text="Recuperar"
             android:textColor="@color/text"
             android:textSize="14sp"
             app:layout_constraintTop_toTopOf="parent"
@@ -136,22 +121,25 @@
         android:id="@+id/imageView2"
         android:layout_width="297dp"
         android:layout_height="429dp"
-        android:layout_marginTop="75dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/login_image" />
+        android:layout_marginStart="58dp"
+        android:layout_marginEnd="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/login_image"
+        tools:layout_editor_absoluteY="74dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/txtRecoverAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="236dp"
-        android:layout_marginTop="-40dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginBottom="19dp"
         android:text="Recuperar Conta"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

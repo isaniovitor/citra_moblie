@@ -2,7 +2,11 @@ package com.example.citra_moblie.model;
 
 import android.graphics.Bitmap;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class User {
+    private String id;
     private Bitmap image;
     private String name;
     private String email;
@@ -13,13 +17,22 @@ public class User {
     public User() {
     }
 
-    public User(Bitmap image, String name, String email, String birthday, String cpf, String password) {
+    public User(String id, Bitmap image, String name, String email, String birthday, String cpf, String password) {
+        this.id = id;
         this.image = image;
         this.name = name;
         this.email = email;
         this.birthday = birthday;
         this.cpf = cpf;
         this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Bitmap getImage() {
@@ -68,5 +81,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void salvar(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child("usuarios").child(getId()).setValue(this);
     }
 }

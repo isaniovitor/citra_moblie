@@ -26,7 +26,6 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -78,7 +77,7 @@ public class AnnounceVacancyFragment extends Fragment {
         ImageButton camera = view.findViewById(R.id.cameraButton);
         profileImage = view.findViewById(R.id.vacancyImageToCreate);
         Button announceVacancyButton = view.findViewById(R.id.announceVacancyButton);
-        nameVacancyToCreate = view.findViewById(R.id.nameVacancyToCreate);
+        nameVacancyToCreate = view.findViewById(R.id.txtEmailRecover);
         descriptionVacancyToCreate = view.findViewById(R.id.descriptionVacancyToCreate);
         shiftVacancyToCreate = view.findViewById(R.id.shiftSpinnertoCreate);
         typeHiringVacancyToCreate = view.findViewById(R.id.typeHiringVacancyToCreatee);
