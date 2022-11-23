@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:layout_editor_absoluteX="1dp"
-tools:layout_editor_absoluteY="1dp"
-android:fillViewport="true"
-tools:context=".ui.AnnounceVacancyFragment">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:textAlignment="viewStart"
+    tools:context=".ui.AnnounceVacancyFragment"
+    tools:layout_editor_absoluteX="1dp"
+    tools:layout_editor_absoluteY="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/text"
@@ -54,24 +54,6 @@ tools:context=".ui.AnnounceVacancyFragment">
             app:layout_constraintStart_toStartOf="@+id/guideline2">
 
             <EditText
-                android:id="@+id/registerUserRepeatPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="15dp"
-                android:ems="10"
-                android:inputType="text"
-                android:shadowColor="@color/white"
-                android:text="Local"
-                android:textColor="@color/text"
-                android:textColorHighlight="@color/text"
-                android:textColorHint="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/announceVacancyButton"
-                app:layout_constraintTop_toBottomOf="@+id/salaryVacancyToCreate"
-                app:layout_constraintVertical_bias="0.0"
-                tools:layout_editor_absoluteX="20dp" />
-
-            <EditText
                 android:id="@+id/salaryVacancyToCreate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,6 +76,7 @@ tools:context=".ui.AnnounceVacancyFragment">
                 android:background="@color/light_blue"
                 android:text="anunciar"
                 android:textColor="@color/text"
+                android:textSize="18sp"
                 android:translationZ="1000dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:ignore="MissingConstraints"
@@ -147,6 +130,25 @@ tools:context=".ui.AnnounceVacancyFragment">
                 android:spinnerMode="dropdown"
                 app:layout_constraintTop_toBottomOf="@+id/shiftSpinnertoCreate"
                 tools:layout_editor_absoluteX="45dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/vacancyLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/filter_background"
+                android:paddingLeft="5dp"
+                android:text="local"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toTopOf="@+id/announceVacancyButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/salaryVacancyToCreate" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

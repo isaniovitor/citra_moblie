@@ -46,11 +46,14 @@ public class VacancyDetails extends Fragment {
         // descobrindo a activity anterior
         FragmentManager fm = getActivity().getSupportFragmentManager();
         int count = fm.getBackStackEntryCount();
+
+        //passar a vacancy msm
         int vacancyPosition = (int) bundle.getSerializable("position");
         lastFragmentName = fm.getBackStackEntryAt(count - 1).getName();
 
         Vacancy currentVacancy;
-        if (lastFragmentName.equals("home_vacancies_list")) {
+        if (lastFragmentName.equals("home_vacancies_list") ||
+                lastFragmentName.equals("vacancies_map")) {
             actionUser.setText("Candidatar-se");
             ownerUserActions.setVisibility(View.GONE);
             currentVacancy = vacancyDAO.getVacancy(vacancyPosition);

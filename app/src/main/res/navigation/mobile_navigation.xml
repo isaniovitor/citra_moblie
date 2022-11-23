@@ -22,10 +22,20 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_user_applyed_vacancies_vacancy"
+        android:id="@+id/nav_user_applyed_vacancies"
         android:name="com.example.citra_moblie.ui.UserAppliedVacancies"
         android:label="Candidaturas"
         tools:layout="@layout/fragment_user_applied_vacancies_list" >
+        <action
+            android:id="@+id/action_nav_user_applyed_vacancies_vacancy_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.example.citra_moblie.ui.VacanciesMapFragment"
+        android:label="Mapa"
+        tools:layout="@layout/fragment_vacancies_map" >
         <action
             android:id="@+id/action_nav_user_applyed_vacancies_vacancy_to_nav_home"
             app:destination="@id/nav_home" />

@@ -68,8 +68,8 @@ public class VacancyDAO implements IVacancyDAO {
                         "dimensionamento do SESMT e CIPA do cliente, incluindo a realização do processo completo da" +
                         " CIPA. Manter contato com o cliente, dirimindo dúvidas e buscando ações de melhoria às suas " +
                         "necessidades.",
-                "manhã", "CTI", "2000",
-                Arrays.asList(appliedUsers.get(0), appliedUsers.get(2), appliedUsers.get(1), appliedUsers.get(3)));
+                        "manhã", "CTI", "2000",  "-4.970945", "39.021467",
+                        Arrays.asList(appliedUsers.get(0), appliedUsers.get(2), appliedUsers.get(1), appliedUsers.get(3)));
         homeVacancies.add(vacancy);
 
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image2);
@@ -78,8 +78,8 @@ public class VacancyDAO implements IVacancyDAO {
                         "obras de reformas, construção, fiscalização e acompanhamento de obras e cronogramas e execução de " +
                         "relatórios. Formação exigida: Superior em Engenharia Civil e/ou Arquitetura e Urbanismo. Conhecimentos " +
                         "imprescindíveis: Pacote Office e AutoCad - Intermediário",
-                "tarde", "CTI", "1000",
-                Arrays.asList(appliedUsers.get(4), appliedUsers.get(2), appliedUsers.get(1)));
+                "tarde", "CTI", "1000", "-4.967952", "-39.014944",
+                        Arrays.asList(appliedUsers.get(4), appliedUsers.get(2), appliedUsers.get(1)));
         homeVacancies.add(vacancy);
 
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image3);
@@ -87,7 +87,7 @@ public class VacancyDAO implements IVacancyDAO {
                 "Analisar a viabilidade de projetos e tarefas; - Orientar a equipe de trabalho; - Controlar o uso de materiais e a " +
                 "disponibilidade de máquinas, equipamentos e pessoal; - Assessorar as atividades de todas as partes envolvidas em uma obra; - " +
                 "Gerenciar resíduos e detritos, assim como seu descarte ou reciclagem; - Delegar tarefas; - Inspecionar a execução de tarefas;",
-                "tarde", "CTD", "1200",
+                "tarde", "CTD", "1200",  "-4.972741", "-39.005972",
                 Arrays.asList(appliedUsers.get(3), appliedUsers.get(2), appliedUsers.get(0)));
         homeVacancies.add(vacancy);
 
@@ -95,16 +95,16 @@ public class VacancyDAO implements IVacancyDAO {
         vacancy = new Vacancy(bitmap, "Técnico de Edificações - CAMBERT Engenharia",
                 "Realizam levantamentos topográficos e planialtimétricos. Desenvolvem e legalizam projetos de edificações sob " +
                         "supervisão de um engenheiro civil; planejam a execução, orçam e providenciam suprimentos e supervisionam a execução de " +
-                        "obras e serviços.",
-                "tarde", "Estágio", "3000", Arrays.asList(appliedUsers.get(1), appliedUsers.get(3)));
+                        "obras e serviços.", "tarde", "Estágio", "3000", "-4.966153", "-39.002177",
+                        Arrays.asList(appliedUsers.get(1), appliedUsers.get(3)));
         homeVacancies.add(vacancy);
 
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image5);
         vacancy = new Vacancy(bitmap, "Engenheiro Civil - FNM ",
                 "Realizam levantamentos topográficos e planialtimétricos. Desenvolvem e legalizam projetos de edificações sob " +
                         "supervisão de um engenheiro civil; planejam a execução, orçam e providenciam suprimentos e supervisionam a execução de " +
-                        "obras e serviços.",
-                "noite", "Temporário", "2400", Arrays.asList(appliedUsers.get(2), appliedUsers.get(3)));
+                        "obras e serviços.", "noite", "Temporário", "2400", "-4.966302", "-39.026848",
+                        Arrays.asList(appliedUsers.get(2), appliedUsers.get(3)));
         homeVacancies.add(vacancy);
     }
 
