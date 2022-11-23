@@ -23,7 +23,7 @@ import com.example.citra_moblie.model.Vacancy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserAppliedVacancies extends Fragment {
+public class UserAppliedVacancies extends Fragment implements VacancyRecyclerViewAdapter.Onclick{
     private FragmentHomeBinding binding;
     private RecyclerView recyclerView;
 
@@ -35,7 +35,7 @@ public class UserAppliedVacancies extends Fragment {
 
         // configurar adapter
         IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
-        VacancyRecyclerViewAdapter adapter = new VacancyRecyclerViewAdapter(vacancyDAO.getUserAppliedVacancies());
+        VacancyRecyclerViewAdapter adapter = new VacancyRecyclerViewAdapter(vacancyDAO.getUserAppliedVacancies(), this);
 
         // configurar Recyclerview
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());

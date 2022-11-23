@@ -5,11 +5,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.citra_moblie.R;
+import com.example.citra_moblie.helper.FirebaseHelper;
+import com.google.firebase.database.DatabaseReference;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class Vacancy implements Serializable {
+    private String idVacancy;
+    private String idUser;
     private Bitmap vacancyImage;
     private String vacancyName;
     private String vacancyDescription;
@@ -21,6 +25,34 @@ public class Vacancy implements Serializable {
     private List<User> appliedCandidates;
 
     public Vacancy() {
+        DatabaseReference reference = FirebaseHelper.getDatabaseReference();
+        this.setIdVacancy(reference.push().getKey());
+    }
+
+    public void salvar() {
+        DatabaseReference reference = FirebaseHelper.getDatabaseReference()
+                .child("vacancies")
+                .child(FirebaseHelper.getIdFirebase())
+                .child(this.getIdVacancy());
+        reference.setValue(this);
+
+        DatabaseReference vacancies_geral = FirebaseHelper.getDatabaseReference()
+                .child("vacancies_geral")
+                .child(this.getIdVacancy());
+        vacancies_geral.setValue(this);
+    }
+
+    public void deletar() {
+        DatabaseReference reference = FirebaseHelper.getDatabaseReference()
+                .child("vacancies")
+                .child(FirebaseHelper.getIdFirebase())
+                .child(this.getIdVacancy());
+        reference.removeValue();
+
+        DatabaseReference vacancies_geral = FirebaseHelper.getDatabaseReference()
+                .child("vacancies_geral")
+                .child(this.getIdVacancy());
+        vacancies_geral.removeValue();
     }
 
     public Vacancy(Bitmap vacancyImage, String vacancyName, String vacancyDescription, String shiftSpinner,
@@ -106,5 +138,21 @@ public class Vacancy implements Serializable {
 
     public void setAppliedCandidates(List<User> appliedCandidates) {
         this.appliedCandidates = appliedCandidates;
+    }
+
+    public String getIdVacancy() {
+        return idVacancy;
+    }
+
+    public void setIdVacancy(String idVacancy) {
+        this.idVacancy = idVacancy;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 }

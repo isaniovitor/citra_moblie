@@ -181,7 +181,8 @@ public class RegisterUserActivity extends AppCompatActivity {
 
         auth.createUserWithEmailAndPassword(email, senha).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                userModel.setId(auth.getUid());
+                String idUser = task.getResult().getUser().getUid();
+                userModel.setId(idUser);
                 userModel.salvar();
                 startActivity(new Intent(this, HomeActivity.class));
             }else{

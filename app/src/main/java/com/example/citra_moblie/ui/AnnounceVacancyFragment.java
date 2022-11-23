@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -37,11 +39,17 @@ import android.widget.Toast;
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.dao.IVacancyDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
+import com.example.citra_moblie.helper.FirebaseHelper;
 import com.example.citra_moblie.helper.Permission;
+import com.example.citra_moblie.model.User;
 import com.example.citra_moblie.model.Vacancy;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -65,13 +73,26 @@ public class AnnounceVacancyFragment extends Fragment {
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
+    private User users;
+    private Vacancy vacancies;
+
+    private EditText nameVacancy;
+    private EditText descriptionVacancy;
+    private Spinner shiftVacancy;
+    private Spinner typeHiringVacancy;
+    private EditText salaryVacancy;
+    private AppCompatButton locationVacancy;
+
     String[] shifts = new String[]{"manhã", "tarde", "noite"};
     String[] typesHiring = new String[]{"CTI", "CTD", "Temporário", "Terceirizado", "Parcial", "Estágio"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_announce_vacancy, container, false);
+
+        iniciaComponentes(view);
 
         ImageButton gallery = view.findViewById(R.id.galleryButton);
         ImageButton camera = view.findViewById(R.id.cameraButton);
@@ -197,7 +218,9 @@ public class AnnounceVacancyFragment extends Fragment {
                         shiftVacancyToCreate.getSelectedItem().toString(), typeHiringVacancyToCreate.getSelectedItem().toString(),
                         salaryVacancyToCreate.getText().toString(), null, null, null);
 
-                if (vacancyDAO.addVacancy(vacancy)) {
+                recuperaDadosUsuario();
+
+                /*if (vacancyDAO.addVacancy(vacancy)) {
                     Toast.makeText(getContext(), "Sucesso ao anunciar Vaga!", Toast.LENGTH_SHORT).show();
 
                     Fragment fragment = new UserCreatedVacancies();
@@ -207,7 +230,7 @@ public class AnnounceVacancyFragment extends Fragment {
                     transaction.commit();
                 } else {
                     Toast.makeText(getContext(), "Erro ao anunciar Vaga!", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
@@ -243,5 +266,57 @@ public class AnnounceVacancyFragment extends Fragment {
                         }
                     });
         }
+    }
+
+    private void validaDados(){
+
+        String name = nameVacancy.getText().toString();
+        String description = descriptionVacancy.getText().toString();
+        //String shift = shiftVacancy.getSelectedItem().toString();
+        //String typeHiring = typeHiringVacancy.getSelectedItem().toString();
+        String salary = salaryVacancy.getText().toString();
+
+        if(vacancies == null) {
+            vacancies = new Vacancy();
+        }
+
+        vacancies.setIdUser(FirebaseHelper.getIdFirebase());
+        vacancies.setVacancyName(name);
+        vacancies.setVacancyDescription(description);
+        //vacancies.setShiftSpinner(shift);
+        //vacancies.setTypeHiringSpinner(typeHiring);
+        vacancies.setSalarySpinner(salary);
+
+        vacancies.salvar();
+
+        startActivity(new Intent(getActivity(), UserCreatedVacancies.class));
+    }
+
+    private void recuperaDadosUsuario() {
+        DatabaseReference reference = FirebaseHelper.getDatabaseReference()
+                .child("usuarios")
+                .child(FirebaseHelper.getIdFirebase());
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                users = snapshot.getValue(User.class);
+
+                validaDados();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void iniciaComponentes(View view) {
+        nameVacancy = view.findViewById(R.id.txtEmailRecover);
+        descriptionVacancy = view.findViewById(R.id.descriptionVacancyToCreate);
+        shiftVacancy = view.findViewById(R.id.shiftVacancyToCreate);
+        typeHiringVacancy = view.findViewById(R.id.typeHiringVacancyToCreatee);
+        salaryVacancy = view.findViewById(R.id.salaryVacancyToCreate);
+        locationVacancy = view.findViewById(R.id.vacancyLocation);
     }
 }

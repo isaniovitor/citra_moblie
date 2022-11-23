@@ -17,8 +17,11 @@ import java.util.List;
 public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecyclerViewAdapter.MyViewHolder> {
     private List<Vacancy> vacancies;
 
-    public VacancyRecyclerViewAdapter(List<Vacancy> vacancies) {
+    private Onclick onclick;
+
+    public VacancyRecyclerViewAdapter(List<Vacancy> vacancies, Onclick onclick) {
         this.vacancies = vacancies;
+        this.onclick = onclick;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -58,6 +61,10 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
         holder.vacancySalary.setText(vacancy.getSalarySpinner());
         holder.vacancyShift.setText(vacancy.getShiftSpinner());
         holder.vacancyTypeHiring.setText(vacancy.getTypeHiringSpinner());
+
+        holder.itemView.setOnClickListener(view -> {
+            onclick.onClickListener(vacancy);
+        });
     }
 
     @Override
@@ -65,8 +72,16 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
         return vacancies.size();
     }
 
+    /*
     public void setVacancies(List<Vacancy> vacancies) {
         this.vacancies = vacancies;
         notifyDataSetChanged();
+    }*/
+
+    public interface Onclick {
+        public default void onClickListener(Vacancy vacancy){
+        }
     }
 }
+
+
