@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.citra_moblie.ui.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_user_created_jobs"
+        android:name="com.example.citra_moblie.ui.UserCreatedVacancies"
+        android:label="Minhas vagas"
+        tools:layout="@layout/fragment_user_created_vacancies_list" >
+        <action
+            android:id="@+id/action_nav_user_created_jobs_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_user_applyed_vacancies"
+        android:name="com.example.citra_moblie.ui.UserAppliedVacancies"
+        android:label="Candidaturas"
+        tools:layout="@layout/fragment_user_applied_vacancies_list" >
+        <action
+            android:id="@+id/action_nav_user_applyed_vacancies_vacancy_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.example.citra_moblie.ui.VacanciesMapFragment"
+        android:label="Mapa"
+        tools:layout="@layout/fragment_vacancies_map" >
+        <action
+            android:id="@+id/action_nav_user_applyed_vacancies_vacancy_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+</navigation>

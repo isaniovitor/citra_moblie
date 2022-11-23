@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/register_user_image"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_user_created_jobs"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Vagas" />
+        <item
+            android:id="@+id/nav_user_applyed_vacancies"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Candidaturas" />
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Mapa" />
+<!--        <item-->
+<!--            android:id="@+id/nav_logout"-->
+<!--            android:icon="@drawable/ic_menu_slideshow"-->
+<!--            android:title="Sair" />-->
+    </group>
+</menu>

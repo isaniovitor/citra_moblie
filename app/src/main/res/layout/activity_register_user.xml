@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/text"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue"
+    tools:context=".RegisterUserActivity">
+
+    <TextView
+        android:id="@+id/navUserEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Cadastro"
+        android:textColor="@color/text"
+        android:textSize="31sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="logo"
+        android:textColor="@color/text"
+        android:textSize="31sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@color/dark_blue"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2">
+
+        <EditText
+            android:id="@+id/registerUserRepeatPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:hint="Repetir senha"
+            android:inputType="textPassword"
+            android:shadowColor="@color/white"
+            android:textColor="@color/text"
+            android:textColorHighlight="@color/text"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/announceVacancyButton"
+            app:layout_constraintTop_toBottomOf="@+id/salaryVacancyToCreate"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="20dp" />
+
+        <EditText
+            android:id="@+id/salaryVacancyToCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="Senha"
+            android:inputType="textPassword"
+            android:shadowColor="@color/white"
+            android:soundEffectsEnabled="false"
+            android:textColor="@color/text"
+            android:textColorHighlight="@color/text"
+            android:textColorHint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/typeHiringVacancyToCreate"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <Button
+            android:id="@+id/announceVacancyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue"
+            android:text="Cadastrar-se"
+            android:textColor="@color/text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="25dp" />
+
+        <EditText
+            android:id="@+id/nameVacancyToCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Nome completo"
+            android:inputType="textPersonName"
+            android:shadowColor="@color/white"
+            android:textColor="@color/text"
+            android:textColorHighlight="@color/text"
+            android:textColorHint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/userIHeadermage"
+            tools:layout_editor_absoluteX="-6dp" />
+
+        <EditText
+            android:id="@+id/descriptionVacancyToCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:shadowColor="@color/white"
+            android:textColor="@color/text"
+            android:textColorHighlight="@color/text"
+            android:textColorHint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/nameVacancyToCreate"
+            tools:layout_editor_absoluteX="20dp" />
+
+        <EditText
+            android:id="@+id/shiftVacancyToCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="Aniversário"
+            android:inputType="date"
+            android:shadowColor="@color/white"
+            android:textColor="@color/text"
+            android:textColorHighlight="@color/text"
+            android:textColorHint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionVacancyToCreate"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/typeHiringVacancyToCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="CPF"
+            android:inputType="textPersonName"
+            android:shadowColor="@color/white"
+            android:textColor="@color/text"
+            android:textColorHighlight="@color/text"
+            android:textColorHint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/shiftVacancyToCreate"
+            tools:layout_editor_absoluteX="24dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/no_user_image"
+        app:civ_border_color="@color/blue"
+        app:civ_border_width="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/galleryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pick_image_background"
+        android:src="@drawable/ic_baseline_photo_library"
+        app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+        app:layout_constraintEnd_toEndOf="@+id/profileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cameraButton"
+        app:layout_constraintTop_toTopOf="@+id/profileImage"
+        app:layout_constraintVertical_bias="0.85" />
+
+    <ImageButton
+        android:id="@+id/cameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pick_image_background"
+        android:src="@drawable/ic_menu_camera"
+        app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+        app:layout_constraintEnd_toStartOf="@+id/galleryButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/profileImage"
+        app:layout_constraintTop_toTopOf="@+id/profileImage"
+        app:layout_constraintVertical_bias="0.85" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
