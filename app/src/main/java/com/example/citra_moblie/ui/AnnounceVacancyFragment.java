@@ -91,7 +91,6 @@ public class AnnounceVacancyFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_announce_vacancy, container, false);
-
         iniciaComponentes(view);
 
         ImageButton gallery = view.findViewById(R.id.galleryButton);
@@ -289,7 +288,11 @@ public class AnnounceVacancyFragment extends Fragment {
 
         vacancies.salvar();
 
-        startActivity(new Intent(getActivity(), UserCreatedVacancies.class));
+        Fragment fragment = new UserCreatedVacancies();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.nav_host_fragment_content_home, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void recuperaDadosUsuario() {
