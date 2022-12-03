@@ -1,10 +1,7 @@
 package com.example.citra_moblie.model;
 
 import android.graphics.Bitmap;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.example.citra_moblie.R;
 import com.example.citra_moblie.helper.FirebaseHelper;
 import com.google.firebase.database.DatabaseReference;
 

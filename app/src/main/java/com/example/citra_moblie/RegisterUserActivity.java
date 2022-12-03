@@ -38,7 +38,7 @@ import java.io.ByteArrayOutputStream;
 public class RegisterUserActivity extends AppCompatActivity {
     public Button registerUserButton;
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
-    private ImageView profileImage;
+
     private TextView registerUserName;
     private TextView registerUserEmail;
     private TextView registerUserBirthday;
@@ -51,6 +51,10 @@ public class RegisterUserActivity extends AppCompatActivity {
     };
     private FirebaseAuth auth;
     private FirebaseStorage storage;
+
+    private ImageView profileImage;
+    private String caminhoImagem;
+    private Bitmap imagem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

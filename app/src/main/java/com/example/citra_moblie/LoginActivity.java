@@ -60,6 +60,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        verificaLogin();
+    }
+
     private void validaDados(){
         String email = loginEmail.getText().toString();
         String password = loginPassword.getText().toString();
@@ -78,6 +84,14 @@ public class LoginActivity extends AppCompatActivity {
                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
            }
         });
+    }
+
+    private void verificaLogin() {
+        if (FirebaseHelper.getAutenticado()) {
+            startActivity(new Intent(this, HomeActivity.class));
+        } else {
+        }
+
     }
 
     /*

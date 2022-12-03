@@ -322,7 +322,7 @@ public class HomeFragment extends Fragment implements VacancyRecyclerViewAdapter
 
 
     @Override
-    public void onClickListener(Vacancy vacancy) {
+    public void onClickListener(Vacancy vacancy, int position) {
         //Intent intent = new Intent(requireContext(), DetalhesTreinoActivity.class);
         Toast.makeText(getActivity(), "Nome da vaga: " + vacancy.getVacancyName(),Toast.LENGTH_LONG).show();
         //startActivity(intent);

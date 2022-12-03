@@ -63,7 +63,7 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
         holder.vacancyTypeHiring.setText(vacancy.getTypeHiringSpinner());
 
         holder.itemView.setOnClickListener(view -> {
-            onclick.onClickListener(vacancy);
+            onclick.onClickListener(vacancy, position);
         });
     }
 
@@ -79,7 +79,7 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
     }*/
 
     public interface Onclick {
-        public default void onClickListener(Vacancy vacancy){
+        public default void onClickListener(Vacancy vacancy, int position){
         }
     }
 }

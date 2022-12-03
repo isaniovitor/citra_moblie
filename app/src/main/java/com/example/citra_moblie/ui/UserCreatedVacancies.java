@@ -156,10 +156,21 @@ public class UserCreatedVacancies extends Fragment implements VacancyRecyclerVie
     }
 
     @Override
-    public void onClickListener(Vacancy vacancy) {
-        //Intent intent = new Intent(requireContext(), DetalhesTreinoActivity.class);
-        Toast.makeText(getActivity(), "Nome da vaga: " + vacancy.getVacancyName(),Toast.LENGTH_LONG).show();
+    public void onClickListener(Vacancy vacancy, int position) {
+        //Intent intent = new Intent(requireContext(), VacancyDetails.class);
+        //intent.putExtra("detail_vacancies", vacancy);
         //startActivity(intent);
+
+        Bundle bundle = new Bundle();
+        Fragment fragment = new VacancyDetails();
+        bundle.putSerializable("detail_vacancies", vacancy);
+        bundle.putInt("position", position);
+
+        fragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.nav_host_fragment_content_home, fragment );
+        transaction.addToBackStack("user_created_vacancy_list");
+        transaction.commit();
 
     }
 

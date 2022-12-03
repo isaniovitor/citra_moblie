@@ -9,20 +9,28 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.citra_moblie.R;
+import com.example.citra_moblie.adapter.VacancyRecyclerViewAdapter;
 import com.example.citra_moblie.dao.IVacancyDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.model.Vacancy;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VacancyDetails extends Fragment {
     private String lastFragmentName;
+    private List<Vacancy> vacancies = new ArrayList<>();
+    private Vacancy vacancy;
+    VacancyRecyclerViewAdapter adapterVacancy;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +56,9 @@ public class VacancyDetails extends Fragment {
         int count = fm.getBackStackEntryCount();
 
         //passar a vacancy msm
-        int vacancyPosition = (int) bundle.getSerializable("position");
+        Vacancy vacancy = (Vacancy) bundle.getSerializable("detail_vacancies");
+        int position = bundle.getInt("position");
+
         lastFragmentName = fm.getBackStackEntryAt(count - 1).getName();
 
         Vacancy currentVacancy;
@@ -56,14 +66,14 @@ public class VacancyDetails extends Fragment {
                 lastFragmentName.equals("vacancies_map")) {
             actionUser.setText("Candidatar-se");
             ownerUserActions.setVisibility(View.GONE);
-            currentVacancy = vacancyDAO.getVacancy(vacancyPosition);
+            currentVacancy = vacancy;
         }else if (lastFragmentName.equals("user_created_vacancy_list")) {
             actionUser.setVisibility(View.GONE);
-            currentVacancy = vacancyDAO.getCreatedVacancy(vacancyPosition);
+            currentVacancy = vacancy;
         }else{
             actionUser.setText("Cancelar");
             ownerUserActions.setVisibility(View.GONE);
-            currentVacancy = vacancyDAO.getAppliedVacancy(vacancyPosition);
+            currentVacancy = vacancy;
         }
 
         // setando os dados
@@ -89,20 +99,24 @@ public class VacancyDetails extends Fragment {
             }
         });
 
-        deleteVacancy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (vacancyDAO.removeVacancy(vacancyDAO.getCreatedVacancy(vacancyPosition))) {
-                    Toast.makeText(getContext(),"Sucesso ao excluir Vaga!", Toast.LENGTH_SHORT).show();
+        deleteVacancy.setOnClickListener(view1 -> {
 
-                    Fragment fragment = new UserCreatedVacancies();
-                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.nav_host_fragment_content_home, fragment );
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }else{
-                    Toast.makeText(getContext(),"Erro ao excluir Vaga!", Toast.LENGTH_SHORT).show();
-                }
+            //Toast.makeText(requireActivity(),"Posição: " + position, Toast.LENGTH_SHORT).show();
+            vacancies.get(position).deletar();
+            adapterVacancy.notifyItemRemoved(position);
+            getActivity().finish();
+
+
+            if(vacancyDAO.removeVacancy(vacancyDAO.getCreatedVacancy(position))) {
+                Toast.makeText(getContext(),"Sucesso ao excluir Vaga!", Toast.LENGTH_SHORT).show();
+
+                Fragment fragment = new UserCreatedVacancies();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment_content_home, fragment );
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }else{
+                Toast.makeText(getContext(),"Erro ao excluir Vaga!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -111,7 +125,7 @@ public class VacancyDetails extends Fragment {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 Fragment fragment = new EditVacancy();
-                bundle.putSerializable("position", vacancyPosition);
+                bundle.putSerializable("position", vacancy);
 
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -126,7 +140,7 @@ public class VacancyDetails extends Fragment {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 Fragment fragment = new VacancyCandidatesFragment();
-                bundle.putSerializable("position", vacancyPosition);
+                bundle.putSerializable("position", vacancy);
 
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

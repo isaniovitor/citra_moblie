@@ -271,8 +271,8 @@ public class AnnounceVacancyFragment extends Fragment {
 
         String name = nameVacancy.getText().toString();
         String description = descriptionVacancy.getText().toString();
-        //String shift = shiftVacancy.getSelectedItem().toString();
-        //String typeHiring = typeHiringVacancy.getSelectedItem().toString();
+        String shift = shiftVacancyToCreate.getSelectedItem().toString();
+        String typeHiring = typeHiringVacancyToCreate.getSelectedItem().toString();
         String salary = salaryVacancy.getText().toString();
 
         if(vacancies == null) {
@@ -282,8 +282,8 @@ public class AnnounceVacancyFragment extends Fragment {
         vacancies.setIdUser(FirebaseHelper.getIdFirebase());
         vacancies.setVacancyName(name);
         vacancies.setVacancyDescription(description);
-        //vacancies.setShiftSpinner(shift);
-        //vacancies.setTypeHiringSpinner(typeHiring);
+        vacancies.setShiftSpinner(shift);
+        vacancies.setTypeHiringSpinner(typeHiring);
         vacancies.setSalarySpinner(salary);
 
         vacancies.salvar();
