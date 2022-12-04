@@ -1,6 +1,7 @@
 package com.example.citra_moblie;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +24,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.citra_moblie.databinding.ActivityHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity {
-
     IUserDAO userDAO = UserDAO.getInstance(this);
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private AppBarConfiguration mAppBarConfiguration;
@@ -42,7 +43,6 @@ public class HomeActivity extends AppCompatActivity {
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        IUserDAO userDAO = UserDAO.getInstance(this);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_user_created_jobs, R.id.nav_user_applyed_vacancies, R.id.nav_map)
@@ -60,15 +60,13 @@ public class HomeActivity extends AppCompatActivity {
         navUsername.setText(userDAO.getUser().getName());
 
         if (userDAO.getUser().getImage() != null) {
-            userIHeaderImage.setImageBitmap(userDAO.getUser().getImage());
+            Picasso.get().load(Uri.parse(userDAO.getUser().getImage()))
+                    .into(userIHeaderImage);
         }
 
-        editUserButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, EditUserActivity.class);
-                startActivity(intent);
-            }
+        editUserButton.setOnClickListener(view -> {
+            Intent intent = new Intent(HomeActivity.this, EditUserActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -77,17 +75,14 @@ public class HomeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.home, menu);
 
         MenuItem logout = menu.findItem(R.id.logout);
-        logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                auth.signOut();
-                userDAO.setUser(null);
+        logout.setOnMenuItemClickListener(menuItem -> {
+            auth.signOut();
+            userDAO.setUser(null);
 
-                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                return true;
-            }
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            return true;
         });
 
         return true;

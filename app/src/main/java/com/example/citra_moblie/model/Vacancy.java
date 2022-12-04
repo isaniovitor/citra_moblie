@@ -1,18 +1,20 @@
 package com.example.citra_moblie.model;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.citra_moblie.R;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.List;
 
 public class Vacancy implements Serializable {
     private String idVacancy;
     private String idUser;
-    private Bitmap vacancyImage;
+    private String vacancyImage;
     private String vacancyName;
     private String vacancyDescription;
     private String shiftSpinner;
@@ -26,7 +28,7 @@ public class Vacancy implements Serializable {
 
     }
 
-    public Vacancy(String idVacancy, String idUser, Bitmap vacancyImage, String vacancyName, String vacancyDescription, String shiftSpinner,
+    public Vacancy(String idVacancy, String idUser, String vacancyImage, String vacancyName, String vacancyDescription, String shiftSpinner,
                    String typeHiringSpinner, String salarySpinner, String vacancyLat, String vacancyLog) {
         this.idVacancy = idVacancy;
         this.idUser = idUser;
@@ -57,11 +59,11 @@ public class Vacancy implements Serializable {
         this.idUser = idUser;
     }
 
-    public Bitmap getVacancyImage() {
+    public String getVacancyImage() {
         return vacancyImage;
     }
 
-    public void setVacancyImage(Bitmap vacancyImage) {
+    public void setVacancyImage(String vacancyImage) {
         this.vacancyImage = vacancyImage;
     }
 

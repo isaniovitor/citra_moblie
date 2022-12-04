@@ -3,8 +3,12 @@ package com.example.citra_moblie.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,6 +17,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -37,6 +42,7 @@ import com.example.citra_moblie.helper.Permission;
 import com.example.citra_moblie.model.User;
 import com.example.citra_moblie.model.Vacancy;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +50,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
 public class EditVacancy extends Fragment {
@@ -86,7 +101,8 @@ public class EditVacancy extends Fragment {
 
         // setando os dados
         if (vacancy.getVacancyImage() != null) {
-            vacancyImageToCreate.setImageBitmap(vacancy.getVacancyImage());
+            Picasso.get().load(Uri.parse(vacancy.getVacancyImage()))
+                    .into(vacancyImageToCreate);
         }
 
         // spinners
@@ -206,25 +222,54 @@ public class EditVacancy extends Fragment {
                         vacancy.getVacancyLog()
                 );
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                reference.child("AllVacancies").child(vacancy.getIdVacancy()).setValue(editedVacancy).
-                        addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                vacancyDAO.getVacanciesFromAPI();
-                                Toast.makeText(getContext(),"Sucesso ao editar usuário!", Toast.LENGTH_SHORT).show();
-
-                                Fragment fragment = new UserCreatedVacancies();
-                                fragment.setArguments(bundle);
-                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                transaction.replace(R.id.nav_host_fragment_content_home, fragment);
-                                transaction.addToBackStack(null);
-                                transaction.commit();
-                            }
-                        });
+                saveVacancyImage(vacancy, editedVacancy);
             }
         });
 
         return view;
+    }
+
+    private void saveVacancyImage(Vacancy vacancy, Vacancy editedVacancy) {
+        // salvando imagem
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap vacancyImage = ((BitmapDrawable) vacancyImageToCreate.getDrawable()).getBitmap();
+        vacancyImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        // converte pixels em uma matriz de bytes
+        byte[] imageData = baos.toByteArray();
+
+        // definindo nó
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference imageRef = storageReference.child("imagesVacancies").child(vacancy.getIdVacancy());
+
+        // objeto que controla upload
+        UploadTask uploadTask = imageRef.putBytes(imageData);
+
+        // tratando respostas
+        uploadTask.addOnSuccessListener(getActivity(), taskSnapshot -> {
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                editedVacancy.setVacancyImage(uri.toString());
+                saveVacancy(vacancy, editedVacancy);
+            });
+        });
+
+        uploadTask.addOnFailureListener(getActivity(), e ->
+                Toast.makeText(getContext(), "Não foi possível salvar imagem!", Toast.LENGTH_SHORT).show());
+                saveVacancy(vacancy, editedVacancy);
+    }
+
+    private void saveVacancy(Vacancy vacancy, Vacancy editedVacancy) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child("AllVacancies").child(vacancy.getIdVacancy()).setValue(editedVacancy)
+                        .addOnCompleteListener(task -> {
+                            vacancyDAO.getVacanciesFromAPI();
+                            Toast.makeText(getContext(),"Sucesso ao editar usuário!", Toast.LENGTH_SHORT).show();
+
+                            Fragment fragment = new UserCreatedVacancies();
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.nav_host_fragment_content_home, fragment);
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+                        });
     }
 }

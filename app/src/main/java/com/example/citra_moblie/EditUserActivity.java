@@ -32,8 +32,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
 
 public class EditUserActivity extends AppCompatActivity {
+    IUserDAO userDAO = UserDAO.getInstance(this);
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
     private ImageView profileImage;
@@ -68,11 +75,11 @@ public class EditUserActivity extends AppCompatActivity {
         registerUserRepeatPassword = findViewById(R.id.registerUserRepeatPassword);
         profileImage = findViewById(R.id.profileImage);
         announceVacancyButton = findViewById(R.id.announceVacancyButton);
-        IUserDAO userDAO = UserDAO.getInstance(this);
 
         // setando os dados
         if (userDAO.getUser().getImage() != null) {
-            profileImage.setImageBitmap(userDAO.getUser().getImage());
+            Picasso.get().load(Uri.parse(userDAO.getUser().getImage()))
+                    .into(profileImage);
         }
         registerUserName.setText(userDAO.getUser().getName());
         registerUserEmail.setText(userDAO.getUser().getEmail());
@@ -84,97 +91,117 @@ public class EditUserActivity extends AppCompatActivity {
         Permission.validatePermissions(necessaryPermissions, this, 1);
         // fazer codio Caso negada a permission
 
-        // https://stackoverflow.com/questions/62671106/onactivityresult-method-is-deprecated-what-is-the-alternative
         ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        // There are no request codes
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Bitmap image = null;
 
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Bitmap image = null;
-
-                            try {
-                                switch (IMAGE_ACTION_CODE){
-                                    case 1:
-                                        image = (Bitmap) result.getData().getExtras().get("data");
-                                        break;
-                                    case 2:
-                                        Uri localImage = result.getData().getData();
-                                        image = MediaStore.Images.Media.getBitmap(getContentResolver(), localImage);
-                                        break;
-                                }
-
-                            }catch (Exception e){
-                                // por toast
+                        try {
+                            switch (IMAGE_ACTION_CODE){
+                                case 1:
+                                    image = (Bitmap) result.getData().getExtras().get("data");
+                                    break;
+                                case 2:
+                                    Uri localImage = result.getData().getData();
+                                    image = MediaStore.Images.Media.getBitmap(getContentResolver(), localImage);
+                                    break;
                             }
 
-                            if (image != null) {
-                                profileImage.setImageBitmap(image);
-                            }
+                        }catch (Exception e){
+                            // por toast
+                        }
+
+                        if (image != null) {
+                            profileImage.setImageBitmap(image);
                         }
                     }
                 });
 
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    resultLauncher.launch(intent);
-                    IMAGE_ACTION_CODE = 1;
-                }
+        camera.setOnClickListener(view -> {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                resultLauncher.launch(intent);
+                IMAGE_ACTION_CODE = 1;
             }
         });
 
-        gallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    resultLauncher.launch(intent);
-                    IMAGE_ACTION_CODE = 2;
-                }
+        gallery.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                resultLauncher.launch(intent);
+                IMAGE_ACTION_CODE = 2;
             }
         });
 
-        announceVacancyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
-                    // ((BitmapDrawable) profileImage.getDrawable()).getBitmap()
-                    userDAO.getUser().setImage(null);
-                    userDAO.getUser().setName(registerUserName.getText().toString());
-                    userDAO.getUser().setEmail(registerUserEmail.getText().toString());
-                    userDAO.getUser().setBirthday(registerUserBirthday.getText().toString());
-                    userDAO.getUser().setCpf(registerUserCpf.getText().toString());
-                    userDAO.getUser().setPassword( registerUserPassword.getText().toString());
+        announceVacancyButton.setOnClickListener(view -> {
+            if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
+                User user = new User(
+                        userDAO.getUser().getId(),
+                        null,
+                        registerUserName.getText().toString(),
+                        registerUserEmail.getText().toString(),
+                        registerUserBirthday.getText().toString(),
+                        registerUserCpf.getText().toString(),
+                        registerUserPassword.getText().toString()
+                );
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                    reference.child("usuarios").child(auth.getCurrentUser().getUid()).setValue(userDAO.getUser());
-                    reference.child("usuarios").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Toast.makeText(EditUserActivity.this,"Sucesso ao editar usuário!", Toast.LENGTH_SHORT).show();
-
-                            User user = snapshot.getValue(User.class);
-                            userDAO.setUser(user);
-
-                            Intent intent = new Intent(EditUserActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }else{
-                    Toast.makeText(EditUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
-                }
+                saveImageUser(user);
+            }else{
+                Toast.makeText(EditUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
+
+    public void saveImageUser(User user){
+        // salvando imagem
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap userImage = ((BitmapDrawable) profileImage.getDrawable()).getBitmap();
+        userImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        // converte pixels em uma matriz de bytes
+        byte[] imageData = baos.toByteArray();
+
+        // definindo nó
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference imageRef = storageReference.child("usersImages").child(user.getId());
+
+        // objeto que controla upload
+        UploadTask uploadTask = imageRef.putBytes(imageData);
+
+        // tratando respostas
+        uploadTask.addOnSuccessListener(this, taskSnapshot -> {
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                user.setImage(uri.toString());
+                saveUser(user);
+            });
+        });
+
+        uploadTask.addOnFailureListener(this, e ->
+                Toast.makeText(this, "Não foi possível salvar imagem!", Toast.LENGTH_SHORT).show());
+                // saveUser(user);
+    }
+
+    public void saveUser(User user){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child("usuarios").child(auth.getCurrentUser().getUid()).setValue(user);
+        reference.child("usuarios").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Toast.makeText(EditUserActivity.this,"Sucesso ao editar usuário!", Toast.LENGTH_SHORT).show();
+
+                User user = snapshot.getValue(User.class);
+                userDAO.setUser(user);
+
+                Intent intent = new Intent(EditUserActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

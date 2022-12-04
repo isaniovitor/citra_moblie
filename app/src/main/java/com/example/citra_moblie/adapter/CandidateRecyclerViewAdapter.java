@@ -1,5 +1,6 @@
 package com.example.citra_moblie.adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.model.User;
 import com.example.citra_moblie.model.Vacancy;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -48,7 +50,8 @@ public class CandidateRecyclerViewAdapter extends RecyclerView.Adapter<Candidate
         User candidate = candidates.get(position);
 
         if (candidate.getImage() != null) {
-            holder.candidateImage.setImageBitmap(candidate.getImage());
+            Picasso.get().load(Uri.parse(candidate.getImage()))
+                    .into(holder.candidateImage);
         }
 
         holder.candidateName.setText(candidate.getName());

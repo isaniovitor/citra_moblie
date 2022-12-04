@@ -44,10 +44,15 @@ import com.example.citra_moblie.helper.Permission;
 import com.example.citra_moblie.model.Vacancy;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -200,23 +205,12 @@ public class AnnounceVacancyFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                // ((BitmapDrawable) profileImage.getDrawable()).getBitmap()
                 Vacancy vacancy = new Vacancy(reference.push().getKey(), userDAO.getUser().getId(), null,
                         nameVacancyToCreate.getText().toString(), descriptionVacancyToCreate.getText().toString(),
                         shiftVacancyToCreate.getSelectedItem().toString(), typeHiringVacancyToCreate.getSelectedItem().toString(),
                         salaryVacancyToCreate.getText().toString(), lat, log);
 
-                if (vacancyDAO.addVacancy(vacancy)) {
-                    Toast.makeText(getContext(), "Sucesso ao anunciar Vaga!", Toast.LENGTH_SHORT).show();
-
-                    Fragment fragment = new UserCreatedVacancies();
-                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.nav_host_fragment_content_home, fragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                } else {
-                    Toast.makeText(getContext(), "Erro ao anunciar Vaga!", Toast.LENGTH_SHORT).show();
-                }
+                saveVacancyImage(vacancy);
             }
         });
 
@@ -248,6 +242,49 @@ public class AnnounceVacancyFragment extends Fragment {
                             }
                         }
                     });
+        }
+    }
+
+    private void saveVacancyImage(Vacancy vacancy) {
+        // salvando imagem
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap vacancyImage = ((BitmapDrawable) profileImage.getDrawable()).getBitmap();
+        vacancyImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        // converte pixels em uma matriz de bytes
+        byte[] imageData = baos.toByteArray();
+
+        // definindo nó
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference imageRef = storageReference.child("imagesVacancies").child(vacancy.getIdVacancy());
+
+        // objeto que controla upload
+        UploadTask uploadTask = imageRef.putBytes(imageData);
+
+        // tratando respostas
+        uploadTask.addOnSuccessListener(getActivity(), taskSnapshot -> {
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                vacancy.setVacancyImage(uri.toString());
+                saveVacancy(vacancy);
+            });
+        });
+
+        uploadTask.addOnFailureListener(getActivity(), e ->
+                Toast.makeText(getContext(), "Não foi possível salvar imagem!", Toast.LENGTH_SHORT).show());
+                saveVacancy(vacancy);
+    }
+
+    private void saveVacancy(Vacancy vacancy) {
+        if (vacancyDAO.addVacancy(vacancy)) {
+            Toast.makeText(getContext(), "Sucesso ao anunciar Vaga!", Toast.LENGTH_SHORT).show();
+
+            Fragment fragment = new UserCreatedVacancies();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.nav_host_fragment_content_home, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else {
+            Toast.makeText(getContext(), "Erro ao anunciar Vaga!", Toast.LENGTH_SHORT).show();
         }
     }
 }

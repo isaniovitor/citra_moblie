@@ -74,6 +74,8 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 User user = snapshot.getValue(User.class);
+                                System.out.println("id: " + auth.getCurrentUser().getUid());
+                                System.out.println("id: " + user.getId());
                                 userDAO.setUser(user);
 
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -94,24 +96,24 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (auth.getCurrentUser() != null) {
-            // buncando usuário que se cadastrou
-            DatabaseReference userReference = FirebaseDatabase.getInstance().getReference();
-            userReference.child("usuarios").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    User user = snapshot.getValue(User.class);
-                    userDAO.setUser(user);
-
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
+//        if (auth.getCurrentUser() != null) {
+//            // buncando usuário que se cadastrou
+//            DatabaseReference userReference = FirebaseDatabase.getInstance().getReference();
+//            userReference.child("usuarios").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    User user = snapshot.getValue(User.class);
+//                    userDAO.setUser(user);
+//
+//                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+//                    startActivity(intent);
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
+//        }
     }
 }

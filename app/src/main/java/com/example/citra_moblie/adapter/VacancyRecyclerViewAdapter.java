@@ -1,5 +1,6 @@
 package com.example.citra_moblie.adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.model.Vacancy;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -51,7 +53,9 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
         Vacancy vacancy = vacancies.get(position);
 
         if (vacancy.getVacancyImage() != null) {
-            holder.vacancyImage.setImageBitmap(vacancy.getVacancyImage());
+            // holder.vacancyImage.setImageBitmap(vacancy.getVacancyImage());
+            Picasso.get().load(Uri.parse(vacancy.getVacancyImage()))
+                    .into(holder.vacancyImage);
         }
 
         holder.vacancyName.setText(vacancy.getVacancyName());

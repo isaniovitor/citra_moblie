@@ -70,77 +70,65 @@ public class RegisterUserActivity extends AppCompatActivity {
         // https://stackoverflow.com/questions/62671106/onactivityresult-method-is-deprecated-what-is-the-alternative
         ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        // There are no request codes
+                result -> {
+                    // There are no request codes
 
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Bitmap image = null;
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Bitmap image = null;
 
-                            try {
-                                switch (IMAGE_ACTION_CODE){
-                                    case 1:
-                                        image = (Bitmap) result.getData().getExtras().get("data");
-                                        break;
-                                    case 2:
-                                        Uri localImage = result.getData().getData();
-                                        image = MediaStore.Images.Media.getBitmap(getContentResolver(), localImage);
-                                        break;
-                                }
-
-                            }catch (Exception e){
-                                // por toast
+                        try {
+                            switch (IMAGE_ACTION_CODE){
+                                case 1:
+                                    image = (Bitmap) result.getData().getExtras().get("data");
+                                    break;
+                                case 2:
+                                    Uri localImage = result.getData().getData();
+                                    image = MediaStore.Images.Media.getBitmap(getContentResolver(), localImage);
+                                    break;
                             }
 
-                            if (image != null) {
-                                profileImage.setImageBitmap(image);
-                            }
+                        }catch (Exception e){
+                            // por toast
+                        }
+
+                        if (image != null) {
+                            profileImage.setImageBitmap(image);
                         }
                     }
                 });
 
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    resultLauncher.launch(intent);
-                    IMAGE_ACTION_CODE = 1;
-                }
+        camera.setOnClickListener(view -> {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                resultLauncher.launch(intent);
+                IMAGE_ACTION_CODE = 1;
             }
         });
 
-        gallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    resultLauncher.launch(intent);
-                    IMAGE_ACTION_CODE = 2;
-                }
+        gallery.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                resultLauncher.launch(intent);
+                IMAGE_ACTION_CODE = 2;
             }
         });
 
-        registerUserButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
-                    // ((BitmapDrawable) profileImage.getDrawable()).getBitmap()
-                    User user = new User(
-                            null,
-                            registerUserName.getText().toString(),
-                            registerUserEmail.getText().toString(),
-                            registerUserBirthday.getText().toString(),
-                            registerUserCpf.getText().toString(),
-                            registerUserPassword.getText().toString()
-                    );
+        registerUserButton.setOnClickListener(view -> {
+            if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
+                // ((BitmapDrawable) profileImage.getDrawable()).getBitmap()
+                User user = new User(
+                        null,
+                        null,
+                        registerUserName.getText().toString(),
+                        registerUserEmail.getText().toString(),
+                        registerUserBirthday.getText().toString(),
+                        registerUserCpf.getText().toString(),
+                        registerUserPassword.getText().toString()
+                );
 
-//                    userDAO.setUser(user);
-                    saveUser(user);
-                }else{
-                    Toast.makeText(RegisterUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
-                }
+                saveUser(user);
+            }else{
+                Toast.makeText(RegisterUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
             }
         });
     }

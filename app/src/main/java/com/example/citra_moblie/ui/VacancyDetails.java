@@ -1,6 +1,7 @@
 package com.example.citra_moblie.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -121,7 +125,8 @@ public class VacancyDetails extends Fragment {
 
         // setando os dados
         if (vacancy.getVacancyImage() != null) {
-            vacancyImageView.setImageBitmap(vacancy.getVacancyImage());
+            Picasso.get().load(Uri.parse(vacancy.getVacancyImage()))
+                    .into(vacancyImageView);
         }
         vacancyName.setText(vacancy.getVacancyName());
         vacancySalaryDetails.setText(vacancy.getSalarySpinner());
@@ -136,6 +141,11 @@ public class VacancyDetails extends Fragment {
                         if(task.isSuccessful()) {
                             vacancyDAO.getVacanciesFromAPI();
                             Toast.makeText(getContext(), "Vaga excluida!", Toast.LENGTH_SHORT).show();
+
+                            // deletando imagem
+                            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                            StorageReference imageRef = storageReference.child("imagesVacancies").child(vacancy.getIdVacancy());
+                            imageRef.delete();
 
                             Fragment fragment = new HomeFragment();
                             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
