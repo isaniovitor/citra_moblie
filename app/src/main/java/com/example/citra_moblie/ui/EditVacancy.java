@@ -211,6 +211,7 @@ public class EditVacancy extends Fragment {
                         addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                vacancyDAO.getVacanciesFromAPI();
                                 Toast.makeText(getContext(),"Sucesso ao editar usuário!", Toast.LENGTH_SHORT).show();
 
                                 Fragment fragment = new UserCreatedVacancies();

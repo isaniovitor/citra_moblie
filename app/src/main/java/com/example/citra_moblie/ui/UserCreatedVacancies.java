@@ -65,7 +65,7 @@ public class UserCreatedVacancies extends Fragment {
                             public void onItemClick(View view, int position) {
                                 Bundle bundle = new Bundle();
                                 Fragment fragment = new VacancyDetails();
-                                bundle.putSerializable("vacancy", vacancyDAO.getVacancy(position));
+                                bundle.putSerializable("vacancy", userCreatedVacancies.get(position));
 
                                 fragment.setArguments(bundle);
                                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

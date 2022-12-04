@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class VacancyDetails extends Fragment {
-    // IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
+     IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
     IUserDAO userDAO = UserDAO.getInstance(getContext());
     private Button actionUser;
     private String lastFragmentName;
@@ -74,6 +74,11 @@ public class VacancyDetails extends Fragment {
         Vacancy vacancy = (Vacancy) bundle.getSerializable("vacancy");
         lastFragmentName = fm.getBackStackEntryAt(count - 1).getName();
 
+        // ação do botao principal: usuário não candidatado
+        actionUser.setText("Candidatar-se");
+        ownerUserActions.setVisibility(View.GONE);
+        actionUser.setOnClickListener(view1 -> applyForVacancy(vacancy));
+
         // pegando usuários cadastrados;
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         reference.child("AllVacancies").child(vacancy.getIdVacancy()).child("appliedCandidates")
@@ -83,35 +88,26 @@ public class VacancyDetails extends Fragment {
                 if(snapshot.exists()){
                     boolean currentUserApplied = false;
 
+                    // percorrendo usuários cadastrados
                     for(DataSnapshot snap : snapshot.getChildren()){
                         User user = snap.getValue(User.class);
+
                         if (user.getId().equals(userDAO.getUser().getId())) {
                             currentUserApplied = true;
+
+                            actionUser.setText("Cancelar");
+                            actionUser.setOnClickListener(view1 -> unsubscribeForVacancy(vacancy));
                         }
 
                         appliedCandidates.add(user);
                     }
+                }
 
-                    // mudadno fragment de acordo com regras de negócio
-                    if (!currentUserApplied && !lastFragmentName.equals("user_created_vacancy_list")) {
-                        actionUser.setText("Candidatar-se");
-                        ownerUserActions.setVisibility(View.GONE);
-                    }else if (lastFragmentName.equals("user_created_vacancy_list")) {
-                        actionUser.setVisibility(View.GONE);
-                    }else{
-                        actionUser.setText("Cancelar");
-                        ownerUserActions.setVisibility(View.GONE);
-                    }
-
-                    // ação do botao
-                    boolean finalCurrentUserApplied = currentUserApplied;
-                    actionUser.setOnClickListener(view1 -> {
-                        if (!finalCurrentUserApplied) {
-                            applyForVacancy(vacancy);
-                        } else {
-                            unsubscribeForVacancy(vacancy);
-                        }
-                    });
+                // mudando fragment de acordo com regras de negócio
+                System.out.println(lastFragmentName);
+                if (lastFragmentName.equals("user_created_vacancy_list")) {
+                    actionUser.setVisibility(View.GONE);
+                    ownerUserActions.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -138,6 +134,7 @@ public class VacancyDetails extends Fragment {
             VacancyReference.child(vacancy.getIdVacancy()).removeValue()
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()) {
+                            vacancyDAO.getVacanciesFromAPI();
                             Toast.makeText(getContext(), "Vaga excluida!", Toast.LENGTH_SHORT).show();
 
                             Fragment fragment = new HomeFragment();
@@ -146,7 +143,7 @@ public class VacancyDetails extends Fragment {
                             transaction.addToBackStack(null);
                             transaction.commit();
                         }else{
-                Toast.makeText(getContext(),"Erro ao excluir vaga!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"Erro ao excluir vaga!", Toast.LENGTH_SHORT).show();
                         }
                     });
         });
@@ -187,14 +184,13 @@ public class VacancyDetails extends Fragment {
                         public void onComplete(@NonNull Task<Void> task) {
                             actionUser.setText("Cancelar");
                             actionUser.setOnClickListener(view -> unsubscribeForVacancy(vacancy));
-
                             Toast.makeText(getContext(),"Candidatado para a vaga", Toast.LENGTH_SHORT).show();
-//
-//                        Fragment fragment = new HomeFragment();
-//                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                        transaction.replace(R.id.nav_host_fragment_content_home, fragment );
-//                        transaction.addToBackStack(null);
-//                        transaction.commit();
+
+                            Fragment fragment = new UserAppliedVacancies();
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.nav_host_fragment_content_home, fragment);
+                            transaction.addToBackStack(null);
+                            transaction.commit();
                         }
                     });
         } else {
@@ -209,14 +205,13 @@ public class VacancyDetails extends Fragment {
                     if(task.isSuccessful()) {
                         actionUser.setText("Candidatar-se");
                         actionUser.setOnClickListener(view -> applyForVacancy(vacancy));
-
                         Toast.makeText(getContext(), "Candidatuta cancelada", Toast.LENGTH_SHORT).show();
 
-//                        Fragment fragment = new HomeFragment();
-//                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                        transaction.replace(R.id.nav_host_fragment_content_home, fragment);
-//                        transaction.addToBackStack(null);
-//                        transaction.commit();
+                        Fragment fragment = new UserAppliedVacancies();
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.nav_host_fragment_content_home, fragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
                     }
                 });
     }
