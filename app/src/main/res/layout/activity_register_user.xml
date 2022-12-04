@@ -171,44 +171,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profileImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/no_user_image"
-        app:civ_border_color="@color/blue"
-        app:civ_border_width="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/galleryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/pick_image_background"
-        android:src="@drawable/ic_baseline_photo_library"
-        app:layout_constraintBottom_toBottomOf="@+id/profileImage"
-        app:layout_constraintEnd_toEndOf="@+id/profileImage"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/cameraButton"
-        app:layout_constraintTop_toTopOf="@+id/profileImage"
-        app:layout_constraintVertical_bias="0.85" />
-
-    <ImageButton
-        android:id="@+id/cameraButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/pick_image_background"
-        android:src="@drawable/ic_menu_camera"
-        app:layout_constraintBottom_toBottomOf="@+id/profileImage"
-        app:layout_constraintEnd_toStartOf="@+id/galleryButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/profileImage"
-        app:layout_constraintTop_toTopOf="@+id/profileImage"
-        app:layout_constraintVertical_bias="0.85" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
