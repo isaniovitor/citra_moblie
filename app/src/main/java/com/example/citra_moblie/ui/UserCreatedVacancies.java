@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.example.citra_moblie.R;
+import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.IVacancyDAO;
+import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.helper.RecyclerItemClickListener;
 import com.example.citra_moblie.adapter.VacancyRecyclerViewAdapter;
@@ -24,11 +26,15 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UserCreatedVacancies extends Fragment {
+    IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
+    IUserDAO userDAO = UserDAO.getInstance(getContext());
     private FragmentHomeBinding binding;
     private RecyclerView recyclerView;
     private FloatingActionButton createVacancy;
+    private List<Vacancy> userCreatedVacancies = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,10 +44,14 @@ public class UserCreatedVacancies extends Fragment {
         createVacancy = view.findViewById(R.id.createVacancy);
 
         // configurar adapter
-        IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
-        VacancyRecyclerViewAdapter adapter = new VacancyRecyclerViewAdapter(vacancyDAO.getUserCreatedVacancies());
+        for (Vacancy vacancy : vacancyDAO.getVacancies()) {
+            if (vacancy.getIdUser().equals(userDAO.getUser().getId())) {
+                userCreatedVacancies.add(vacancy);
+            }
+        }
 
         // configurar Recyclerview
+        VacancyRecyclerViewAdapter adapter = new VacancyRecyclerViewAdapter(userCreatedVacancies);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.hasFixedSize();
@@ -55,7 +65,7 @@ public class UserCreatedVacancies extends Fragment {
                             public void onItemClick(View view, int position) {
                                 Bundle bundle = new Bundle();
                                 Fragment fragment = new VacancyDetails();
-                                bundle.putSerializable("position", position);
+                                bundle.putSerializable("vacancy", vacancyDAO.getVacancy(position));
 
                                 fragment.setArguments(bundle);
                                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -25,8 +26,15 @@ import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.helper.Permission;
 import com.example.citra_moblie.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class EditUserActivity extends AppCompatActivity {
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
     private ImageView profileImage;
     private TextView registerUserName;
@@ -66,7 +74,6 @@ public class EditUserActivity extends AppCompatActivity {
         if (userDAO.getUser().getImage() != null) {
             profileImage.setImageBitmap(userDAO.getUser().getImage());
         }
-
         registerUserName.setText(userDAO.getUser().getName());
         registerUserEmail.setText(userDAO.getUser().getEmail());
         registerUserBirthday.setText(userDAO.getUser().getBirthday());
@@ -136,15 +143,33 @@ public class EditUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
-                    userDAO.getUser().setImage(((BitmapDrawable) profileImage.getDrawable()).getBitmap());
+                    // ((BitmapDrawable) profileImage.getDrawable()).getBitmap()
+                    userDAO.getUser().setImage(null);
                     userDAO.getUser().setName(registerUserName.getText().toString());
                     userDAO.getUser().setEmail(registerUserEmail.getText().toString());
                     userDAO.getUser().setBirthday(registerUserBirthday.getText().toString());
                     userDAO.getUser().setCpf(registerUserCpf.getText().toString());
                     userDAO.getUser().setPassword( registerUserPassword.getText().toString());
 
-                    Intent intent = new Intent(EditUserActivity.this, HomeActivity.class);
-                    startActivity(intent);
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                    reference.child("usuarios").child(auth.getCurrentUser().getUid()).setValue(userDAO.getUser());
+                    reference.child("usuarios").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Toast.makeText(EditUserActivity.this,"Sucesso ao editar usuário!", Toast.LENGTH_SHORT).show();
+
+                            User user = snapshot.getValue(User.class);
+                            userDAO.setUser(user);
+
+                            Intent intent = new Intent(EditUserActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }else{
                     Toast.makeText(EditUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
                 }

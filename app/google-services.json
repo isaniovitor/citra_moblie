@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "247487599230",
+    "firebase_url": "https://citra-backend-default-rtdb.firebaseio.com",
+    "project_id": "citra-backend",
+    "storage_bucket": "citra-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247487599230:android:2bd6409f4b3d2936107e2f",
+        "android_client_info": {
+          "package_name": "com.example.citra_moblie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247487599230-l2cciek265o35csocr0q1h0opjnh0kcs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPETCZ3pmEmdTDm0L8swJrFGyxfLjEagw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247487599230-l2cciek265o35csocr0q1h0opjnh0kcs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

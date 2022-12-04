@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Vacancy implements Serializable {
+    private String idVacancy;
+    private String idUser;
     private Bitmap vacancyImage;
     private String vacancyName;
     private String vacancyDescription;
@@ -18,13 +20,16 @@ public class Vacancy implements Serializable {
     private String salarySpinner;
     private String vacancyLat;
     private String vacancyLog;
-    private List<User> appliedCandidates;
+//    private List<User> appliedCandidates;
 
     public Vacancy() {
+
     }
 
-    public Vacancy(Bitmap vacancyImage, String vacancyName, String vacancyDescription, String shiftSpinner,
-                   String typeHiringSpinner, String salarySpinner, String vacancyLat, String vacancyLog, List<User> appliedCandidates) {
+    public Vacancy(String idVacancy, String idUser, Bitmap vacancyImage, String vacancyName, String vacancyDescription, String shiftSpinner,
+                   String typeHiringSpinner, String salarySpinner, String vacancyLat, String vacancyLog) {
+        this.idVacancy = idVacancy;
+        this.idUser = idUser;
         this.vacancyImage = vacancyImage;
         this.vacancyName = vacancyName;
         this.shiftSpinner = shiftSpinner;
@@ -33,7 +38,23 @@ public class Vacancy implements Serializable {
         this.salarySpinner = salarySpinner;
         this.vacancyLat = vacancyLat;
         this.vacancyLog = vacancyLog;
-        this.appliedCandidates = appliedCandidates;
+//        this.appliedCandidates = appliedCandidates;
+    }
+
+    public String getIdVacancy() {
+        return idVacancy;
+    }
+
+    public void setIdVacancy(String idVacancy) {
+        this.idVacancy = idVacancy;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 
     public Bitmap getVacancyImage() {
@@ -100,11 +121,11 @@ public class Vacancy implements Serializable {
         this.vacancyLog = vacancyLog;
     }
 
-    public List<User> getAppliedCandidates() {
-        return appliedCandidates;
-    }
-
-    public void setAppliedCandidates(List<User> appliedCandidates) {
-        this.appliedCandidates = appliedCandidates;
-    }
+//    public List<User> getAppliedCandidates() {
+//        return appliedCandidates;
+//    }
+//
+//    public void setAppliedCandidates(List<User> appliedCandidates) {
+//        this.appliedCandidates = appliedCandidates;
+//    }
 }

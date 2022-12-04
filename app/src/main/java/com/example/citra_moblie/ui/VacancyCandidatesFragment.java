@@ -35,13 +35,11 @@ public class VacancyCandidatesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_vacancy_canditates, container, false);
 
         Bundle bundle = getArguments();
-        IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
-        List<Vacancy> vacancies = vacancyDAO.getUserCreatedVacancies();
         recyclerView = view.findViewById(R.id.candidates);
 
         // configurar adapter
-        int vacancyPosition = (int) bundle.getSerializable("position");
-        CandidateRecyclerViewAdapter adapter = new CandidateRecyclerViewAdapter(vacancies.get(vacancyPosition).getAppliedCandidates());
+        List<User> appliedCandidates = (List<User>) bundle.getSerializable("appliedCandidates");
+        CandidateRecyclerViewAdapter adapter = new CandidateRecyclerViewAdapter(appliedCandidates);
 
         // configurar Recyclerview
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());

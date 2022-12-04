@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -25,14 +26,29 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.citra_moblie.EditUserActivity;
+import com.example.citra_moblie.HomeActivity;
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.dao.IVacancyDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.helper.Permission;
+import com.example.citra_moblie.model.User;
+import com.example.citra_moblie.model.Vacancy;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class EditVacancy extends Fragment {
+    IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private TextView nameVacancyToEdit;
     private TextView descriptionVacancyToEdit;
     private Spinner shiftVacancyToEdit;
@@ -66,12 +82,11 @@ public class EditVacancy extends Fragment {
         Button editVacancyButton = view.findViewById(R.id.announceVacancyButton);
 
         Bundle bundle = getArguments();
-        IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
-        int vacancyPosition = (int) bundle.getSerializable("position");
+        Vacancy vacancy = (Vacancy) bundle.getSerializable("vacancy");
 
         // setando os dados
-        if (vacancyDAO.getVacancy(vacancyPosition).getVacancyImage() != null) {
-            vacancyImageToCreate.setImageBitmap(vacancyDAO.getVacancy(vacancyPosition).getVacancyImage());
+        if (vacancy.getVacancyImage() != null) {
+            vacancyImageToCreate.setImageBitmap(vacancy.getVacancyImage());
         }
 
         // spinners
@@ -113,11 +128,11 @@ public class EditVacancy extends Fragment {
         typeHiringVacancyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeHiringVacancyToEdit.setAdapter(typeHiringVacancyAdapter);
 
-        nameVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getVacancyName());
-        descriptionVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getVacancyDescription());
-        salaryVacancyToEdit.setText(vacancyDAO.getCreatedVacancy(vacancyPosition).getSalarySpinner());
-        shiftVacancyToEdit.setSelection(shiftVacancyAdapter.getPosition(vacancyDAO.getCreatedVacancy(vacancyPosition).getShiftSpinner()));
-        typeHiringVacancyToEdit.setSelection(typeHiringVacancyAdapter.getPosition(vacancyDAO.getCreatedVacancy(vacancyPosition).getTypeHiringSpinner()));
+        nameVacancyToEdit.setText(vacancy.getVacancyName());
+        descriptionVacancyToEdit.setText(vacancy.getVacancyDescription());
+        salaryVacancyToEdit.setText(vacancy.getSalarySpinner());
+        shiftVacancyToEdit.setSelection(shiftVacancyAdapter.getPosition(vacancy.getShiftSpinner()));
+        typeHiringVacancyToEdit.setSelection(typeHiringVacancyAdapter.getPosition(vacancy.getTypeHiringSpinner()));
 
         Permission.validatePermissions(necessaryPermissions, getActivity(), 1);
         // fazer codio Caso negada a permission
@@ -174,23 +189,38 @@ public class EditVacancy extends Fragment {
             }
         });
 
-        // salvar mudança
         editVacancyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vacancyDAO.getCreatedVacancy(vacancyPosition).setVacancyImage(((BitmapDrawable) vacancyImageToCreate.getDrawable()).getBitmap());
-                vacancyDAO.getCreatedVacancy(vacancyPosition).setVacancyName(nameVacancyToEdit.getText().toString());
-                vacancyDAO.getCreatedVacancy(vacancyPosition).setVacancyDescription(descriptionVacancyToEdit.getText().toString());
-                vacancyDAO.getCreatedVacancy(vacancyPosition).setShiftSpinner(shiftVacancyToEdit.getSelectedItem().toString());
-                vacancyDAO.getCreatedVacancy(vacancyPosition).setTypeHiringSpinner(typeHiringVacancyToEdit.getSelectedItem().toString());
-                vacancyDAO.getCreatedVacancy(vacancyPosition).setSalarySpinner(salaryVacancyToEdit.getText().toString());
+                //((BitmapDrawable) vacancyImageToCreate.getDrawable()).getBitmap()
+                Vacancy editedVacancy = new Vacancy(
+                        vacancy.getIdVacancy(),
+                        vacancy.getIdUser(),
+                        null,
+                        nameVacancyToEdit.getText().toString(),
+                        descriptionVacancyToEdit.getText().toString(),
+                        shiftVacancyToEdit.getSelectedItem().toString(),
+                        typeHiringVacancyToEdit.getSelectedItem().toString(),
+                        salaryVacancyToEdit.getText().toString(),
+                        vacancy.getVacancyLat(),
+                        vacancy.getVacancyLog()
+                );
 
-                Fragment fragment = new UserCreatedVacancies();
-                fragment.setArguments(bundle);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment_content_home, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                reference.child("AllVacancies").child(vacancy.getIdVacancy()).setValue(editedVacancy).
+                        addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(getContext(),"Sucesso ao editar usuário!", Toast.LENGTH_SHORT).show();
+
+                                Fragment fragment = new UserCreatedVacancies();
+                                fragment.setArguments(bundle);
+                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.nav_host_fragment_content_home, fragment);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+                            }
+                        });
             }
         });
 

@@ -6,9 +6,16 @@ import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
+
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.model.User;
 import com.example.citra_moblie.model.Vacancy;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,36 +25,17 @@ public class VacancyDAO implements IVacancyDAO {
     private static Context context;
     private static VacancyDAO vacancyDAO = null;
     private List<User> appliedUsers = new ArrayList<>();
-    private List<Vacancy> homeVacancies = new ArrayList<>();
-    private List<Vacancy> userAppliedVacancies = new ArrayList<>();
-    private List<Vacancy> userCreatedVacancies = new ArrayList<>();
+    private List<Vacancy> vacancies = new ArrayList<>();
+//    private List<Vacancy> userAppliedVacancies = new ArrayList<>();
+//    private List<Vacancy> userCreatedVacancies = new ArrayList<>();
+    IUserDAO userDAO = UserDAO.getInstance(context);
 
     private VacancyDAO(Context context) {
         VacancyDAO.context = context;
 
-        User user = new User(null, "alice Maria", "aliceMaria@com",
-                "12/02/2002", "02193243234", "alice");
-        appliedUsers.add(user);
-
-        user = new User(null, "Davilo", "daviloAlo@com",
-                "12/02/2002", "02193243234", "alice");
-        appliedUsers.add(user);
-
-        user = new User(null, "Ewados", "ewadosJunios@com",
-                "12/02/2002", "02193243234", "alice");
-        appliedUsers.add(user);
-
-        user = new User(null, "Isanus", "isanusVitors@com",
-                "12/02/2002", "02193243234", "alice");
-        appliedUsers.add(user);
-
-        user = new User(null, "Falcs alcs", "falconato@com",
-                "12/02/2002", "02193243234", "alice");
-        appliedUsers.add(user);
-
-        createHomeVacanciesMock();
-        userAppliedVacancies();
-        userCreatedVacancies();
+//        createHomeVacanciesMock();
+//        userAppliedVacancies();
+//        userCreatedVacancies();
     }
 
     public static IVacancyDAO getInstance(Context context) {
@@ -58,116 +46,128 @@ public class VacancyDAO implements IVacancyDAO {
     }
 
     @Override
-    public void createHomeVacanciesMock() {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image1);
-        Vacancy vacancy = new Vacancy(bitmap, "Técnico em Segurança do Trabalho - Grupo MAST",
-                "Realizar visitas ao site do cliente, preenchendo o check list com os dados do " +
-                        "cliente e discriminando a atividade. Elaborar e/ou atualizar o PCMSO de acordo com o PGR " +
-                        "do cliente e seguindo as diretrizes e procedimentos da área de Segurança do Trabalho e " +
-                        "realizando o lançamento de todos os documentos no sistema interno da empresa. Realizar o " +
-                        "dimensionamento do SESMT e CIPA do cliente, incluindo a realização do processo completo da" +
-                        " CIPA. Manter contato com o cliente, dirimindo dúvidas e buscando ações de melhoria às suas " +
-                        "necessidades.",
-                        "manhã", "CTI", "2000",  "-4.970945", "39.021467",
-                        Arrays.asList(appliedUsers.get(0), appliedUsers.get(2), appliedUsers.get(1), appliedUsers.get(3)));
-        homeVacancies.add(vacancy);
+    public void getVacanciesFromAPI() {
+        // Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image1);
+        DatabaseReference vacanciesReference = FirebaseDatabase.getInstance().getReference().child("AllVacancies");
+        vacanciesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getVacancies().clear();
+                List<Vacancy> vacancies = new ArrayList<>();
 
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image2);
-        vacancy = new Vacancy(bitmap, "Engenheiro Civil - Grupo FNM Engenharia",
-                "As atividades contemplam a gestão de equipes, planejamento das atividades, execução de " +
-                        "obras de reformas, construção, fiscalização e acompanhamento de obras e cronogramas e execução de " +
-                        "relatórios. Formação exigida: Superior em Engenharia Civil e/ou Arquitetura e Urbanismo. Conhecimentos " +
-                        "imprescindíveis: Pacote Office e AutoCad - Intermediário",
-                "tarde", "CTI", "1000", "-4.967952", "-39.014944",
-                        Arrays.asList(appliedUsers.get(4), appliedUsers.get(2), appliedUsers.get(1)));
-        homeVacancies.add(vacancy);
+                if(snapshot.exists()){
+                    for(DataSnapshot snap : snapshot.getChildren()){
+                        Vacancy vacancy = snap.getValue(Vacancy.class);
 
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image3);
-        vacancy = new Vacancy(bitmap, "Mestre de obras - FXKAP Infraestrutura", "Elaborar planos e cronogramas; -" +
-                "Analisar a viabilidade de projetos e tarefas; - Orientar a equipe de trabalho; - Controlar o uso de materiais e a " +
-                "disponibilidade de máquinas, equipamentos e pessoal; - Assessorar as atividades de todas as partes envolvidas em uma obra; - " +
-                "Gerenciar resíduos e detritos, assim como seu descarte ou reciclagem; - Delegar tarefas; - Inspecionar a execução de tarefas;",
-                "tarde", "CTD", "1200",  "-4.972741", "-39.005972",
-                Arrays.asList(appliedUsers.get(3), appliedUsers.get(2), appliedUsers.get(0)));
-        homeVacancies.add(vacancy);
+                        // pegando os usuários
+//                        DatabaseReference appliedCandidatesReference = FirebaseDatabase.getInstance().getReference().child("AllVacancies")
+//                                .child(vacancy.getIdVacancy()).child("appliedCandidates");
+//                        appliedCandidatesReference.addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                List<User> users = new ArrayList<>();
+//
+//                                if(snapshot.exists()){
+//                                    for(DataSnapshot snap : snapshot.getChildren()){
+//                                        User user = snap.getValue(User.class);
+//                                        users.add(user);
+//                                    }
+//                                    vacancy.setAppliedCandidates(users);
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                            }
+//                        });
 
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image4);
-        vacancy = new Vacancy(bitmap, "Técnico de Edificações - CAMBERT Engenharia",
-                "Realizam levantamentos topográficos e planialtimétricos. Desenvolvem e legalizam projetos de edificações sob " +
-                        "supervisão de um engenheiro civil; planejam a execução, orçam e providenciam suprimentos e supervisionam a execução de " +
-                        "obras e serviços.", "tarde", "Estágio", "3000", "-4.966153", "-39.002177",
-                        Arrays.asList(appliedUsers.get(1), appliedUsers.get(3)));
-        homeVacancies.add(vacancy);
+                        vacancies.add(vacancy);
+                    }
 
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image5);
-        vacancy = new Vacancy(bitmap, "Engenheiro Civil - FNM ",
-                "Realizam levantamentos topográficos e planialtimétricos. Desenvolvem e legalizam projetos de edificações sob " +
-                        "supervisão de um engenheiro civil; planejam a execução, orçam e providenciam suprimentos e supervisionam a execução de " +
-                        "obras e serviços.", "noite", "Temporário", "2400", "-4.966302", "-39.026848",
-                        Arrays.asList(appliedUsers.get(2), appliedUsers.get(3)));
-        homeVacancies.add(vacancy);
+                    setVacancies(vacancies);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+
+//    @Override
+//    public void userAppliedVacancies() {
+//        userAppliedVacancies.add(vacancies.get(0));
+//        userAppliedVacancies.add(vacancies.get(1));
+//        userAppliedVacancies.add(vacancies.get(2));
+//    }
+//
+//    @Override
+//    public void userCreatedVacancies() {
+//        userCreatedVacancies.add(homeVacancies.get(3));
+//        userCreatedVacancies.add(homeVacancies.get(4));
+//    }
 
     @Override
-    public void userAppliedVacancies() {
-        userAppliedVacancies.add(homeVacancies.get(0));
-        userAppliedVacancies.add(homeVacancies.get(1));
-        userAppliedVacancies.add(homeVacancies.get(2));
+    public List<Vacancy> getVacancies() {
+        return vacancies;
     }
 
-    @Override
-    public void userCreatedVacancies() {
-        userCreatedVacancies.add(homeVacancies.get(3));
-        userCreatedVacancies.add(homeVacancies.get(4));
-    }
-
-    @Override
-    public List<Vacancy> getHomeVacancies() {
-        return homeVacancies;
-    }
-
-    @Override
-    public List<Vacancy> getUserAppliedVacancies() {
-        return userAppliedVacancies;
-    }
-
-    @Override
-    public List<Vacancy> getUserCreatedVacancies() {
-        return userCreatedVacancies;
-    }
+//    @Override
+//    public List<Vacancy> getUserAppliedVacancies() {
+//        return userAppliedVacancies;
+//    }
+//
+//    @Override
+//    public List<Vacancy> getUserCreatedVacancies() {
+//        return userCreatedVacancies;
+//    }
 
     @Override
     public Vacancy getVacancy(int id) {
-        return homeVacancies.get(id);
+        return vacancies.get(id);
     }
 
-    @Override
-    public Vacancy getAppliedVacancy(int id) {
-        return userAppliedVacancies.get(id);
-    }
-
-    @Override
-    public Vacancy getCreatedVacancy(int id) {
-        return userCreatedVacancies.get(id);
-    }
+//    @Override
+//    public Vacancy getAppliedVacancy(int id) {
+//        return userAppliedVacancies.get(id);
+//    }
+//
+//    @Override
+//    public Vacancy getCreatedVacancy(int id) {
+//        return userCreatedVacancies.get(id);
+//    }
 
     @Override
     public boolean addVacancy(Vacancy vacancy) {
-        return userCreatedVacancies.add(vacancy);
+        try{
+            DatabaseReference usersVacanciesReference = FirebaseDatabase.getInstance().getReference();
+            usersVacanciesReference.child("usersVacancies").child(userDAO.getUser().getId()).
+                    child(vacancy.getIdVacancy()).setValue(vacancy.getIdVacancy());
+
+            DatabaseReference AllVacancies =  FirebaseDatabase.getInstance().getReference();
+            AllVacancies.child("AllVacancies").child(vacancy.getIdVacancy()).setValue(vacancy);
+
+            return true;
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     @Override
     public boolean editVacancy(Vacancy vacancyEdited, Vacancy oldVacancy) {
-        userCreatedVacancies.set(homeVacancies.indexOf(oldVacancy), vacancyEdited);
+        vacancies.set(vacancies.indexOf(oldVacancy), vacancyEdited);
         return true;
     }
 
     @Override
     public boolean removeVacancy(Vacancy vacancy) {
-        return userCreatedVacancies.remove(vacancy);
+        return vacancies.remove(vacancy);
     }
 
+    @Override
     public void setVacancies(List<Vacancy> vacancies) {
-        this.homeVacancies = vacancies;
+        this.vacancies = vacancies;
     }
 }

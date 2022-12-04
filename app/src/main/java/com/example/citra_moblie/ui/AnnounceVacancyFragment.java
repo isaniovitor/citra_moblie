@@ -36,13 +36,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.citra_moblie.R;
+import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.IVacancyDAO;
+import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.helper.Permission;
 import com.example.citra_moblie.model.Vacancy;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.List;
@@ -50,8 +54,12 @@ import java.util.Locale;
 
 
 public class AnnounceVacancyFragment extends Fragment {
+    IUserDAO userDAO = UserDAO.getInstance(getContext());
+    IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
     FusedLocationProviderClient fusedLocationProviderClient;
     private final static int REQUEST_CODE = 100;
+    private String lat;
+    private String log;
     private TextView nameVacancyToCreate;
     private TextView descriptionVacancyToCreate;
     private Spinner shiftVacancyToCreate;
@@ -84,8 +92,6 @@ public class AnnounceVacancyFragment extends Fragment {
         typeHiringVacancyToCreate = view.findViewById(R.id.typeHiringVacancyToCreatee);
         salaryVacancyToCreate = view.findViewById(R.id.salaryVacancyToCreate);
         Button vacancyLocation = view.findViewById(R.id.vacancyLocation);
-        IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
-
         Permission.validatePermissions(necessaryPermissions, getActivity(), 1); // fazer codio Caso negada a permission
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
 
@@ -193,10 +199,12 @@ public class AnnounceVacancyFragment extends Fragment {
         announceVacancyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Vacancy vacancy = new Vacancy(((BitmapDrawable) profileImage.getDrawable()).getBitmap(),
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                // ((BitmapDrawable) profileImage.getDrawable()).getBitmap()
+                Vacancy vacancy = new Vacancy(reference.push().getKey(), userDAO.getUser().getId(), null,
                         nameVacancyToCreate.getText().toString(), descriptionVacancyToCreate.getText().toString(),
                         shiftVacancyToCreate.getSelectedItem().toString(), typeHiringVacancyToCreate.getSelectedItem().toString(),
-                        salaryVacancyToCreate.getText().toString(), null, null, null);
+                        salaryVacancyToCreate.getText().toString(), lat, log);
 
                 if (vacancyDAO.addVacancy(vacancy)) {
                     Toast.makeText(getContext(), "Sucesso ao anunciar Vaga!", Toast.LENGTH_SHORT).show();
@@ -221,20 +229,17 @@ public class AnnounceVacancyFragment extends Fragment {
                     .addOnSuccessListener(new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
-                            System.out.println(location);
-                            // ativar localização
+
+                            // ativar localização é necessário
                             if (location != null) {
                                 Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
                                 List<Address> addresses;
                                 try {
                                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                    Toast.makeText(getContext(),
-                                            "Lagitude:" + addresses.get(0).getLatitude() +
-                                                    "Longitude :" + addresses.get(0).getLongitude(),
-                                            Toast.LENGTH_SHORT).show();
-//                                    address.setText("Address :"+addresses.get(0).getAddressLine(0));
-//                                    city.setText("City :"+addresses.get(0).getLocality());
-//                                    country.setText("Country :"+addresses.get(0).getCountryName());
+                                    lat = Double.toString(addresses.get(0).getLatitude());
+                                    log = Double.toString(addresses.get(0).getLongitude());
+
+                                    Toast.makeText(getContext(), "localização encontrada ", Toast.LENGTH_SHORT).show();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }

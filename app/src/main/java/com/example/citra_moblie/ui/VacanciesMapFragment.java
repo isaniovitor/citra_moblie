@@ -44,25 +44,25 @@ public class VacanciesMapFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             // pegar so as que ele pode se cadastrar
-            for (Vacancy vacancy : vacancyDAO.getHomeVacancies()){
-                LatLng newMarker = new LatLng(Double. parseDouble(vacancy.getVacancyLat()), Double.parseDouble(vacancy.getVacancyLog()));
+            for (Vacancy vacancy : vacancyDAO.getVacancies()){
+                LatLng newMarker = new LatLng(Double.parseDouble(vacancy.getVacancyLat()), Double.parseDouble(vacancy.getVacancyLog()));
                 googleMap.addMarker(new MarkerOptions()
                                 .position(newMarker)
                                 .title(vacancy.getVacancyName())
-                                .snippet("descrição")
-                                .icon(BitmapDescriptorFactory.fromBitmap(
-                                        Bitmap.createScaledBitmap(vacancy.getVacancyImage(), 100, 100, false))));
+                                .snippet("descrição"));
+
+                // icon(BitmapDescriptorFactory.fromBitmap(
+                // Bitmap.createScaledBitmap(vacancy.getVacancyImage(), 100, 100, false)))
             }
 
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(@NonNull Marker marker) {
-                    for (int i = 0; i < vacancyDAO.getHomeVacancies().size(); i++) {
-                        Toast.makeText(getContext(), "c: " + (char) i + " e " + marker.getId(), Toast.LENGTH_SHORT).show();
+                    for (int i = 0; i < vacancyDAO.getVacancies().size(); i++) {
                         if (i == Integer.parseInt(String.valueOf(marker.getId().charAt(1)))){
                             Bundle bundle = new Bundle();
                             Fragment fragment = new VacancyDetails();
-                            bundle.putSerializable("position", i);
+                            bundle.putSerializable("vacancy", vacancyDAO.getVacancy(i));
 
                             fragment.setArguments(bundle);
                             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -75,8 +75,6 @@ public class VacanciesMapFragment extends Fragment {
                     return false;
                 }
             });
-
-//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(newMarker));
         }
     };
 

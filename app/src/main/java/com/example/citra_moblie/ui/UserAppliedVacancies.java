@@ -35,7 +35,7 @@ public class UserAppliedVacancies extends Fragment {
 
         // configurar adapter
         IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
-        VacancyRecyclerViewAdapter adapter = new VacancyRecyclerViewAdapter(vacancyDAO.getUserAppliedVacancies());
+        VacancyRecyclerViewAdapter adapter = new VacancyRecyclerViewAdapter(vacancyDAO.getVacancies());
 
         // configurar Recyclerview
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());

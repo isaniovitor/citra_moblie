@@ -1,12 +1,16 @@
 package com.example.citra_moblie.dao;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.content.Intent;
 
-import com.example.citra_moblie.R;
+import com.example.citra_moblie.LoginActivity;
+import com.example.citra_moblie.RegisterUserActivity;
 import com.example.citra_moblie.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UserDAO implements IUserDAO{
     private static Context context;
@@ -15,7 +19,6 @@ public class UserDAO implements IUserDAO{
 
     private UserDAO(Context context) {
         UserDAO.context = context;
-        createUserMock();
     }
 
     public static IUserDAO getInstance(Context context) {
@@ -25,11 +28,11 @@ public class UserDAO implements IUserDAO{
         return userDAO;
     }
 
-    @Override
-    public void createUserMock() {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lice);
-        user = new User(bitmap, "alice", "alice@com","12/02/2002", "02193243234", "alice");
-    }
+//    @Override
+//    public void createUserMock() {
+//        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lice);
+//        user = new User(bitmap, "alice", "alice@com","12/02/2002", "02193243234", "alice");
+//    }
 
     public User getUser() {
         return user;

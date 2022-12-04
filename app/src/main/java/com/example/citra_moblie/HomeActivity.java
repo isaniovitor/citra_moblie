@@ -22,9 +22,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.citra_moblie.databinding.ActivityHomeBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
+    IUserDAO userDAO = UserDAO.getInstance(this);
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHomeBinding binding;
 
@@ -77,9 +80,12 @@ public class HomeActivity extends AppCompatActivity {
         logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                startActivity(intent);
+                auth.signOut();
+                userDAO.setUser(null);
 
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 return true;
             }
         });

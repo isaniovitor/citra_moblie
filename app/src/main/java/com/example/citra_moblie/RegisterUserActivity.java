@@ -25,9 +25,13 @@ import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.helper.Permission;
 import com.example.citra_moblie.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterUserActivity extends AppCompatActivity {
-    public Button registerUserButton;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private Button registerUserButton;
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
     private ImageView profileImage;
     private TextView registerUserName;
@@ -122,8 +126,9 @@ public class RegisterUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
+                    // ((BitmapDrawable) profileImage.getDrawable()).getBitmap()
                     User user = new User(
-                            ((BitmapDrawable) profileImage.getDrawable()).getBitmap(),
+                            null,
                             registerUserName.getText().toString(),
                             registerUserEmail.getText().toString(),
                             registerUserBirthday.getText().toString(),
@@ -131,12 +136,28 @@ public class RegisterUserActivity extends AppCompatActivity {
                             registerUserPassword.getText().toString()
                     );
 
-                    userDAO.setUser(user);
-                    Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
-                    startActivity(intent);
+//                    userDAO.setUser(user);
+                    saveUser(user);
                 }else{
                     Toast.makeText(RegisterUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+
+    public void saveUser(User user){
+        auth.createUserWithEmailAndPassword(user.getEmail(),
+                user.getPassword()).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                user.setId(auth.getUid());
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                reference.child("usuarios").child(user.getId()).setValue(user);
+
+                Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }else{
+                Toast.makeText(RegisterUserActivity.this,"Erro ao cadastrar!", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,18 +22,27 @@ import com.example.citra_moblie.dao.IVacancyDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.helper.RecyclerItemClickListener;
 import com.example.citra_moblie.adapter.VacancyRecyclerViewAdapter;
+import com.example.citra_moblie.model.User;
 import com.example.citra_moblie.model.Vacancy;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment  {
+    private IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
     private ImageView clearFilters;
     private Spinner minimumsSalarySpinner;
     private Spinner maximumsSalarySpinner;
     private Spinner shiftSpinner;
     private Spinner typeHiringSpinner;
-    private IVacancyDAO vacancyDAO;
     private VacancyRecyclerViewAdapter adapter;
 
     String[] minimumsSalary = new String[]{"Mínimo salário", "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"};
@@ -50,9 +60,11 @@ public class HomeFragment extends Fragment  {
         maximumsSalarySpinner = view.findViewById(R.id.maximumSalarySpinner);
         shiftSpinner = view.findViewById(R.id.shiftSpinner);
         typeHiringSpinner = view.findViewById(R.id.typeHiringSpinner);
-        vacancyDAO = VacancyDAO.getInstance(getContext());
-        adapter = new VacancyRecyclerViewAdapter(vacancyDAO.getHomeVacancies());
 
+        //buscando todas as vagas
+        vacancyDAO.getVacanciesFromAPI();
+
+        adapter = new VacancyRecyclerViewAdapter(vacancyDAO.getVacancies());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.hasFixedSize();
@@ -66,7 +78,7 @@ public class HomeFragment extends Fragment  {
                             public void onItemClick(View view, int position) {
                                 Bundle bundle = new Bundle();
                                 Fragment fragment = new VacancyDetails();
-                                bundle.putSerializable("position", position);
+                                bundle.putSerializable("vacancy", vacancyDAO.getVacancy(position));
 
                                 fragment.setArguments(bundle);
                                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -215,7 +227,7 @@ public class HomeFragment extends Fragment  {
                 shiftSpinner.setSelection(0);
                 typeHiringSpinner.setSelection(0);
 
-                adapter.setVacancies(vacancyDAO.getHomeVacancies());
+                adapter.setVacancies(vacancyDAO.getVacancies());
             }
         });
 
@@ -231,7 +243,7 @@ public class HomeFragment extends Fragment  {
     public void vacancyListFilter(){
         List<Vacancy> filteredList = new ArrayList<>();
 
-        for (Vacancy vacancy : vacancyDAO.getHomeVacancies()) {
+        for (Vacancy vacancy : vacancyDAO.getVacancies()) {
             boolean hasMinimumsSalary = minimumsSalarySpinner.getSelectedItemPosition() == 0 ||
                     Integer.parseInt(vacancy.getSalarySpinner()) >= Integer.parseInt(minimumsSalarySpinner.getSelectedItem().toString());
             boolean hasMaximumsSalary = maximumsSalarySpinner.getSelectedItemPosition() == 0 ||

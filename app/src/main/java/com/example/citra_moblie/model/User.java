@@ -3,6 +3,7 @@ package com.example.citra_moblie.model;
 import android.graphics.Bitmap;
 
 public class User {
+    private String id;
     private Bitmap image;
     private String name;
     private String email;
@@ -20,6 +21,14 @@ public class User {
         this.birthday = birthday;
         this.cpf = cpf;
         this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Bitmap getImage() {
