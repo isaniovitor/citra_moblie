@@ -51,23 +51,24 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2">
 
-            <EditText
-                android:id="@+id/registerUserRepeatPassword"
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/vacancyLocation2"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="15dp"
-                android:ems="10"
-                android:inputType="text"
-                android:shadowColor="@color/white"
-                android:text="Local"
-                android:textColor="@color/text"
-                android:textColorHighlight="@color/text"
-                android:textColorHint="@color/white"
+                android:background="@drawable/filter_background"
+                android:paddingLeft="5dp"
+                android:text="local"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="normal"
                 app:layout_constraintBottom_toTopOf="@+id/announceVacancyButton"
-                app:layout_constraintTop_toBottomOf="@+id/salaryVacancyToCreate"
-                app:layout_constraintVertical_bias="0.0"
-                tools:layout_editor_absoluteX="20dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/salaryVacancyToCreate" />
 
             <EditText
                 android:id="@+id/salaryVacancyToCreate"

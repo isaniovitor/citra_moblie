@@ -133,23 +133,28 @@ public class EditUserActivity extends AppCompatActivity {
         });
 
         announceVacancyButton.setOnClickListener(view -> {
-            if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
-                User user = new User(
-                        userDAO.getUser().getId(),
-                        null,
-                        registerUserName.getText().toString(),
-                        registerUserEmail.getText().toString(),
-                        registerUserBirthday.getText().toString(),
-                        registerUserCpf.getText().toString(),
-                        registerUserPassword.getText().toString()
-                );
+            if (!registerUserName.getText().toString().equals("") && !registerUserEmail.getText().toString().equals("") &&
+                    !registerUserBirthday.getText().toString().equals("") && !registerUserCpf.getText().toString().equals("") &&
+                    !registerUserPassword.getText().toString().equals("") && !registerUserRepeatPassword.getText().toString().equals("")) {
+                if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
+                    User user = new User(
+                            userDAO.getUser().getId(),
+                            null,
+                            registerUserName.getText().toString(),
+                            registerUserEmail.getText().toString(),
+                            registerUserBirthday.getText().toString(),
+                            registerUserCpf.getText().toString(),
+                            registerUserPassword.getText().toString()
+                    );
 
-                saveImageUser(user);
+                    saveImageUser(user);
+                }else{
+                    Toast.makeText(EditUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
+                }
             }else{
-                Toast.makeText(EditUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditUserActivity.this,"Campos vazios!", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     public void saveImageUser(User user){

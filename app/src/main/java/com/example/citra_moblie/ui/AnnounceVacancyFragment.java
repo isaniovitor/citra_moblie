@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.citra_moblie.EditUserActivity;
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.IVacancyDAO;
@@ -36,6 +37,7 @@ import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.helper.LoadingDialog;
 import com.example.citra_moblie.helper.Permission;
+import com.example.citra_moblie.model.User;
 import com.example.citra_moblie.model.Vacancy;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -58,8 +60,8 @@ public class AnnounceVacancyFragment extends Fragment {
     private IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LoadingDialog loadingDialog;
-    private String lat;
-    private String log;
+    private String lat = "";
+    private String log = "";
     private TextView nameVacancyToCreate;
     private TextView descriptionVacancyToCreate;
     private Spinner shiftVacancyToCreate;
@@ -128,8 +130,6 @@ public class AnnounceVacancyFragment extends Fragment {
             public View getDropDownView(int position, View convertView,
                                         ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-
                 return view;
             }
         };
@@ -188,7 +188,12 @@ public class AnnounceVacancyFragment extends Fragment {
                     shiftVacancyToCreate.getSelectedItem().toString(), typeHiringVacancyToCreate.getSelectedItem().toString(),
                     salaryVacancyToCreate.getText().toString(), lat, log);
 
-            saveVacancyImage(vacancy);
+            if (!nameVacancyToCreate.getText().toString().equals("") && !descriptionVacancyToCreate.getText().toString().equals("") &&
+                    !salaryVacancyToCreate.getText().toString().equals("") && !lat.equals("") && !log.equals("")) {
+                saveVacancyImage(vacancy);
+            }else{
+                Toast.makeText(getContext(),"Campos vazios!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         return view;
@@ -263,6 +268,7 @@ public class AnnounceVacancyFragment extends Fragment {
                 transaction.addToBackStack(null);
                 transaction.commit();
             } else {
+                loadingDialog.dismissAlertDialog();
                 Toast.makeText(getContext(), "Erro ao anunciar Vaga!", Toast.LENGTH_SHORT).show();
             }
         };

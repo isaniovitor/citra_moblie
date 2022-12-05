@@ -41,20 +41,26 @@ public class RegisterUserActivity extends AppCompatActivity {
         registerUserButton = findViewById(R.id.announceVacancyButton);
 
         registerUserButton.setOnClickListener(view -> {
-            if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
-                User user = new User(
-                        null,
-                        null,
-                        registerUserName.getText().toString(),
-                        registerUserEmail.getText().toString(),
-                        registerUserBirthday.getText().toString(),
-                        registerUserCpf.getText().toString(),
-                        registerUserPassword.getText().toString()
-                );
+            if (!registerUserName.getText().toString().equals("") && !registerUserEmail.getText().toString().equals("") &&
+                    !registerUserBirthday.getText().toString().equals("") && !registerUserCpf.getText().toString().equals("") &&
+                    !registerUserPassword.getText().toString().equals("") && !registerUserRepeatPassword.getText().toString().equals("")) {
+                if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
+                    User user = new User(
+                            null,
+                            null,
+                            registerUserName.getText().toString(),
+                            registerUserEmail.getText().toString(),
+                            registerUserBirthday.getText().toString(),
+                            registerUserCpf.getText().toString(),
+                            registerUserPassword.getText().toString()
+                    );
 
-                saveUser(user);
+                    saveUser(user);
+                }else{
+                    Toast.makeText(RegisterUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
+                }
             }else{
-                Toast.makeText(RegisterUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterUserActivity.this,"Campos vazios!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -73,6 +79,7 @@ public class RegisterUserActivity extends AppCompatActivity {
                 Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
                 startActivity(intent);
             }else{
+                loadingDialog.dismissAlertDialog();
                 Toast.makeText(RegisterUserActivity.this,"Erro ao cadastrar!", Toast.LENGTH_SHORT).show();
             }
         });

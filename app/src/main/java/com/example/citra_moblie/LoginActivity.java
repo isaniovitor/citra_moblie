@@ -63,8 +63,6 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 User user = snapshot.getValue(User.class);
-                                System.out.println("id: " + auth.getCurrentUser().getUid());
-                                System.out.println("id: " + user.getId());
                                 userDAO.setUser(user);
 
                                 loadingDialog.dismissAlertDialog();
@@ -78,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         });
                     }else{
+                        loadingDialog.dismissAlertDialog();
                         Toast.makeText(LoginActivity.this,"Erro ao logar!", Toast.LENGTH_SHORT).show();
                     }
                 });

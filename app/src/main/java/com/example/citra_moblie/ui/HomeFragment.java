@@ -103,8 +103,6 @@ public class HomeFragment extends Fragment  {
             public View getDropDownView(int position, View convertView,
                                         ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-
                 return view;
             }
         };

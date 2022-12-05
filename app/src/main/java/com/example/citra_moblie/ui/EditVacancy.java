@@ -3,8 +3,11 @@ package com.example.citra_moblie.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -30,6 +34,8 @@ import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.helper.LoadingDialog;
 import com.example.citra_moblie.helper.Permission;
 import com.example.citra_moblie.model.Vacancy;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -38,9 +44,15 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
 public class EditVacancy extends Fragment {
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private String lat = "";
+    private String log = "";
     private IVacancyDAO vacancyDAO;
     private LoadingDialog loadingDialog;
     private TextView nameVacancyToEdit;
@@ -74,6 +86,8 @@ public class EditVacancy extends Fragment {
         typeHiringVacancyToEdit = view.findViewById(R.id.typeHiringVacancyToEdit);
         salaryVacancyToEdit = view.findViewById(R.id.salaryVacancyToCreate);
         Button editVacancyButton = view.findViewById(R.id.announceVacancyButton);
+        Button vacancyLocation = view.findViewById(R.id.vacancyLocation2);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
         loadingDialog = new LoadingDialog(getActivity());
         vacancyDAO = VacancyDAO.getInstance(getContext());
 
@@ -126,9 +140,10 @@ public class EditVacancy extends Fragment {
         salaryVacancyToEdit.setText(vacancy.getSalarySpinner());
         shiftVacancyToEdit.setSelection(shiftVacancyAdapter.getPosition(vacancy.getShiftSpinner()));
         typeHiringVacancyToEdit.setSelection(typeHiringVacancyAdapter.getPosition(vacancy.getTypeHiringSpinner()));
+        lat = vacancy.getVacancyLat();
+        log = vacancy.getVacancyLog();
 
         Permission.validatePermissions(necessaryPermissions, getActivity(), 1);
-        // fazer codio Caso negada a permission
 
         // https://stackoverflow.com/questions/62671106/onactivityresult-method-is-deprecated-what-is-the-alternative
         ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
@@ -156,6 +171,9 @@ public class EditVacancy extends Fragment {
                         }
                     }
                 });
+
+        // botao localização
+        vacancyLocation.setOnClickListener(view14 -> getLocation());
 
         camera.setOnClickListener(view1 -> {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -187,10 +205,40 @@ public class EditVacancy extends Fragment {
                     vacancy.getVacancyLog()
             );
 
-            saveVacancyImage(vacancy, editedVacancy);
+            if (!nameVacancyToEdit.getText().toString().equals("") && !descriptionVacancyToEdit.getText().toString().equals("") &&
+                    !salaryVacancyToEdit.getText().toString().equals("") && !lat.equals("") && !log.equals("")) {
+                saveVacancyImage(vacancy, editedVacancy);
+            }else{
+                Toast.makeText(getContext(),"Campos vazios!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         return view;
+    }
+
+    private void getLocation() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(location -> {
+
+                        // ativar localização é necessário
+                        if (location != null) {
+                            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                            List<Address> addresses;
+                            try {
+                                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                lat = Double.toString(addresses.get(0).getLatitude());
+                                log = Double.toString(addresses.get(0).getLongitude());
+
+                                Toast.makeText(getContext(), "localização encontrada!", Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            Toast.makeText(getContext(), "Não foi possível obter a localização!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     private void saveVacancyImage(Vacancy vacancy, Vacancy editedVacancy) {

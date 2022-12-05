@@ -149,6 +149,7 @@ public class VacancyDetails extends Fragment {
                             transaction.addToBackStack(null);
                             transaction.commit();
                         }else{
+                            loadingDialog.dismissAlertDialog();
                             Toast.makeText(getContext(),"Erro ao excluir vaga!", Toast.LENGTH_SHORT).show();
                         }
                     });
