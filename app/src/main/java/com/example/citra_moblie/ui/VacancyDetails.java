@@ -1,14 +1,7 @@
 package com.example.citra_moblie.ui;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.citra_moblie.EditUserActivity;
-import com.example.citra_moblie.HomeActivity;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.IVacancyDAO;
 import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
+import com.example.citra_moblie.helper.LoadingDialog;
 import com.example.citra_moblie.model.User;
 import com.example.citra_moblie.model.Vacancy;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -42,15 +39,14 @@ import com.squareup.picasso.Picasso;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class VacancyDetails extends Fragment {
-     IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
-    IUserDAO userDAO = UserDAO.getInstance(getContext());
+    private IVacancyDAO vacancyDAO;
+    private IUserDAO userDAO;
+    private LoadingDialog loadingDialog;
     private Button actionUser;
     private String lastFragmentName;
     private List<User> appliedCandidates = new ArrayList<>();
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +65,9 @@ public class VacancyDetails extends Fragment {
         TextView vacancyDescription = view.findViewById(R.id.vacancyDescription);
         ImageView vacancyImageView = view.findViewById(R.id.vacancyImageView);
         actionUser = view.findViewById(R.id.actionUserActivity);
+        vacancyDAO = VacancyDAO.getInstance(getContext());
+        userDAO = UserDAO.getInstance(getContext());
+        loadingDialog = new LoadingDialog(getActivity());
 
         // descobrindo a activity anterior
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -90,15 +89,11 @@ public class VacancyDetails extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    boolean currentUserApplied = false;
-
                     // percorrendo usuários cadastrados
                     for(DataSnapshot snap : snapshot.getChildren()){
                         User user = snap.getValue(User.class);
 
                         if (user.getId().equals(userDAO.getUser().getId())) {
-                            currentUserApplied = true;
-
                             actionUser.setText("Cancelar");
                             actionUser.setOnClickListener(view1 -> unsubscribeForVacancy(vacancy));
                         }
@@ -121,8 +116,6 @@ public class VacancyDetails extends Fragment {
             }
         });
 
-        // vacancy.getAppliedCandidates().contains(userDAO.getUser())
-
         // setando os dados
         if (vacancy.getVacancyImage() != null) {
             Picasso.get().load(Uri.parse(vacancy.getVacancyImage()))
@@ -135,11 +128,13 @@ public class VacancyDetails extends Fragment {
         vacancyDescription.setText(vacancy.getVacancyDescription());
 
         deleteVacancy.setOnClickListener(view12 -> {
+            loadingDialog.startAlertDialog();
+
             DatabaseReference VacancyReference = FirebaseDatabase.getInstance().getReference().child("AllVacancies");
             VacancyReference.child(vacancy.getIdVacancy()).removeValue()
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()) {
-                            vacancyDAO.getVacanciesFromAPI();
+                            vacancyDAO.getVacanciesFromAPI(getActivity());
                             Toast.makeText(getContext(), "Vaga excluida!", Toast.LENGTH_SHORT).show();
 
                             // deletando imagem
@@ -147,7 +142,8 @@ public class VacancyDetails extends Fragment {
                             StorageReference imageRef = storageReference.child("imagesVacancies").child(vacancy.getIdVacancy());
                             imageRef.delete();
 
-                            Fragment fragment = new HomeFragment();
+                            loadingDialog.dismissAlertDialog();
+                            Fragment fragment = new UserCreatedVacancies();
                             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.nav_host_fragment_content_home, fragment);
                             transaction.addToBackStack(null);
@@ -187,6 +183,8 @@ public class VacancyDetails extends Fragment {
 
     public void applyForVacancy(Vacancy vacancy) {
         if (!vacancy.getIdUser().equals(userDAO.getUser().getId())) {
+            loadingDialog.startAlertDialog();
+
             DatabaseReference VacancyReference = FirebaseDatabase.getInstance().getReference().child("AllVacancies");
             VacancyReference.child(vacancy.getIdVacancy()).child("appliedCandidates").child(userDAO.getUser().getId()).
                     setValue(userDAO.getUser()).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -196,6 +194,7 @@ public class VacancyDetails extends Fragment {
                             actionUser.setOnClickListener(view -> unsubscribeForVacancy(vacancy));
                             Toast.makeText(getContext(),"Candidatado para a vaga", Toast.LENGTH_SHORT).show();
 
+                            loadingDialog.dismissAlertDialog();
                             Fragment fragment = new UserAppliedVacancies();
                             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.nav_host_fragment_content_home, fragment);
@@ -209,6 +208,8 @@ public class VacancyDetails extends Fragment {
     }
 
     public void unsubscribeForVacancy(Vacancy vacancy) {
+        loadingDialog.startAlertDialog();
+
         DatabaseReference VacancyReference = FirebaseDatabase.getInstance().getReference().child("AllVacancies");
         VacancyReference.child(vacancy.getIdVacancy()).child("appliedCandidates").child(userDAO.getUser().getId()).removeValue()
                 .addOnCompleteListener(task -> {
@@ -217,6 +218,7 @@ public class VacancyDetails extends Fragment {
                         actionUser.setOnClickListener(view -> applyForVacancy(vacancy));
                         Toast.makeText(getContext(), "Candidatuta cancelada", Toast.LENGTH_SHORT).show();
 
+                        loadingDialog.dismissAlertDialog();
                         Fragment fragment = new UserAppliedVacancies();
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.nav_host_fragment_content_home, fragment);

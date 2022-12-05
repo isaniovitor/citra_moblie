@@ -62,9 +62,4 @@ public class CandidateRecyclerViewAdapter extends RecyclerView.Adapter<Candidate
     public int getItemCount() {
         return candidates.size();
     }
-
-    public void setVacancies(List<User> vacancies) {
-        this.candidates = vacancies;
-        notifyDataSetChanged();
-    }
 }

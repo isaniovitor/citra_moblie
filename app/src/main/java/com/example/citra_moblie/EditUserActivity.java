@@ -1,12 +1,5 @@
 package com.example.citra_moblie;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -15,15 +8,20 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.citra_moblie.dao.IUserDAO;
 import com.example.citra_moblie.dao.UserDAO;
+import com.example.citra_moblie.helper.LoadingDialog;
 import com.example.citra_moblie.helper.Permission;
 import com.example.citra_moblie.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +38,8 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 
 public class EditUserActivity extends AppCompatActivity {
-    IUserDAO userDAO = UserDAO.getInstance(this);
+    private IUserDAO userDAO = UserDAO.getInstance(this);
+    private LoadingDialog loadingDialog = new LoadingDialog(this);
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private int IMAGE_ACTION_CODE; // code 1 = camera; code 2 = gallery
     private ImageView profileImage;
@@ -89,7 +88,6 @@ public class EditUserActivity extends AppCompatActivity {
         registerUserRepeatPassword.setText(userDAO.getUser().getPassword());
 
         Permission.validatePermissions(necessaryPermissions, this, 1);
-        // fazer codio Caso negada a permission
 
         ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -109,7 +107,7 @@ public class EditUserActivity extends AppCompatActivity {
                             }
 
                         }catch (Exception e){
-                            // por toast
+                            Toast.makeText(EditUserActivity.this,"Não foi possível recuperar imagem!", Toast.LENGTH_SHORT).show();
                         }
 
                         if (image != null) {
@@ -155,6 +153,8 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     public void saveImageUser(User user){
+        loadingDialog.startAlertDialog();
+
         // salvando imagem
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap userImage = ((BitmapDrawable) profileImage.getDrawable()).getBitmap();
@@ -180,7 +180,6 @@ public class EditUserActivity extends AppCompatActivity {
 
         uploadTask.addOnFailureListener(this, e ->
                 Toast.makeText(this, "Não foi possível salvar imagem!", Toast.LENGTH_SHORT).show());
-                // saveUser(user);
     }
 
     public void saveUser(User user){
@@ -194,6 +193,7 @@ public class EditUserActivity extends AppCompatActivity {
                 User user = snapshot.getValue(User.class);
                 userDAO.setUser(user);
 
+                loadingDialog.dismissAlertDialog();
                 Intent intent = new Intent(EditUserActivity.this, HomeActivity.class);
                 startActivity(intent);
             }

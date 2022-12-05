@@ -11,33 +11,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.citra_moblie.R;
+import com.example.citra_moblie.adapter.VacancyRecyclerViewAdapter;
 import com.example.citra_moblie.dao.IVacancyDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.helper.RecyclerItemClickListener;
-import com.example.citra_moblie.adapter.VacancyRecyclerViewAdapter;
-import com.example.citra_moblie.model.User;
 import com.example.citra_moblie.model.Vacancy;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment  {
-    private IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
+    private IVacancyDAO vacancyDAO;
     private ImageView clearFilters;
     private Spinner minimumsSalarySpinner;
     private Spinner maximumsSalarySpinner;
@@ -60,9 +50,10 @@ public class HomeFragment extends Fragment  {
         maximumsSalarySpinner = view.findViewById(R.id.maximumSalarySpinner);
         shiftSpinner = view.findViewById(R.id.shiftSpinner);
         typeHiringSpinner = view.findViewById(R.id.typeHiringSpinner);
+        vacancyDAO = VacancyDAO.getInstance(getContext());
 
-        //buscando todas as vagas
-        vacancyDAO.getVacanciesFromAPI();
+        // pegando novo array de vagas
+        vacancyDAO.getVacanciesFromAPI(getActivity());
 
         adapter = new VacancyRecyclerViewAdapter(vacancyDAO.getVacancies());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -142,8 +133,6 @@ public class HomeFragment extends Fragment  {
             public View getDropDownView(int position, View convertView,
                                         ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-
                 return view;
             }
         };
@@ -172,8 +161,6 @@ public class HomeFragment extends Fragment  {
             public View getDropDownView(int position, View convertView,
                                         ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-
                 return view;
             }
         };
@@ -201,8 +188,6 @@ public class HomeFragment extends Fragment  {
             public View getDropDownView(int position, View convertView,
                                         ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-
                 return view;
             }
         };
@@ -219,16 +204,13 @@ public class HomeFragment extends Fragment  {
             }
         });
 
-        clearFilters.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                minimumsSalarySpinner.setSelection(0);
-                maximumsSalarySpinner.setSelection(0);
-                shiftSpinner.setSelection(0);
-                typeHiringSpinner.setSelection(0);
+        clearFilters.setOnClickListener(view1 -> {
+            minimumsSalarySpinner.setSelection(0);
+            maximumsSalarySpinner.setSelection(0);
+            shiftSpinner.setSelection(0);
+            typeHiringSpinner.setSelection(0);
 
-                adapter.setVacancies(vacancyDAO.getVacancies());
-            }
+            adapter.setVacancies(vacancyDAO.getVacancies());
         });
 
         return view;
@@ -237,7 +219,6 @@ public class HomeFragment extends Fragment  {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        com.example.citra_moblie.databinding.FragmentHomeBinding binding = null;
     }
 
     public void vacancyListFilter(){

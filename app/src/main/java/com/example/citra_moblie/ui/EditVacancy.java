@@ -3,24 +3,10 @@ package com.example.citra_moblie.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,37 +19,30 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.citra_moblie.EditUserActivity;
-import com.example.citra_moblie.HomeActivity;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.citra_moblie.R;
 import com.example.citra_moblie.dao.IVacancyDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
+import com.example.citra_moblie.helper.LoadingDialog;
 import com.example.citra_moblie.helper.Permission;
-import com.example.citra_moblie.model.User;
 import com.example.citra_moblie.model.Vacancy;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 
 public class EditVacancy extends Fragment {
-    IVacancyDAO vacancyDAO = VacancyDAO.getInstance(getContext());
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private IVacancyDAO vacancyDAO;
+    private LoadingDialog loadingDialog;
     private TextView nameVacancyToEdit;
     private TextView descriptionVacancyToEdit;
     private Spinner shiftVacancyToEdit;
@@ -95,6 +74,8 @@ public class EditVacancy extends Fragment {
         typeHiringVacancyToEdit = view.findViewById(R.id.typeHiringVacancyToEdit);
         salaryVacancyToEdit = view.findViewById(R.id.salaryVacancyToCreate);
         Button editVacancyButton = view.findViewById(R.id.announceVacancyButton);
+        loadingDialog = new LoadingDialog(getActivity());
+        vacancyDAO = VacancyDAO.getInstance(getContext());
 
         Bundle bundle = getArguments();
         Vacancy vacancy = (Vacancy) bundle.getSerializable("vacancy");
@@ -117,8 +98,6 @@ public class EditVacancy extends Fragment {
             public View getDropDownView(int position, View convertView,
                                         ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-
                 return view;
             }
         };
@@ -136,8 +115,6 @@ public class EditVacancy extends Fragment {
             public View getDropDownView(int position, View convertView,
                                         ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-
                 return view;
             }
         };
@@ -156,80 +133,69 @@ public class EditVacancy extends Fragment {
         // https://stackoverflow.com/questions/62671106/onactivityresult-method-is-deprecated-what-is-the-alternative
         ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Bitmap image = null;
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Bitmap image = null;
 
-                            try {
-                                switch (IMAGE_ACTION_CODE){
-                                    case 1:
-                                        image = (Bitmap) result.getData().getExtras().get("data");
-                                        break;
-                                    case 2:
-                                        Uri localImage = result.getData().getData();
-                                        image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), localImage);
-                                        break;
-                                }
-                            }catch (Exception e){
-                                // por toast
+                        try {
+                            switch (IMAGE_ACTION_CODE){
+                                case 1:
+                                    image = (Bitmap) result.getData().getExtras().get("data");
+                                    break;
+                                case 2:
+                                    Uri localImage = result.getData().getData();
+                                    image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), localImage);
+                                    break;
                             }
+                        }catch (Exception e){
+                            // por toast
+                        }
 
-                            if (image != null) {
-                                vacancyImageToCreate.setImageBitmap(image);
-                            }
+                        if (image != null) {
+                            vacancyImageToCreate.setImageBitmap(image);
                         }
                     }
                 });
 
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    resultLauncher.launch(intent);
-                    IMAGE_ACTION_CODE = 1;
-                }
+        camera.setOnClickListener(view1 -> {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                resultLauncher.launch(intent);
+                IMAGE_ACTION_CODE = 1;
             }
         });
 
-        gallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    resultLauncher.launch(intent);
-                    IMAGE_ACTION_CODE = 2;
-                }
+        gallery.setOnClickListener(view12 -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                resultLauncher.launch(intent);
+                IMAGE_ACTION_CODE = 2;
             }
         });
 
-        editVacancyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //((BitmapDrawable) vacancyImageToCreate.getDrawable()).getBitmap()
-                Vacancy editedVacancy = new Vacancy(
-                        vacancy.getIdVacancy(),
-                        vacancy.getIdUser(),
-                        null,
-                        nameVacancyToEdit.getText().toString(),
-                        descriptionVacancyToEdit.getText().toString(),
-                        shiftVacancyToEdit.getSelectedItem().toString(),
-                        typeHiringVacancyToEdit.getSelectedItem().toString(),
-                        salaryVacancyToEdit.getText().toString(),
-                        vacancy.getVacancyLat(),
-                        vacancy.getVacancyLog()
-                );
+        editVacancyButton.setOnClickListener(view13 -> {
+            Vacancy editedVacancy = new Vacancy(
+                    vacancy.getIdVacancy(),
+                    vacancy.getIdUser(),
+                    null,
+                    nameVacancyToEdit.getText().toString(),
+                    descriptionVacancyToEdit.getText().toString(),
+                    shiftVacancyToEdit.getSelectedItem().toString(),
+                    typeHiringVacancyToEdit.getSelectedItem().toString(),
+                    salaryVacancyToEdit.getText().toString(),
+                    vacancy.getVacancyLat(),
+                    vacancy.getVacancyLog()
+            );
 
-                saveVacancyImage(vacancy, editedVacancy);
-            }
+            saveVacancyImage(vacancy, editedVacancy);
         });
 
         return view;
     }
 
     private void saveVacancyImage(Vacancy vacancy, Vacancy editedVacancy) {
+        loadingDialog.startAlertDialog();
+
         // salvando imagem
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap vacancyImage = ((BitmapDrawable) vacancyImageToCreate.getDrawable()).getBitmap();
@@ -262,9 +228,10 @@ public class EditVacancy extends Fragment {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         reference.child("AllVacancies").child(vacancy.getIdVacancy()).setValue(editedVacancy)
                         .addOnCompleteListener(task -> {
-                            vacancyDAO.getVacanciesFromAPI();
-                            Toast.makeText(getContext(),"Sucesso ao editar usuário!", Toast.LENGTH_SHORT).show();
+                            vacancyDAO.getVacanciesFromAPI(getActivity());
+                            Toast.makeText(getContext(),"Sucesso ao editar vaga!", Toast.LENGTH_SHORT).show();
 
+                            loadingDialog.dismissAlertDialog();
                             Fragment fragment = new UserCreatedVacancies();
                             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.nav_host_fragment_content_home, fragment);

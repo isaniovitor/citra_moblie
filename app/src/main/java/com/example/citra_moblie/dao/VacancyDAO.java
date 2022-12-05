@@ -1,16 +1,13 @@
 package com.example.citra_moblie.dao;
 
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 
-import com.example.citra_moblie.R;
-import com.example.citra_moblie.model.User;
+import com.example.citra_moblie.helper.LoadingDialog;
 import com.example.citra_moblie.model.Vacancy;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,15 +15,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class VacancyDAO implements IVacancyDAO {
     private static Context context;
     private static VacancyDAO vacancyDAO = null;
-    private List<User> appliedUsers = new ArrayList<>();
     private List<Vacancy> vacancies = new ArrayList<>();
-    IUserDAO userDAO = UserDAO.getInstance(context);
 
     // getusersAplblied, fazer edit e delete
 
@@ -42,8 +36,10 @@ public class VacancyDAO implements IVacancyDAO {
     }
 
     @Override
-    public void getVacanciesFromAPI() {
-        // Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image1);
+    public void getVacanciesFromAPI(Activity activity) {
+        // LoadingDialog loadingDialog = new LoadingDialog(activity);
+        // loadingDialog.startAlertDialog();
+
         DatabaseReference vacanciesReference = FirebaseDatabase.getInstance().getReference().child("AllVacancies");
         vacanciesReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -57,6 +53,7 @@ public class VacancyDAO implements IVacancyDAO {
                         vacancies.add(vacancy);
                     }
 
+                    // loadingDialog.dismissAlertDialog();
                     setVacancies(vacancies);
                 }
             }
@@ -79,27 +76,24 @@ public class VacancyDAO implements IVacancyDAO {
     }
 
     @Override
-    public boolean addVacancy(Vacancy vacancy) {
+    public void addVacancy(Vacancy vacancy, OnCompleteListener onCompleteListener) {
         try{
             DatabaseReference AllVacancies =  FirebaseDatabase.getInstance().getReference();
-            AllVacancies.child("AllVacancies").child(vacancy.getIdVacancy()).setValue(vacancy);
-
-            return true;
+            AllVacancies.child("AllVacancies").child(vacancy.getIdVacancy()).setValue(vacancy)
+                    .addOnCompleteListener(onCompleteListener);
         }catch (Exception e){
             throw e;
         }
     }
 
     @Override
-    public boolean editVacancy(Vacancy vacancyEdited, Vacancy oldVacancy) {
-        getVacanciesFromAPI();
-        return true;
+    public void editVacancy(Vacancy vacancyEdited, Vacancy oldVacancy) {
+        //getVacanciesFromAPI();
     }
 
     @Override
-    public boolean removeVacancy(Vacancy vacancy) {
-        getVacanciesFromAPI();
-        return true;
+    public void removeVacancy(Vacancy vacancy) {
+        //getVacanciesFromAPI();
     }
 
     @Override
