@@ -1,22 +1,31 @@
 package com.example.citra_moblie;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.citra_moblie.dao.IUserDAO;
+import com.example.citra_moblie.dao.UserDAO;
 import com.example.citra_moblie.helper.LoadingDialog;
 import com.example.citra_moblie.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RegisterUserActivity extends AppCompatActivity {
     private LoadingDialog loadingDialog = new LoadingDialog(this);
     private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private IUserDAO userDAO;
     private Button registerUserButton;
     private TextView registerUserName;
     private TextView registerUserEmail;
@@ -39,6 +48,7 @@ public class RegisterUserActivity extends AppCompatActivity {
         registerUserPassword = findViewById(R.id.salaryVacancyToCreate);
         registerUserRepeatPassword = findViewById(R.id.registerUserRepeatPassword);
         registerUserButton = findViewById(R.id.announceVacancyButton);
+        userDAO = UserDAO.getInstance(this);
 
         registerUserButton.setOnClickListener(view -> {
             if (!registerUserName.getText().toString().equals("") && !registerUserEmail.getText().toString().equals("") &&
@@ -55,7 +65,8 @@ public class RegisterUserActivity extends AppCompatActivity {
                             registerUserPassword.getText().toString()
                     );
 
-                    saveUser(user);
+                    SaveUser saveUser = new SaveUser(this, user);
+                    saveUser.start();
                 }else{
                     Toast.makeText(RegisterUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
                 }
@@ -65,23 +76,36 @@ public class RegisterUserActivity extends AppCompatActivity {
         });
     }
 
-    public void saveUser(User user){
-        loadingDialog.startAlertDialog();
-        auth.createUserWithEmailAndPassword(user.getEmail(),
-                user.getPassword()).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                user.setId(auth.getUid());
+    class SaveUser extends Thread {
+        private Activity activity;
+        private User user;
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                reference.child("usuarios").child(user.getId()).setValue(user);
+        public SaveUser(Activity activity, User user) {
+            this.activity = activity;
+            this.user = user;
+        }
 
-                loadingDialog.dismissAlertDialog();
-                Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }else{
-                loadingDialog.dismissAlertDialog();
-                Toast.makeText(RegisterUserActivity.this,"Erro ao cadastrar!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        @Override
+        public void run() {
+            OnCompleteListener completeListener = task -> {
+                if(task.isSuccessful()){
+                    Thread.currentThread().interrupt();
+                    user.setId(auth.getUid());
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                    reference.child("usuarios").child(user.getId()).setValue(user);
+
+                    activity.runOnUiThread((Runnable) () -> loadingDialog.dismissAlertDialog());
+                    Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }else{
+                    activity.runOnUiThread((Runnable) () -> loadingDialog.dismissAlertDialog());
+                    Toast.makeText(RegisterUserActivity.this,"Erro ao cadastrar!", Toast.LENGTH_SHORT).show();
+                }
+            };
+
+            activity.runOnUiThread((Runnable) () -> loadingDialog.startAlertDialog());
+            userDAO.saveUser(completeListener, user);
+        }
     }
 }

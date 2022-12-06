@@ -1,15 +1,6 @@
 package com.example.citra_moblie.model;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.example.citra_moblie.R;
-
 import java.io.Serializable;
-import java.net.URL;
-import java.util.List;
 
 public class Vacancy implements Serializable {
     private String idVacancy;
@@ -22,7 +13,6 @@ public class Vacancy implements Serializable {
     private String salarySpinner;
     private String vacancyLat;
     private String vacancyLog;
-//    private List<User> appliedCandidates;
 
     public Vacancy() {
 

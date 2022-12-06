@@ -1,7 +1,5 @@
 package com.example.citra_moblie.model;
 
-import android.graphics.Bitmap;
-
 public class User {
     private String id;
     private String image;

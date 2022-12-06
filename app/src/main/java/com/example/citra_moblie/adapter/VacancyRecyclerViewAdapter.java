@@ -53,7 +53,6 @@ public class VacancyRecyclerViewAdapter extends RecyclerView.Adapter<VacancyRecy
         Vacancy vacancy = vacancies.get(position);
 
         if (vacancy.getVacancyImage() != null) {
-            // holder.vacancyImage.setImageBitmap(vacancy.getVacancyImage());
             Picasso.get().load(Uri.parse(vacancy.getVacancyImage()))
                     .into(holder.vacancyImage);
         }

@@ -43,7 +43,6 @@ public class VacanciesMapFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            // pegar so as que ele pode se cadastrar
             for (Vacancy vacancy : vacancyDAO.getVacancies()){
                 LatLng newMarker = new LatLng(Double.parseDouble(vacancy.getVacancyLat()), Double.parseDouble(vacancy.getVacancyLog()));
                 googleMap.addMarker(new MarkerOptions()
@@ -55,25 +54,22 @@ public class VacanciesMapFragment extends Fragment {
                 // Bitmap.createScaledBitmap(vacancy.getVacancyImage(), 100, 100, false)))
             }
 
-            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(@NonNull Marker marker) {
-                    for (int i = 0; i < vacancyDAO.getVacancies().size(); i++) {
-                        if (i == Integer.parseInt(String.valueOf(marker.getId().charAt(1)))){
-                            Bundle bundle = new Bundle();
-                            Fragment fragment = new VacancyDetails();
-                            bundle.putSerializable("vacancy", vacancyDAO.getVacancy(i));
+            googleMap.setOnMarkerClickListener(marker -> {
+                for (int i = 0; i < vacancyDAO.getVacancies().size(); i++) {
+                    if (i == Integer.parseInt(String.valueOf(marker.getId().charAt(1)))){
+                        Bundle bundle = new Bundle();
+                        Fragment fragment = new VacancyDetails();
+                        bundle.putSerializable("vacancy", vacancyDAO.getVacancy(i));
 
-                            fragment.setArguments(bundle);
-                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.nav_host_fragment_content_home, fragment, "vacancies_map");
-                            transaction.addToBackStack("vacancies_map");
-                            transaction.commit();
-                            return true;
-                        }
+                        fragment.setArguments(bundle);
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.nav_host_fragment_content_home, fragment, "vacancies_map");
+                        transaction.addToBackStack("vacancies_map");
+                        transaction.commit();
+                        return true;
                     }
-                    return false;
                 }
+                return false;
             });
         }
     };
