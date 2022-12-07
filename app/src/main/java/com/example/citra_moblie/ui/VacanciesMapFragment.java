@@ -39,7 +39,10 @@ public class VacanciesMapFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             for (Vacancy vacancy : vacancyDAO.getVacancies()){
                 LatLng newMarker = new LatLng(Double.parseDouble(vacancy.getVacancyLat()), Double.parseDouble(vacancy.getVacancyLog()));
-                Marker marker = googleMap.addMarker(new MarkerOptions().position(newMarker).title("vacancy.getVacancyName()").snippet("descrição"));
+                Marker marker = googleMap.addMarker(new MarkerOptions().position(newMarker).title(vacancy.getVacancyName())
+                        .snippet(vacancy.getSalarySpinner() + " / " + vacancy.getShiftSpinner()));
+
+                assert marker != null;
                 marker.showInfoWindow();
             }
 
