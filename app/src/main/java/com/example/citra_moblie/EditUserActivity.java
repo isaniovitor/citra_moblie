@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,15 +26,8 @@ import com.example.citra_moblie.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
-import java.io.ByteArrayOutputStream;
 
 public class EditUserActivity extends AppCompatActivity {
     private IUserDAO userDAO = UserDAO.getInstance(this);
@@ -137,7 +129,7 @@ public class EditUserActivity extends AppCompatActivity {
                     !registerUserBirthday.getText().toString().equals("") && !registerUserCpf.getText().toString().equals("") &&
                     !registerUserPassword.getText().toString().equals("") && !registerUserRepeatPassword.getText().toString().equals("")) {
                 if (registerUserPassword.getText().toString().equals(registerUserRepeatPassword.getText().toString())) {
-                    User user = new User(
+                    User editedUser = new User(
                             userDAO.getUser().getId(),
                             null,
                             registerUserName.getText().toString(),
@@ -147,7 +139,8 @@ public class EditUserActivity extends AppCompatActivity {
                             registerUserPassword.getText().toString()
                     );
 
-                    saveImageUser(user);
+                    EditUser editUser = new EditUser(this, profileImage,  editedUser);
+                    editUser.start();
                 }else{
                     Toast.makeText(EditUserActivity.this,"Senhas diferentes!", Toast.LENGTH_SHORT).show();
                 }
@@ -157,56 +150,40 @@ public class EditUserActivity extends AppCompatActivity {
         });
     }
 
-    public void saveImageUser(User user){
-        loadingDialog.startAlertDialog();
+    class EditUser extends Thread {
+        private Activity activity;
+        private User user;
+        private ImageView imageView;
 
-        // salvando imagem
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap userImage = ((BitmapDrawable) profileImage.getDrawable()).getBitmap();
-        userImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        public EditUser(Activity activity, ImageView imageView, User editedUser) {
+            this.activity = activity;
+            this.user = editedUser;
+            this.imageView = imageView;
+        }
 
-        // converte pixels em uma matriz de bytes
-        byte[] imageData = baos.toByteArray();
+        @Override
+        public void run() {
+            ValueEventListener eventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Toast.makeText(activity,"Sucesso ao editar usuário!", Toast.LENGTH_SHORT).show();
 
-        // definindo nó
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference imageRef = storageReference.child("usersImages").child(user.getId());
+                    User user = snapshot.getValue(User.class);
+                    userDAO.setUser(user);
 
-        // objeto que controla upload
-        UploadTask uploadTask = imageRef.putBytes(imageData);
+                    activity.runOnUiThread((Runnable) () -> loadingDialog.dismissAlertDialog());
+                    Intent intent = new Intent(activity, HomeActivity.class);
+                    startActivity(intent);
+                }
 
-        // tratando respostas
-        uploadTask.addOnSuccessListener(this, taskSnapshot -> {
-            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                user.setImage(uri.toString());
-                saveUser(user);
-            });
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-        uploadTask.addOnFailureListener(this, e ->
-                Toast.makeText(this, "Não foi possível salvar imagem!", Toast.LENGTH_SHORT).show());
-    }
+                }
+            };
 
-    public void saveUser(User user){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        reference.child("usuarios").child(auth.getCurrentUser().getUid()).setValue(user);
-        reference.child("usuarios").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Toast.makeText(EditUserActivity.this,"Sucesso ao editar usuário!", Toast.LENGTH_SHORT).show();
-
-                User user = snapshot.getValue(User.class);
-                userDAO.setUser(user);
-
-                loadingDialog.dismissAlertDialog();
-                Intent intent = new Intent(EditUserActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+            activity.runOnUiThread((Runnable) () -> loadingDialog.startAlertDialog());
+            userDAO.saveImageUser(activity, imageView, eventListener, user);
+        }
     }
 }

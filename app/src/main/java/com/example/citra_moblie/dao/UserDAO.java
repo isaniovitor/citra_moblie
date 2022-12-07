@@ -1,11 +1,16 @@
 package com.example.citra_moblie.dao;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.citra_moblie.EditUserActivity;
 import com.example.citra_moblie.HomeActivity;
 import com.example.citra_moblie.LoginActivity;
 import com.example.citra_moblie.RegisterUserActivity;
@@ -17,7 +22,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UserDAO implements IUserDAO{
@@ -51,7 +60,40 @@ public class UserDAO implements IUserDAO{
                 newUser.getPassword()).addOnCompleteListener(completeListener);
     }
 
-    //edit user
+    public void saveImageUser(Activity activity, ImageView imageView, ValueEventListener eventListener, User editedUser) {
+        // salvando imagem
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap userImage = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        userImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        // converte pixels em uma matriz de bytes
+        byte[] imageData = baos.toByteArray();
+
+        // definindo nó
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference imageRef = storageReference.child("usersImages").child(user.getId());
+
+        // objeto que controla upload
+        UploadTask uploadTask = imageRef.putBytes(imageData);
+
+        // tratando respostas
+        uploadTask.addOnSuccessListener(activity, taskSnapshot -> {
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                editedUser.setImage(uri.toString());
+                editUser(eventListener, editedUser);
+            });
+        });
+
+        uploadTask.addOnFailureListener(activity, e -> {
+            Toast.makeText(activity, "Não foi possível salvar imagem!", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    public void editUser(ValueEventListener eventListener, User editedUser) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child("usuarios").child(auth.getCurrentUser().getUid()).setValue(editedUser);
+        reference.child("usuarios").child(auth.getCurrentUser().getUid()).addValueEventListener(eventListener);
+    }
 
     public User getUser() {
         return user;

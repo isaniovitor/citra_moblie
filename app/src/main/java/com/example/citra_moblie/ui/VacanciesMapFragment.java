@@ -1,28 +1,22 @@
 package com.example.citra_moblie.ui;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.citra_moblie.R;
-
 import com.example.citra_moblie.dao.IVacancyDAO;
 import com.example.citra_moblie.dao.VacancyDAO;
 import com.example.citra_moblie.model.Vacancy;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,13 +39,8 @@ public class VacanciesMapFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             for (Vacancy vacancy : vacancyDAO.getVacancies()){
                 LatLng newMarker = new LatLng(Double.parseDouble(vacancy.getVacancyLat()), Double.parseDouble(vacancy.getVacancyLog()));
-                googleMap.addMarker(new MarkerOptions()
-                                .position(newMarker)
-                                .title(vacancy.getVacancyName())
-                                .snippet("descrição"));
-
-                // icon(BitmapDescriptorFactory.fromBitmap(
-                // Bitmap.createScaledBitmap(vacancy.getVacancyImage(), 100, 100, false)))
+                Marker marker = googleMap.addMarker(new MarkerOptions().position(newMarker).title("vacancy.getVacancyName()").snippet("descrição"));
+                marker.showInfoWindow();
             }
 
             googleMap.setOnMarkerClickListener(marker -> {
