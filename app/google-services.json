@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "247487599230",
+    "firebase_url": "https://citra-backend-default-rtdb.firebaseio.com",
     "project_id": "citra-backend",
     "storage_bucket": "citra-backend.appspot.com"
   },
