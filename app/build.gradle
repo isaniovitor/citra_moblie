@@ -1,12 +1,11 @@
 plugins {
     id 'com.android.application'
-    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' apply false
     id 'com.google.gms.google-services'
 }
 
 android {
     compileSdk 32
-    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.example.citra_moblie"
